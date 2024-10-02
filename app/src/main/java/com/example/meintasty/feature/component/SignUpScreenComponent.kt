@@ -1,6 +1,5 @@
 package com.example.meintasty.feature.component
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,11 +13,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,32 +27,70 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.navigation.Screen
+import java.security.Key
 
 @Composable
-fun ScreenImage() {
-    Image(
-        painter = painterResource(id = R.drawable.account),
-        contentDescription = ""
+fun SignUpImage() {
+
+    Image(painter = painterResource(id = R.drawable.account), contentDescription = "")
+}
+
+@Composable
+fun NameSurnameComponent(
+    name_surname: String,
+    onNameSurnameChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = name_surname,
+        onValueChange = {
+            onNameSurnameChange(it)
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.user),
+                contentDescription = "",
+                tint = Color.LightGray,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        modifier = Modifier.fillMaxWidth(),
+        label = {
+            Text(text = stringResource(id = R.string.name_surname))
+        },
+        textStyle = TextStyle(
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            color = Color.Black
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Next
+        ),
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = Color(0xFFA841E7),
+            unfocusedIndicatorColor = Color.LightGray,
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+            unfocusedTextColor = Color(0xFFA841E7)
+        )
+
     )
 }
 
 @Composable
-fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
-
+fun EmailComponent(
+    email: String,
+    onMailChange: (String) -> Unit
+) {
     OutlinedTextField(
-        value = emailText,
+        value = email,
         onValueChange = { newEmail ->
-            onEmailChange(newEmail)
+            onMailChange(newEmail)
         },
-         modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
             color = Color.Black
@@ -77,7 +112,6 @@ fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Next
         ),
-
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color(0xFFA841E7),
             unfocusedIndicatorColor = Color.LightGray,
@@ -89,16 +123,57 @@ fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
 }
 
 @Composable
-fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> Unit) {
+fun PhoneComponent(phone: String, onPhoneChange: (String) -> Unit) {
+
+    OutlinedTextField(
+        value = phone,
+        onValueChange = {
+            onPhoneChange(it)
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.phone),
+                contentDescription = "",
+                tint = Color.LightGray,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        label = {
+            Text(text = stringResource(id = R.string.phone))
+        },
+        modifier = Modifier.fillMaxWidth(),
+        textStyle = TextStyle(
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            color = Color.Black
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Phone,
+            imeAction = ImeAction.Next
+        ),
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = Color(0xFFA841E7),
+            unfocusedIndicatorColor = Color.LightGray,
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+            unfocusedTextColor = Color(0xFFA841E7)
+        )
+    )
+}
+
+@Composable
+fun PasswordSignUpComponent(
+    password : String,
+    onPaswordChange: (String) -> Unit
+) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        value = passwordText,
+        value = password,
         onValueChange = { password ->
-            onPasswordChange(password)
+            onPaswordChange(password)
         },
-          modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
 
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -113,6 +188,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
                 )
         },
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.lock),
@@ -137,7 +213,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
             imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
-            onDone ={
+            onDone = {
                 keyboardController?.hide()
             }
         ),
@@ -152,7 +228,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
 }
 
 @Composable
-fun LoginButtonComponent(onLogin: () -> Unit) {
+fun SignUpButtonComponent(onClick: () -> Unit) {
 
     Button(
         modifier = Modifier
@@ -163,36 +239,6 @@ fun LoginButtonComponent(onLogin: () -> Unit) {
         ),
         onClick = { /*TODO*/ }
     ) {
-        Text(text = stringResource(id = R.string.login))
+        Text(text = stringResource(id = R.string.sign_up))
     }
-}
-
-
-@Composable
-fun SignUpComponent(navController: NavController) {
-    TextButton(
-        onClick = {
-            navController.navigate(Screen.SignUpScreen.route)
-    }) {
-
-        Text(
-            text = stringResource(id = R.string.sign_up),
-            style = TextStyle(
-                textDecoration = TextDecoration.Underline
-            )
-        )
-    }
-
-}
-
-@Composable
-fun ForgotPasswordComponent() {
-    Text(
-        text = stringResource(id = R.string.forgot_password),
-        style = TextStyle(
-            textDecoration = TextDecoration.Underline
-        ),
-        textAlign = TextAlign.End
-    )
-
 }
