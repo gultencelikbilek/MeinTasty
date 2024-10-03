@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.login_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.feature.component.EmailLoginComponent
@@ -33,17 +37,30 @@ import com.example.meintasty.feature.component.LoginButtonComponent
 import com.example.meintasty.feature.component.PasswordLoginComponent
 import com.example.meintasty.feature.component.ScreenImage
 import com.example.meintasty.feature.component.SignUpComponent
+import com.example.meintasty.navigation.Screen
+import kotlin.math.log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     var emailText by remember {
         mutableStateOf("")
     }
     var passwordText by remember {
         mutableStateOf("")
+    }
+
+    var userAccountState = loginViewModel.tokenState.collectAsState().value
+    when(userAccountState){
+        is UserAccountState.Error -> {
+            Log.d("errorMessage:",userAccountState.exception.message.toString())
+        }
+        is UserAccountState.Succes -> {
+            navController.navigate(Screen.NewScreen.route)
+        }
     }
 
     Scaffold(
@@ -99,7 +116,10 @@ fun LoginScreen(
                                 ForgotPasswordComponent()
                             }
                             Spacer(modifier = Modifier.height(16.dp))
-                            LoginButtonComponent(onLogin = {})
+                            LoginButtonComponent(onLogin = {
+                                loginViewModel.loginUser(emailText,passwordText)
+
+                            })
                             SignUpComponent(
                                 navController
                             )
