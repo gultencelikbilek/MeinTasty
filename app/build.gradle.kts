@@ -87,6 +87,9 @@ dependencies {
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation (libs.androidx.lifecycle.runtime.ktx.v286)
+    implementation (libs.androidx.lifecycle.runtime.compose)
+    implementation (libs.androidx.runtime.livedata)
 
     //coil
     implementation(libs.coil.compose)
@@ -97,6 +100,9 @@ dependencies {
     kapt (libs.androidx.room.compiler)
     annotationProcessor (libs.androidx.room.room.compiler)
     implementation (libs.androidx.room.ktx)
+
+    //spalshscreen
+    implementation (libs.androidx.core.splashscreen)
 
 
 }

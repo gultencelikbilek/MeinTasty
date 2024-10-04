@@ -18,9 +18,9 @@ class LoginUserRepositoryImpl @Inject constructor(@ApplicationContext context : 
     suspend fun getToken(email : String, password : String) : Value {
         val loginResquest = LoginUserRequest(email,password)
         val response = api.loginUser(loginResquest)
-        return response.value
         Log.d("token",response.toString())
         Log.d("token",response.success.toString())
+        return response.value
     }
 
     suspend fun insertToken(userAccountModel: UserAccountModel) =  flow<Unit>{
