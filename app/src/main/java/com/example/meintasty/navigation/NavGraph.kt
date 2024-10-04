@@ -1,5 +1,6 @@
 package com.example.meintasty.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +15,7 @@ fun NavGraph() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.LoginScreen.route ){
         composable(Screen.LoginScreen.route){
+            Log.v("Logg:loginNav","")
             LoginScreen(navController)
         }
         composable(Screen.SignUpScreen.route){

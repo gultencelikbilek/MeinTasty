@@ -165,7 +165,7 @@ fun LoginButtonComponent(onLogin: () -> Unit) {
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFA841E7)
         ),
-        onClick = { /*TODO*/ }
+        onClick = { onLogin() }
     ) {
         Text(text = stringResource(id = R.string.login))
     }
