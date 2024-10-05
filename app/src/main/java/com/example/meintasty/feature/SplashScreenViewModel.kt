@@ -14,22 +14,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
-    private val repositoryImpl: SplashScreenRepositoryImpl,
-    private val context: Context
+    private val repositoryImpl: SplashScreenRepositoryImpl
 ) : ViewModel(){
+
 
     private val _tokenExists = MutableLiveData<Boolean>()
     val tokenExists: LiveData<Boolean> get() = _tokenExists
-    init {
-        checkToken()
-    }
-    private fun checkToken() {
+     fun checkToken(token:String) {
         viewModelScope.launch {
-
-            val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
-            val token = sharedPreferences.getString("auth_token", null) // Eğer token yoksa null döner
-
-
             if (token != null) {
                 val userAccount = repositoryImpl.getToken(token)
                 Log.d("token","$token")
