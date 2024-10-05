@@ -124,7 +124,8 @@ fun SignUpScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         SignUpButtonComponent(
-                            onClick = {}
+                            onClick = {},
+                            ""
                         )
                     }
                 }

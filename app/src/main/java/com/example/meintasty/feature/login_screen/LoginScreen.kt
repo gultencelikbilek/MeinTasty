@@ -62,29 +62,34 @@ fun LoginScreen(
     }
 
     val tokenState by loginViewModel.token.observeAsState()
-    Log.v("Logg:Token:",tokenState.toString())
+    Log.v("Logg:Token:", tokenState.toString())
 
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("token",Context.MODE_PRIVATE)
-    with(sharedPreferences.edit()){
-        putString("auth_token",tokenState)
-        apply()
+    val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
+
+    // Token null olmadığında SharedPreferences içine kaydediyoruz
+    tokenState?.let {
+        with(sharedPreferences.edit()) {
+            putString("auth_token", tokenState)
+            apply()
+        }
     }
 
-    LaunchedEffect (tokenState){
-        Log.d("Logg:LoginScreen","token")
+    LaunchedEffect(tokenState) {
+        Log.d("Logg:LoginScreen", "token")
         val token = loginViewModel.token.value
-        Log.d("Logg:LoginScreen",token.toString())
-        when(token){
-            "Test" ->{
+        Log.d("Logg:LoginScreen", token.toString())
+        when (token) {
+            "Test" -> {
                 Log.d("Logg:LoginScreen", "trueee")
                 navController.navigate(Screen.NewScreen.route)
             }
-            "null" ->{
+            else -> {
                 Log.d("Logg:LoginScreen", "Error occurred")
             }
         }
     }
+
 
 
 
