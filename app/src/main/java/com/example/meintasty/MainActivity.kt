@@ -51,14 +51,14 @@ class MainActivity : ComponentActivity() {
                 }
             }
             val navContoller = rememberNavController()
-            if(showSplashScreen) {
-                SplashScreenContent(navContoller)
-            }else {
+           // if(showSplashScreen) {
+           //     SplashScreenContent(navContoller)
+           // }else {
                 MeinTastyTheme {
                     Log.v("Logg:loginNav","")
                     NavGraph()
                 }
-            }
+           // }
 
         }
     }
@@ -83,11 +83,11 @@ fun SplashScreenContent(
         // authToken değeri varsa giriş yapılmış, yoksa login ekranına yönlendirir
         if (authToken.value) {
             navController.navigate(Screen.NewScreen.route) {
-                popUpTo(Screen.SplashScreenContent.route) { inclusive = true }
+             //   popUpTo(Screen.SplashScreenContent.route) { inclusive = true }
             }
         } else {
             navController.navigate(Screen.LoginScreen.route) {
-                popUpTo(Screen.SplashScreenContent.route) { inclusive = true }
+            //    popUpTo(Screen.SplashScreenContent.route) { inclusive = true }
             }
         }
     }
