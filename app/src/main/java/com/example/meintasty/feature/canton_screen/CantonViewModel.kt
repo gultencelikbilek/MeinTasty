@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.welcome_screen
+package com.example.meintasty.feature.canton_screen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.repoimpl.CantonRepositoryImpl
 import com.example.meintasty.domain.model.Canton
 import com.example.meintasty.domain.model.CantonRequestModel
-import com.example.meintasty.domain.model.CantonResponseModel
 import com.example.meintasty.domain.model.City
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +28,7 @@ class CantonViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repositoryImpl.getCanton(requestModel)
-                if (response.success) {
+                if (response!!.success) {
                     _canton.value = response.value
                     Log.d("CantonViewModel:", response.success.toString())
                 } else {

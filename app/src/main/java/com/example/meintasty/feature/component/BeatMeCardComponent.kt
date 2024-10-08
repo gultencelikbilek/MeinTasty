@@ -26,7 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.feature.welcome_screen.CantonViewModel
+import com.example.meintasty.feature.canton_screen.CantonViewModel
 
 @Composable
 fun BeatMeCardComponent(cantonViewModel: CantonViewModel) {

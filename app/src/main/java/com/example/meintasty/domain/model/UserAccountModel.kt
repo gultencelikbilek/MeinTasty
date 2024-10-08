@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 @Entity
 data class UserAccountModel(
     @PrimaryKey(autoGenerate = true)
-    val id : Int,
+    val id : Int? = 0,
     val fullName: String? ="",
-    val roleList : List<String>,
+    val roleList : List<String> = emptyList(),
     val token: String? =""
 )

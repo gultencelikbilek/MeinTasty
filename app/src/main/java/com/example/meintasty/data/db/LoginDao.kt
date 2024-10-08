@@ -11,8 +11,8 @@ interface LoginDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertToken(userAccountModel: UserAccountModel)
 
-    @Query("SELECT * FROM useraccountmodel WHERE token = :token LIMIT 1")
-    suspend fun getToken(token: String): UserAccountModel?
+    @Query("SELECT * FROM useraccountmodel")
+    suspend fun getToken():  UserAccountModel
 
 
 }

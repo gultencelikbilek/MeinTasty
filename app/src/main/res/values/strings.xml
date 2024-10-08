@@ -22,4 +22,7 @@
     <string name="what_hot_today">What Hot Today</string>
     <string name="breakfast">Breakfast</string>
     <string name="turkish_breakfast">Turkish Breakfast</string>
+    <string name="mein_tasty">Mein Tasty</string>
+    <string name="or">or</string>
+    <string name="skip">Skip</string>
 </resources>
