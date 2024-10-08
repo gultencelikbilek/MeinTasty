@@ -32,9 +32,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
+import com.example.meintasty.domain.model.Food
 
 @Composable
-fun FoodCardComponent() {
+fun FoodCardComponent(food: Food) {
 
 
     Card(
@@ -58,7 +59,7 @@ fun FoodCardComponent() {
                     .height(200.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.food_one),
+                    painter = painterResource(id = food.img),
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxSize(),
@@ -74,7 +75,7 @@ fun FoodCardComponent() {
                     verticalAlignment = Alignment.CenterVertically // Dikey h
                 ) {
                     Text(
-                        text = stringResource(id = R.string.shripm_lo),
+                        text = food.name,
                         style = TextStyle(
                             color = Color.Black,
                             fontSize = MaterialTheme.typography.titleLarge.fontSize,
@@ -128,5 +129,5 @@ fun FoodCardComponent() {
 @Preview
 @Composable
 fun FoodCardPrew(modifier: Modifier = Modifier) {
-    FoodCardComponent()
+   // FoodCardComponent(it)
 }

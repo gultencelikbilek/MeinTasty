@@ -2,9 +2,14 @@ package com.example.meintasty.feature.component
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -18,13 +23,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -43,21 +50,33 @@ import com.example.meintasty.navigation.Screen
 
 @Composable
 fun ScreenImage() {
-    Image(
-        painter = painterResource(id = R.drawable.account),
-        contentDescription = ""
-    )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(400.dp)
+            .background(colorResource(id = R.color.mein_tasty_color))
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.meintast_logo),
+            contentDescription = "",
+            modifier = Modifier
+                .size(200.dp)
+                .align(Alignment.Center)
+        )
+    }
 }
 
 @Composable
 fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
-
     OutlinedTextField(
         value = emailText,
         onValueChange = { newEmail ->
             onEmailChange(newEmail)
         },
-         modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(25.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
             color = Color.Black
@@ -65,8 +84,10 @@ fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
         label = {
             Text(
                 text = stringResource(id = R.string.email),
-
+                style = TextStyle(
+                    color = Color.LightGray
                 )
+            )
         },
         leadingIcon = {
             Icon(
@@ -83,11 +104,9 @@ fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
         ),
 
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color(0xFFA841E7),
-            unfocusedIndicatorColor = Color.LightGray,
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            unfocusedTextColor = Color(0xFFA841E7)
+            unfocusedContainerColor = Color.White
         )
     )
 }
@@ -102,8 +121,10 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
         onValueChange = { password ->
             onPasswordChange(password)
         },
-          modifier = Modifier.fillMaxWidth(),
-
+        shape = RoundedCornerShape(25.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
             fontWeight = FontWeight.ExtraBold,
@@ -113,7 +134,9 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
         label = {
             Text(
                 text = stringResource(id = R.string.password),
-
+                style = TextStyle(
+                    color = Color.LightGray
+                )
                 )
         },
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -141,16 +164,15 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
             imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
-            onDone ={
+            onDone = {
                 keyboardController?.hide()
             }
         ),
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color(0xFFA841E7),
-            unfocusedIndicatorColor = Color.LightGray,
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = Color(0xFFA841E7),
+            //focusedLabelColor =  colorResource(id = R.color.mein_tasty_color)
         )
     )
 }
@@ -163,9 +185,11 @@ fun LoginButtonComponent(onLogin: () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 80.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFA841E7)
+            containerColor = colorResource(id = R.color.mein_tasty_color)
         ),
-        onClick = { onLogin() }
+        onClick = {
+            onLogin()
+        }
     ) {
         Text(text = stringResource(id = R.string.login))
     }
@@ -177,7 +201,8 @@ fun SignUpComponent(navController: NavController) {
     TextButton(
         onClick = {
             navController.navigate(Screen.SignUpScreen.route)
-    }) {
+        },
+    ) {
 
         Text(
             text = stringResource(id = R.string.sign_up),
