@@ -2,6 +2,7 @@ package com.example.meintasty.feature.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,11 +28,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.Food
+import com.example.meintasty.domain.model.Restaurant
+import com.example.meintasty.navigation.Screen
 
 @Composable
-fun PopulerRestaurantCardComponent(food: Food) {
+fun PopulerRestaurantCardComponent(restaurant: Restaurant,navController: NavController) {
 
     Card(
         modifier = Modifier
@@ -39,7 +43,10 @@ fun PopulerRestaurantCardComponent(food: Food) {
             .padding(top = 16.dp)
             .padding(start = 16.dp)
             .height(150.dp)
-            .background(Color.White),
+            .background(Color.White)
+            .clickable {
+                       navController.navigate(Screen.DetailRestaurantScreen.route+"?restaurantId=${restaurant.id}")
+            },
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Column(
@@ -50,7 +57,7 @@ fun PopulerRestaurantCardComponent(food: Food) {
                 modifier = Modifier.background(Color.LightGray).align(Alignment.CenterHorizontally)
             ) {
                 Image(
-                    painter = painterResource(id = food.img),
+                    painter = painterResource(id = R.drawable.food_one),
                     contentDescription = "",
                     contentScale = ContentScale.Crop
                 )
@@ -61,18 +68,18 @@ fun PopulerRestaurantCardComponent(food: Food) {
                     .padding(start = 16.dp)
             ) {
                 Text(
-                    text = food.name,
+                    text = restaurant.restaurantName.toString(),
                     style = TextStyle(
                         color = Color.Black,
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         fontWeight = FontWeight.Bold
                     )
                 )
-                Row(
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
+              //  Row(
+              //      modifier = Modifier.padding(top = 16.dp)
+              //  ) {
                     Text(
-                        text = stringResource(id = R.string.dollars),
+                        text = restaurant.phoneNumber.toString(),
                         style = TextStyle(
                             color = Color.Gray,
                             fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -80,16 +87,16 @@ fun PopulerRestaurantCardComponent(food: Food) {
                             textDecoration = TextDecoration.LineThrough
                         )
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = stringResource(id = R.string.price),
-                        style = TextStyle(
-                            color = Color.DarkGray,
-                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                        )
-                    )
-                }
+                    //Spacer(modifier = Modifier.width(10.dp))
+                  // Text(
+                  //     text = restaurant.phoneNumber,
+                  //     style = TextStyle(
+                  //         color = Color.DarkGray,
+                  //         fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                  //         fontWeight = FontWeight.Normal,
+                  //     )
+                  // )
+               // }
             }
         }
     }

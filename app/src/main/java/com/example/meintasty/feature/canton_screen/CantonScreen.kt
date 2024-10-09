@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.canton_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -38,6 +39,7 @@ fun CantonScreen(
 
     LaunchedEffect(Unit) {
         cantonViewModel.getCanton(requestModel)  // Modeli burada ViewModel'e geçiyoruz
+        Log.d("cantonscreen",cantonViewModel.canton.toString())
     }
 
     Scaffold(

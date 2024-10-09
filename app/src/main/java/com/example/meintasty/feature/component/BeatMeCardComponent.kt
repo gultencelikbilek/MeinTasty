@@ -31,7 +31,7 @@ import com.example.meintasty.feature.canton_screen.CantonViewModel
 import com.example.meintasty.navigation.Screen
 
 @Composable
-fun BeatMeCardComponent(cantonViewModel: CantonViewModel,navController: NavController) {
+fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavController) {
 
 
     var cantonSelect by remember {
@@ -40,14 +40,23 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel,navController: NavContr
     var citiesSelect by remember {
         mutableStateOf("")
     }
-
-   val cantonList by  cantonViewModel.canton.collectAsState()
+    var selectedCityCode by remember {
+        mutableStateOf("")
+    }
+    val cantonList by cantonViewModel.canton.collectAsState()
     val citiesList by cantonViewModel.cities.collectAsState()
 
     LaunchedEffect(cantonSelect) {
         val selectedCanton = cantonViewModel.canton.value.find { it.cantonName == cantonSelect }
         selectedCanton?.let {
             cantonViewModel.updateCities(it) // Seçilen Canton nesnesini ViewModel'e gönderiyoruz
+        }
+    }
+
+    LaunchedEffect(citiesSelect) {
+        val selectedCity = citiesList.find { it.cityName == citiesSelect }
+        selectedCity.let {
+            selectedCityCode = it?.cityCode.toString()
         }
     }
     Box(
@@ -80,9 +89,9 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel,navController: NavContr
             ) {
 
                 CantonTextFieldComponent(
-                   cantonList,
+                    cantonList,
                     cantonSelect,
-                    onCantonChange ={ newCanton ->
+                    onCantonChange = { newCanton ->
                         cantonSelect = newCanton
                     }
                 )
@@ -90,14 +99,15 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel,navController: NavContr
                 CitiesTextFieldComponent(
                     citiesList,
                     citiesSelect,
-                    onCitiesChange= {
+                    onCitiesChange = {
                         citiesSelect = it
                     }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SearchButton(onClick = {
-                    navController.navigate(Screen.SearchScreen.route)
-                })
+                    navController.navigate(Screen.RestaurantScreen.route + "?selectedCityCode=$selectedCityCode")
+                }
+                )
             }
         }
     }
