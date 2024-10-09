@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.repoimpl.CantonRepositoryImpl
+import com.example.meintasty.data.repoimpl.RestaurantRepositoryImpl
 import com.example.meintasty.domain.model.Canton
 import com.example.meintasty.domain.model.CantonRequestModel
 import com.example.meintasty.domain.model.City
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CantonViewModel @Inject constructor(
-    private val repositoryImpl: CantonRepositoryImpl
+    private val repositoryImpl: CantonRepositoryImpl,
 ) : ViewModel() {
 
     private val _canton = MutableStateFlow<List<Canton>>(emptyList())
@@ -44,6 +45,7 @@ class CantonViewModel @Inject constructor(
     fun updateCities(selectedCanton: Canton) {
         viewModelScope.launch {
             _cities.value = selectedCanton.cities
+            Log.d("selectedCanton.cities:","${selectedCanton.cities.toString()}")
         }
     }
 }

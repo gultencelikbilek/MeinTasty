@@ -48,7 +48,7 @@ fun MeinTastySplashScreen(
         if (splashShowState != null) {
             if (splashShowState.isNavigateLoginScreen == true){
                 Log.v("splashShowState:", splashShowState.toString())
-                navController.navigate(Screen.ChooseLoginRegister.route)
+                navController.navigate(Screen.ChooseLoginRegisterScreen.route)
             }else{
                 Log.v("splashShowState:","else")
                 navController.navigate(Screen.LoginScreen.route)
