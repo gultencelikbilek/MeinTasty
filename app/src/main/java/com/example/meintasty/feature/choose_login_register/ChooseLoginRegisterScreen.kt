@@ -71,7 +71,7 @@ fun ChooseLoginRegisterScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(400.dp)
+                        .height(350.dp)
                         .background(colorResource(id = R.color.mein_tasty_color))
                 ) {
                     Image(
@@ -83,9 +83,13 @@ fun ChooseLoginRegisterScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(26.dp))
-                SignUpButtonComponent(onClick = {}, text = stringResource(id = R.string.sign_up))
+                SignUpButtonComponent(onClick = {
+                    navController.navigate(Screen.SignUpScreen.route)
+                }, text = stringResource(id = R.string.sign_up))
                 DividerComponent()
-                SignInButtonComponent(onClick = {}, text = stringResource(id = R.string.sign_in))
+                SignInButtonComponent(onClick = {
+                    navController.navigate(Screen.LoginScreen.route)
+                }, text = stringResource(id = R.string.sign_in))
 
             }
         }

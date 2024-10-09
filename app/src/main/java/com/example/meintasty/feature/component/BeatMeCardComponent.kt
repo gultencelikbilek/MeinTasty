@@ -25,11 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.feature.canton_screen.CantonViewModel
+import com.example.meintasty.navigation.Screen
 
 @Composable
-fun BeatMeCardComponent(cantonViewModel: CantonViewModel) {
+fun BeatMeCardComponent(cantonViewModel: CantonViewModel,navController: NavController) {
 
 
     var cantonSelect by remember {
@@ -93,7 +95,9 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel) {
                     }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                SearchButton(onClick = {})
+                SearchButton(onClick = {
+                    navController.navigate(Screen.SearchScreen.route)
+                })
             }
         }
     }

@@ -36,27 +36,26 @@ import com.example.meintasty.domain.model.Food
 
 @Composable
 fun FoodCardComponent(food: Food) {
-
-
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp)
-            .background(Color.White),
+            .width(200.dp)
+            .height(300.dp)
+            .background(Color.White)
+            .padding(start = 16.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
-        elevation = CardDefaults.cardElevation(40.dp)
+        elevation = CardDefaults.cardElevation(6.dp)
     ) {
-        Row(
-            modifier = Modifier,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+      //  Row(
+      //      modifier = Modifier,
+      //      horizontalArrangement = Arrangement.SpaceBetween
+      //  ) {
             Box(
                 modifier = Modifier
-                    .width(150.dp)
-                    .height(200.dp)
+                    .width(200.dp)
+                    .height(300.dp)
             ) {
                 Image(
                     painter = painterResource(id = food.img),
@@ -65,69 +64,70 @@ fun FoodCardComponent(food: Food) {
                         .fillMaxSize(),
                     contentScale = ContentScale.Crop // Resmin alanı doldurması için
                 )
-            }
-            Column(
-                modifier = Modifier.padding(top = 24.dp, start = 20.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically // Dikey h
-                ) {
-                    Text(
-                        text = food.name,
-                        style = TextStyle(
-                            color = Color.Black,
-                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        painter = painterResource(id = R.drawable.love),
-                        contentDescription = "",
-                        tint = Color.Red,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = stringResource(id = R.string.lorem_ipsum),
-                    style = TextStyle(
-                        color = Color.LightGray,
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontWeight = FontWeight.Normal
-                    )
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Row {
-                    Text(
-                        text = stringResource(id = R.string.dollars),
-                        style = TextStyle(
-                            color = Color.Gray,
-                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            textDecoration = TextDecoration.LineThrough // Üstü çizili
-                        )
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
+//            }
 
-                    Text(
-                        text = stringResource(id = R.string.price),
-                        style = TextStyle(
-                            color = Color.DarkGray,
-                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                        )
-                    )
-                }
-            }
+           //Column(
+           //    modifier = Modifier.padding(top = 24.dp, start = 20.dp)
+           //) {
+           //    Row(
+           //        modifier = Modifier
+           //            .fillMaxWidth(),
+           //        verticalAlignment = Alignment.CenterVertically // Dikey h
+           //    ) {
+           //        Text(
+           //            text = food.name,
+           //            style = TextStyle(
+           //                color = Color.Black,
+           //                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+           //                fontWeight = FontWeight.Bold
+           //            )
+           //        )
+               //    Spacer(modifier = Modifier.width(8.dp))
+               //    Icon(
+               //        painter = painterResource(id = R.drawable.love),
+               //        contentDescription = "",
+               //        tint = Color.Red,
+               //        modifier = Modifier.size(16.dp)
+               //    )
+               //}
+               //Spacer(modifier = Modifier.height(10.dp))
+               //Text(
+               //    text = stringResource(id = R.string.lorem_ipsum),
+               //    style = TextStyle(
+               //        color = Color.LightGray,
+               //        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+               //        fontWeight = FontWeight.Normal
+               //    )
+               //)
+              // Spacer(modifier = Modifier.height(10.dp))
+              // Row {
+              //     Text(
+              //         text = stringResource(id = R.string.dollars),
+              //         style = TextStyle(
+              //             color = Color.Gray,
+              //             fontSize = MaterialTheme.typography.titleMedium.fontSize,
+              //             fontWeight = FontWeight.Normal,
+              //             textDecoration = TextDecoration.LineThrough // Üstü çizili
+              //         )
+              //     )
+              //     Spacer(modifier = Modifier.width(10.dp))
+
+              //     Text(
+              //         text = stringResource(id = R.string.price),
+              //         style = TextStyle(
+              //             color = Color.DarkGray,
+              //             fontSize = MaterialTheme.typography.titleLarge.fontSize,
+              //             fontWeight = FontWeight.Normal,
+              //         )
+              //     )
+              // }
+            //}
         }
     }
 }
 
-@Preview
+
 @Composable
-fun FoodCardPrew(modifier: Modifier = Modifier) {
-   // FoodCardComponent(it)
+fun FoodCardPrew(food: Food) {
+    FoodCardComponent(food)
 }

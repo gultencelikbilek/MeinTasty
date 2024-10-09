@@ -40,7 +40,6 @@ fun SignInButtonComponent(
             contentColor = Color.DarkGray
         )
     )
-
 }
 
 @Preview

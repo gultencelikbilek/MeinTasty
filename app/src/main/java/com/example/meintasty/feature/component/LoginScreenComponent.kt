@@ -137,7 +137,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
                 style = TextStyle(
                     color = Color.LightGray
                 )
-                )
+            )
         },
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         leadingIcon = {
@@ -207,7 +207,8 @@ fun SignUpComponent(navController: NavController) {
         Text(
             text = stringResource(id = R.string.sign_up),
             style = TextStyle(
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
+                color = colorResource(id = R.color.mein_tasty_color)
             )
         )
     }

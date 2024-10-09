@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -59,6 +60,7 @@ fun NameSurnameComponent(
         onValueChange = {
             onNameSurnameChange(it)
         },
+        shape = RoundedCornerShape(25.dp),
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.user),
@@ -69,7 +71,12 @@ fun NameSurnameComponent(
         },
         modifier = Modifier.fillMaxWidth(),
         label = {
-            Text(text = stringResource(id = R.string.name_surname))
+            Text(
+                text = stringResource(id = R.string.name_surname),
+                style = TextStyle(
+                    color = Color.LightGray
+                )
+            )
         },
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -79,11 +86,10 @@ fun NameSurnameComponent(
             imeAction = ImeAction.Next
         ),
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color(0xFFA841E7),
-            unfocusedIndicatorColor = Color.LightGray,
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = Color(0xFFA841E7)
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color)
         )
 
     )
@@ -99,6 +105,7 @@ fun EmailComponent(
         onValueChange = { newEmail ->
             onMailChange(newEmail)
         },
+        shape = RoundedCornerShape(25.dp),
         modifier = Modifier.fillMaxWidth(),
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -107,8 +114,10 @@ fun EmailComponent(
         label = {
             Text(
                 text = stringResource(id = R.string.email),
-
+                style = TextStyle(
+                    color = Color.LightGray
                 )
+            )
         },
         leadingIcon = {
             Icon(
@@ -122,11 +131,10 @@ fun EmailComponent(
             imeAction = ImeAction.Next
         ),
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color(0xFFA841E7),
-            unfocusedIndicatorColor = Color.LightGray,
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = Color(0xFFA841E7)
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color)
         )
     )
 }
@@ -147,8 +155,14 @@ fun PhoneComponent(phone: String, onPhoneChange: (String) -> Unit) {
                 modifier = Modifier.size(24.dp)
             )
         },
+        shape = RoundedCornerShape(25.dp),
         label = {
-            Text(text = stringResource(id = R.string.phone))
+            Text(
+                text = stringResource(id = R.string.phone),
+                style = TextStyle(
+                    color = Color.LightGray
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         textStyle = TextStyle(
@@ -160,18 +174,17 @@ fun PhoneComponent(phone: String, onPhoneChange: (String) -> Unit) {
             imeAction = ImeAction.Next
         ),
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color(0xFFA841E7),
-            unfocusedIndicatorColor = Color.LightGray,
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = Color(0xFFA841E7)
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color)
         )
     )
 }
 
 @Composable
 fun PasswordSignUpComponent(
-    password : String,
+    password: String,
     onPaswordChange: (String) -> Unit
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -189,12 +202,14 @@ fun PasswordSignUpComponent(
             fontWeight = FontWeight.ExtraBold,
             color = Color.Black
         ),
-
+        shape = RoundedCornerShape(25.dp),
         label = {
             Text(
                 text = stringResource(id = R.string.password),
-
+                style = TextStyle(
+                    color = Color.LightGray
                 )
+            )
         },
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
 
@@ -227,11 +242,10 @@ fun PasswordSignUpComponent(
             }
         ),
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color(0xFFA841E7),
-            unfocusedIndicatorColor = Color.LightGray,
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = Color(0xFFA841E7),
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color),
         )
     )
 }

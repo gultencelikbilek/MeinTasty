@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import com.example.meintasty.R
 
 
 @Composable
@@ -21,21 +23,18 @@ fun SignUpButtonComponent(
     onClick: () -> Unit,
     text:String
 ) {
-    Box(modifier = Modifier.wrapContentWidth()) {
-        Button(
-            onClick = { onClick() },
-            content = {
-                Text(text = text)
-            },
-            border = BorderStroke(1.dp,Color(0xffdc3545)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .wrapContentHeight(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.DarkGray
-            )
+    Button(
+        onClick = { onClick() },
+        content = {
+            Text(text = text)
+        },
+        border = BorderStroke(1.dp,Color(0xffdc3545)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            contentColor = Color.DarkGray
         )
-    }
+    )
 }

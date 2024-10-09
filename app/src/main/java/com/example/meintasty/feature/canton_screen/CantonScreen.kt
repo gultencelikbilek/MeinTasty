@@ -29,7 +29,6 @@ import com.example.meintasty.feature.component.FoodCardComponent
 import com.example.meintasty.feature.component.HotTodayComponent
 import com.example.meintasty.feature.component.MenuButtonComponent
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CantonScreen(
     navController: NavController,
@@ -48,7 +47,7 @@ fun CantonScreen(
                 modifier = Modifier.padding(paddingValues),
                 verticalArrangement = Arrangement.Bottom
             ) {
-                BeatMeCardComponent(cantonViewModel)
+                BeatMeCardComponent(cantonViewModel,navController)
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyRow(
                     modifier = Modifier.fillMaxWidth()
