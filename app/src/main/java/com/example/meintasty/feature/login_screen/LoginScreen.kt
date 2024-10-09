@@ -14,12 +14,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,9 +51,11 @@ import com.example.meintasty.feature.component.LoginButtonComponent
 import com.example.meintasty.feature.component.PasswordLoginComponent
 import com.example.meintasty.feature.component.ScreenImage
 import com.example.meintasty.feature.component.SignUpComponent
+import com.example.meintasty.feature.component.SkipComponent
 import com.example.meintasty.navigation.Screen
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -82,6 +88,14 @@ fun LoginScreen(
     }
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { /*TODO*/ },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xffdc3545)
+                )
+            )
+        },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -93,7 +107,7 @@ fun LoginScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(400.dp)
+                        .wrapContentHeight()
                         .background(colorResource(id = R.color.mein_tasty_color))
                 ) {
                     Image(
@@ -141,7 +155,6 @@ fun LoginScreen(
                         LoginButtonComponent(
                             onLogin = {
                                 loginViewModel.loginUser(emailText, passwordText)
-
                             }
                         )
                         SignUpComponent(
@@ -159,5 +172,5 @@ fun LoginScreen(
 fun LoginScreenPrew(
 ) {
     val navController = rememberNavController()
-    LoginScreen(navController)
+    LoginScreen(navController = navController)
 }

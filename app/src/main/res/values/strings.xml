@@ -25,4 +25,7 @@
     <string name="mein_tasty">Mein Tasty</string>
     <string name="or">or</string>
     <string name="skip">Skip</string>
+    <string name="compains">Campaigns</string>
+    <string name="populer_restaurants">Popular Restaurants</string>
+    <string name="restaurant_nearby">Restaurants Nearby</string>
 </resources>
