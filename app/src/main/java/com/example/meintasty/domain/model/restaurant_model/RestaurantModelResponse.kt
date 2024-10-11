@@ -1,4 +1,4 @@
-package com.example.meintasty.domain.model
+package com.example.meintasty.domain.model.restaurant_model
 
 data class RestaurantModelResponse(
     val errorMessage: Any,

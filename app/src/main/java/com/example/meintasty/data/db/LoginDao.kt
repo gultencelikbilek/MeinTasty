@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.meintasty.domain.model.UserAccountModel
+import com.example.meintasty.domain.model.UserLocationModel
 
 @Dao
 interface LoginDao {
@@ -14,5 +15,9 @@ interface LoginDao {
     @Query("SELECT * FROM useraccountmodel")
     suspend fun getToken():  UserAccountModel
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCanton(userLocationModel: UserLocationModel)
 
+    @Query("SELECT * FROM userlocationmodel")
+    suspend fun getLocationInfo():  UserLocationModel
 }

@@ -3,7 +3,7 @@ package com.example.meintasty.data.repoimpl
 import android.content.Context
 import android.util.Log
 import com.example.meintasty.data.di.AppModule
-import com.example.meintasty.domain.model.LoginUserRequest
+import com.example.meintasty.domain.model.login_model.LoginUserRequest
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.Value
 import dagger.hilt.android.qualifiers.ApplicationContext

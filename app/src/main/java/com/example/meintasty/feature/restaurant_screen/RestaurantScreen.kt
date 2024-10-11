@@ -24,8 +24,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -41,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.RestaurantRequest
+import com.example.meintasty.domain.model.restaurant_model.RestaurantRequest
 import com.example.meintasty.domain.model.foodList
 import com.example.meintasty.feature.component.FoodCardComponent
 import com.example.meintasty.feature.component.NearbyRestaurantCardComponent
@@ -56,32 +58,51 @@ fun RestaurantScreen(
     navController: NavController,
     restaurantViewModel: RestaurantViewModel = hiltViewModel()
 ) {
-    var query = remember {
+    var query by remember {
         mutableStateOf("")
     }
     val customFontFamily = FontFamily(
-        Font(resId = R.font.poppins_italic, weight = FontWeight.Normal)
+        Font(resId = R.font.poppins_bold, weight = FontWeight.Bold)
     )
     val restaurantState = restaurantViewModel.restaurantState.collectAsState()
+    val locaitonState = restaurantViewModel.locationState.collectAsState()
+
     val restaurantRequest = RestaurantRequest(cityCode!!.toInt())
     LaunchedEffect(Unit) {
         restaurantViewModel.getRestaurant(restaurantRequest)
+        restaurantViewModel.getLocationInfo()
         Log.d("screen","searchscreen")
-
     }
+
+
+
     Log.d("cityCode:",cityCode.toString())
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = stringResource(id = R.string.mein_tasty),
-                        style = TextStyle(
-                            color = Color.White,
-                            fontSize = MaterialTheme.typography.headlineSmall.fontSize,
-                            fontFamily =  customFontFamily
+                    Column {
+                        Text(
+                            text = stringResource(id = R.string.mein_tasty),
+                            style = TextStyle(
+                                color = Color.White,
+                                fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                                fontFamily = customFontFamily
+                            )
                         )
-                    )
+                        locaitonState.value.data?.let {locationInfo ->
+                            Text(
+                                text = "${locationInfo.cantonName}/${locationInfo.cityName}",
+                               // modifier = Modifier.padding(bottom = ),
+                                style = TextStyle(
+                                    color = Color.White,
+                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                    fontFamily = customFontFamily
+                                )
+                            )
+                        }
+
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = colorResource(id = R.color.mein_tasty_color)
@@ -104,8 +125,10 @@ fun RestaurantScreen(
                         .height(70.dp)
                 ) {
                    SearchComponent(
-                       query = query.value,
-                       onQueryChange ={}
+                       query = query,
+                       onQueryChange ={
+                           query = it
+                       }
                    )
                 }
                 Box(
