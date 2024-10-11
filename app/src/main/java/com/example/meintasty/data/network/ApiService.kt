@@ -1,14 +1,14 @@
 package com.example.meintasty.data.network
 
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.CantonRequestModel
-import com.example.meintasty.domain.model.CantonResponseModel
-import com.example.meintasty.domain.model.DetailRestaurantRequest
-import com.example.meintasty.domain.model.DetailRestaurantResponse
-import com.example.meintasty.domain.model.LoginResponseModel
-import com.example.meintasty.domain.model.LoginUserRequest
-import com.example.meintasty.domain.model.RestaurantModelResponse
-import com.example.meintasty.domain.model.RestaurantRequest
+import com.example.meintasty.domain.model.canton_model.CantonRequestModel
+import com.example.meintasty.domain.model.canton_model.CantonResponseModel
+import com.example.meintasty.domain.model.restaurant_detail.DetailRestaurantRequest
+import com.example.meintasty.domain.model.login_model.LoginResponseModel
+import com.example.meintasty.domain.model.login_model.LoginUserRequest
+import com.example.meintasty.domain.model.restaurant_model.RestaurantModelResponse
+import com.example.meintasty.domain.model.restaurant_model.RestaurantRequest
+import com.example.meintasty.domain.model.restaurant_detail.RestaurantDetailResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -24,5 +24,5 @@ interface ApiService {
     suspend fun getRestaurant(@Body restaurantRequest: RestaurantRequest) : RestaurantModelResponse
 
     @POST(Constants.END_POINT_DETAIL_RESTAURANT)
-    suspend fun getDetailRestaurant(@Body detailRestaurantRequest: DetailRestaurantRequest) : DetailRestaurantResponse
+    suspend fun getDetailRestaurant(@Body detailRestaurantRequest: DetailRestaurantRequest) : RestaurantDetailResponse
 }

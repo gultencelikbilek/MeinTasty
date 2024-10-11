@@ -9,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,25 +19,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-
 @Composable
 fun SearchComponent(
-    query : String,
+    query: String,
     onQueryChange: (String) -> Unit
 ) {
-    OutlinedTextField(
+    TextField(
         value = query,
-        onValueChange = {query->
-           onQueryChange(query)
+        onValueChange = { query ->
+            onQueryChange(query)
         },
         shape = RoundedCornerShape(60.dp),
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
             .padding(horizontal = 12.dp),
-        label = {
+        placeholder = {
             Text(
-
                 text = "Search",
                 style = TextStyle(
                     color = Color.Gray,
@@ -54,9 +53,10 @@ fun SearchComponent(
             )
         },
         colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White
         )
     )
 }
-

@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.City
+import com.example.meintasty.domain.model.canton_model.City
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,6 +55,7 @@ fun CitiesTextFieldComponent(
                 DropdownMenuItem(
                     text = { Text(text = city.cityName) },
                     onClick = {
+
                         selectedCities = city.cityName
                         onCitiesChange(city.cityName)
                         isDropDownExpanded = false

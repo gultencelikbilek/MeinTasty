@@ -1,6 +1,7 @@
 package com.example.meintasty.feature.login_screen
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -67,7 +68,7 @@ fun LoginScreen(
     var passwordText by remember {
         mutableStateOf("")
     }
-
+    val context = LocalContext.current
     val tokenState by loginViewModel.token.observeAsState()
     Log.v("Logg:Token:", tokenState.toString())
 
@@ -154,7 +155,13 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.height(12.dp))
                         LoginButtonComponent(
                             onLogin = {
-                                loginViewModel.loginUser(emailText, passwordText)
+                                if (passwordText.isNullOrEmpty().not() && emailText.isNullOrEmpty().not()
+                                ) {
+                                    loginViewModel.loginUser(emailText, passwordText)
+                                    navController.navigate(Screen.RestaurantScreen.route)
+                                }else{
+                                    Toast.makeText(context,"Missing information",Toast.LENGTH_SHORT).show()
+                                }
                             }
                         )
                         SignUpComponent(

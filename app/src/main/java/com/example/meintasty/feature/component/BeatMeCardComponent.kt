@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meintasty.R
+import com.example.meintasty.domain.model.UserLocationModel
 import com.example.meintasty.feature.canton_screen.CantonViewModel
 import com.example.meintasty.navigation.Screen
 
@@ -59,6 +61,7 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
             selectedCityCode = it?.cityCode.toString()
         }
     }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -105,7 +108,14 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SearchButton(onClick = {
-                    navController.navigate(Screen.RestaurantScreen.route + "?selectedCityCode=$selectedCityCode")
+                    if (cantonSelect.isNullOrEmpty().not() && citiesSelect.isNullOrEmpty().not()) {
+                        val userLocationModel = UserLocationModel(0, cantonSelect, citiesSelect)
+                        cantonViewModel.saveCantonCities(userLocationModel)
+                        Log.d("userLocationModelScreen:", "$userLocationModel")
+                        navController.navigate(Screen.RestaurantScreen.route + "?selectedCityCode=$selectedCityCode")
+                    } else {
+                        Log.d("Navigation:", "Missing Information")
+                    }
                 }
                 )
             }

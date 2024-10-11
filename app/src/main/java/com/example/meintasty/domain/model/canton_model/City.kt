@@ -1,4 +1,4 @@
-package com.example.meintasty.domain.model
+package com.example.meintasty.domain.model.canton_model
 
 data class City(
     val cityCode: Int,

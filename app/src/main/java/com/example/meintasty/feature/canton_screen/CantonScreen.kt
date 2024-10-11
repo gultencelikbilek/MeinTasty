@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.meintasty.domain.model.CantonRequestModel
+import com.example.meintasty.domain.model.canton_model.CantonRequestModel
 import com.example.meintasty.domain.model.foodList
 import com.example.meintasty.feature.component.BeatMeCardComponent
 import com.example.meintasty.feature.component.BreakfastCardComponent

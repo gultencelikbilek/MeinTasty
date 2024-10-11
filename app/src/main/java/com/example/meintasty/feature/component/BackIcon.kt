@@ -21,7 +21,6 @@ import com.example.meintasty.R
 fun BackIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .padding(16.dp)
             .size(48.dp)
             .background(Color.White, RoundedCornerShape(8.dp))
             .clickable {
@@ -31,7 +30,7 @@ fun BackIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ) {
         Box(
             modifier = Modifier
-                .size(40.dp)
+                .size(24.dp)
                 .background(Color.White, RoundedCornerShape(12.dp))
                 .clickable { onClick() },
             contentAlignment = Alignment.Center

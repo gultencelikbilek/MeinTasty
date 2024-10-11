@@ -3,13 +3,12 @@ package com.example.meintasty.feature.detail_restaurant
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.repoimpl.DetailRestaurantRespositoryImpl
-import com.example.meintasty.domain.model.DetailRestaurant
-import com.example.meintasty.domain.model.DetailRestaurantRequest
+import com.example.meintasty.domain.model.restaurant_detail.DetailRestaurantRequest
+import com.example.meintasty.domain.model.restaurant_detail.DetailRestaurant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.lang.Error
 import javax.inject.Inject
 
 @HiltViewModel
