@@ -36,6 +36,7 @@ class CantonViewModel @Inject constructor(
             try {
                 val response = repositoryImpl.getCanton(requestModel)
                 Log.d("response:",response.value.toString())
+
                 if (response!!.success) {
                     _canton.value = response.value
                     Log.d("CantonViewModel:", response.success.toString())
@@ -57,13 +58,20 @@ class CantonViewModel @Inject constructor(
         }
     }
 
-    fun saveCantonCities(userLocationModel: UserLocationModel){
+    fun saveCantonCities(userLocationModel: UserLocationModel) {
         viewModelScope.launch {
-            val response = repositoryImpl.insertCanton(userLocationModel)
+            try {
+                repositoryImpl.insertCanton(userLocationModel)
+             //   _addCantonState.value = CantonState(data = userLocationModel)
+            } catch (e: Exception) {
+                // Hata durumunda işlemi yönetebilirsiniz
+                Log.e("CantonViewModelLocation", "Error saving canton cities: ${e.message}")
+            }
         }
     }
+
 }
 
 data class CantonState(
-    val data :UserLocationModel? = null
+    val data :Canton? = null
 )

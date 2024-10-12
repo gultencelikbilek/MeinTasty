@@ -1,65 +1,48 @@
 package com.example.meintasty.feature.login_screen
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.repoimpl.LoginUserRepositoryImpl
 import com.example.meintasty.domain.model.UserAccountModel
+import com.example.meintasty.domain.model.login_model.LoginUser
+import com.example.meintasty.domain.model.login_model.LoginUserRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repositoryImpl: LoginUserRepositoryImpl
+    private val loginRepositoryImpl: LoginUserRepositoryImpl,
 ) : ViewModel() {
 
-    private val _tokenState = MutableStateFlow(UserAccountState.Succes(false))
-    val tokenState: StateFlow<UserAccountState> = _tokenState
+    private val _loginState = MutableStateFlow(LoginState())
+    val loginState = _loginState.asStateFlow()
 
-
-   private val _token = MutableLiveData("null")
-   val token: LiveData<String> get() = _token
-
-    fun loginUser(email: String, password: String) {
+    fun loginFlowUser(loginUserRequest: LoginUserRequest) {
         viewModelScope.launch {
-            try {
-
-                val token = repositoryImpl.getToken(email, password)
-                val userAccountModel = UserAccountModel(
-                    0,
-                    fullName = token.fullName,
-                    roleList = token.roleList,
-                    token = token.toString()
-                )
-
-                //db ye token kaydet
-                //kullanıcıyı bir sonraki ekrana geçiş yaptır
-                Log.d("Logg:", token.toString())
-                Log.d("Logg:", userAccountModel.toString())
-                Log.d("Logg:", "$email $password")
-
-                repositoryImpl.insertToken(userAccountModel)
-                withContext(Dispatchers.Main) {
-                    _token.value = "Test"
-                    _tokenState.value = UserAccountState.Succes(true)
-                    Log.d("UserAccountState.Succes", "${UserAccountState.Succes(data = true)}")
+            val response = loginRepositoryImpl.login(loginUserRequest)
+            if (response.success) {
+                response.value.let {
+                    val userAccountModel = UserAccountModel(
+                        id = 0,
+                        fullName = response.value.fullName,
+                        roleList = response.value.roleList,
+                        token = response.value.token
+                    )
+                    loginRepositoryImpl.insertToken(userAccountModel)
+                    Log.d("LoginViewModel", "insertUser called with: ${response.value.token}")
                 }
-            }catch (e:Exception){
-                Log.d("exception:",e.message.toString())
-
             }
+            _loginState.value = LoginState(
+                data = response.value
+            )
         }
     }
 }
 
-sealed class UserAccountState {
-    data class Succes(val data: Boolean) : UserAccountState()
-    data class Error(val exception: Exception) : UserAccountState()
-}
+data class LoginState(
+    val data: LoginUser? = null
+)

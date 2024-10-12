@@ -1,11 +1,12 @@
 package com.example.meintasty.feature.signup_screen
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,35 +30,36 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
-import com.example.meintasty.feature.component.BackIcon
+import com.example.meintasty.domain.model.signup_model.SignupRequest
 import com.example.meintasty.feature.component.EmailComponent
 import com.example.meintasty.feature.component.NameSurnameComponent
 import com.example.meintasty.feature.component.PasswordSignUpComponent
 import com.example.meintasty.feature.component.PhoneComponent
-import com.example.meintasty.feature.component.ScreenImage
 import com.example.meintasty.feature.component.SignUpButtonComponent
-import com.example.meintasty.feature.component.SignUpImage
 import com.example.meintasty.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
-    navController: NavController
+    navController: NavController,
+    signUpViewModel: SignUpViewModel = hiltViewModel()
 ) {
 
-    var nameSurname by remember {
+    var fullName by remember {
         mutableStateOf("")
     }
 
-    var mail by remember {
+    var email by remember {
         mutableStateOf("")
     }
 
@@ -66,6 +70,14 @@ fun SignUpScreen(
     var password by remember {
         mutableStateOf("")
     }
+
+    val context = LocalContext.current
+
+    val signuState = signUpViewModel.signupState.collectAsState()
+
+    LaunchedEffect(Unit) {
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -115,15 +127,15 @@ fun SignUpScreen(
                         )
                     ) {
                         NameSurnameComponent(
-                            name_surname = nameSurname,
+                            name_surname = fullName,
                             onNameSurnameChange = {
-                                nameSurname = it
+                                fullName = it
                             }
                         )
                         EmailComponent(
-                            email = mail,
+                            email = email,
                             onMailChange = {
-                                mail = it
+                                email = it
                             }
                         )
                         PhoneComponent(
@@ -140,7 +152,18 @@ fun SignUpScreen(
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         SignUpButtonComponent(
-                            onClick = {},
+                            onClick = {
+                               if (fullName.isNullOrEmpty().not() && email.isNullOrEmpty().not() && phone.isNullOrEmpty().not() && password.isNullOrEmpty().not()){
+                                   val signUpRequest = SignupRequest(email,fullName,phone,password,password)
+                                   signUpViewModel.signUp(signUpRequest)
+                                   Log.d("signuprequest:","$signUpRequest")
+                                   navController.navigate(Screen.CantonScreen.route)
+                                   Toast.makeText(context,"Success signup",Toast.LENGTH_SHORT).show()
+                               }else{
+                                   Toast.makeText(context,"Unssucces signup",Toast.LENGTH_SHORT).show()
+                               }
+
+                            },
                             stringResource(id = R.string.sign_up)
                         )
                     }

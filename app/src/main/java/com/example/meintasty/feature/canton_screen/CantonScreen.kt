@@ -60,11 +60,11 @@ fun CantonScreen(
                         }
                     }
                 }
-                Spacer(modifier = Modifier.width(50.dp))
-                MenuButtonComponent(onClick = {})
-                Spacer(modifier = Modifier.height(10.dp))
-                HotTodayComponent()
-                BreakfastCardComponent()
+              //  Spacer(modifier = Modifier.width(50.dp))
+              //  MenuButtonComponent(onClick = {})
+              //  Spacer(modifier = Modifier.height(10.dp))
+              //  HotTodayComponent()
+              //  BreakfastCardComponent()
             }
         }
     )

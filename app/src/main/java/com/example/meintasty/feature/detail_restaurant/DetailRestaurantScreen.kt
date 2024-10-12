@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -75,15 +77,17 @@ fun DetailRestaurantScreen(
                         detailRestState.value.data?.restaurantName?.let { it1 ->
                             Text(
                                 text = it1,
-                                modifier=Modifier.padding(top = 6.dp) ,
-                                color = Color.Black,
+                                modifier= Modifier
+                                    .padding(start = 4.dp)
+                                    .padding(top = 6.dp) ,
+                                color = Color.White,
                                 fontFamily = customFontFamily
                             )
                         }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
+                    containerColor = colorResource(id = R.color.mein_tasty_color)
                 )
             )
         },

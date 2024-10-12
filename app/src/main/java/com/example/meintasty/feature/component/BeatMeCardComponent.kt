@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.component
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -47,6 +49,8 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
     }
     val cantonList by cantonViewModel.canton.collectAsState()
     val citiesList by cantonViewModel.cities.collectAsState()
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("city_code", Context.MODE_PRIVATE)
 
     LaunchedEffect(cantonSelect) {
         val selectedCanton = cantonViewModel.canton.value.find { it.cantonName == cantonSelect }
@@ -112,7 +116,12 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
                         val userLocationModel = UserLocationModel(0, cantonSelect, citiesSelect)
                         cantonViewModel.saveCantonCities(userLocationModel)
                         Log.d("userLocationModelScreen:", "$userLocationModel")
-                        navController.navigate(Screen.RestaurantScreen.route + "?selectedCityCode=$selectedCityCode")
+
+                        val editor = sharedPreferences.edit()
+                        editor.putString("city_code", selectedCityCode)
+                        editor.apply() // Değişiklikleri kaydet
+
+                        navController.navigate(Screen.RestaurantScreen.route)
                     } else {
                         Log.d("Navigation:", "Missing Information")
                     }
