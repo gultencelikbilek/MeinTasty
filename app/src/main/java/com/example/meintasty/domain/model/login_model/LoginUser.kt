@@ -1,6 +1,6 @@
-package com.example.meintasty.domain.model
+package com.example.meintasty.domain.model.login_model
 
-data class Value(
+data class LoginUser(
     val fullName: String,
     val roleList: List<String>,
     val token: String

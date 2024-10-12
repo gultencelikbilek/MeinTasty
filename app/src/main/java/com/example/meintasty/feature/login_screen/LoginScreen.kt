@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
+import com.example.meintasty.domain.model.UserAccountModel
+import com.example.meintasty.domain.model.login_model.LoginUserRequest
 import com.example.meintasty.feature.component.EmailLoginComponent
 import com.example.meintasty.feature.component.ForgotPasswordComponent
 import com.example.meintasty.feature.component.LoginButtonComponent
@@ -69,24 +72,7 @@ fun LoginScreen(
         mutableStateOf("")
     }
     val context = LocalContext.current
-    val tokenState by loginViewModel.token.observeAsState()
-    Log.v("Logg:Token:", tokenState.toString())
-
-    LaunchedEffect(tokenState) {
-        Log.d("Logg:LoginScreen", "token")
-        val token = loginViewModel.token.value
-        Log.d("Logg:LoginScreen", token.toString())
-        when (token) {
-            "Test" -> {
-                Log.d("Logg:LoginScreen", "trueee")
-                navController.navigate(Screen.NewScreen.route)
-            }
-
-            else -> {
-                Log.d("Logg:LoginScreen", "Error occurred")
-            }
-        }
-    }
+    val loginState =  loginViewModel.loginState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -154,16 +140,18 @@ fun LoginScreen(
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         LoginButtonComponent(
-                            onLogin = {
-                                if (passwordText.isNullOrEmpty().not() && emailText.isNullOrEmpty().not()
-                                ) {
-                                    loginViewModel.loginUser(emailText, passwordText)
-                                    navController.navigate(Screen.RestaurantScreen.route)
-                                }else{
-                                    Toast.makeText(context,"Missing information",Toast.LENGTH_SHORT).show()
+                                onLogin = {
+                                    if (passwordText.isNotEmpty() && emailText.isNotEmpty()) {
+                                        val request = LoginUserRequest(emailText, passwordText)
+                                        loginViewModel.loginFlowUser(request)
+                                        navController.navigate(Screen.CantonScreen.route)
+                                        Log.d("LoginScreen", "loginFlowUser called")
+                                    } else {
+                                        Toast.makeText(context, "Missing information", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
-                            }
-                        )
+                                )
+
                         SignUpComponent(
                             navController
                         )

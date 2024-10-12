@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +23,7 @@ fun BackIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(48.dp)
-            .background(Color.White, RoundedCornerShape(8.dp))
+            .background(colorResource(id = R.color.mein_tasty_color), RoundedCornerShape(8.dp))
             .clickable {
                 onClick()
             },
@@ -31,7 +32,7 @@ fun BackIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .size(24.dp)
-                .background(Color.White, RoundedCornerShape(12.dp))
+                .background(colorResource(id = R.color.mein_tasty_color), RoundedCornerShape(12.dp))
                 .clickable { onClick() },
             contentAlignment = Alignment.Center
         ) {
@@ -40,7 +41,7 @@ fun BackIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
                 contentDescription = stringResource(
                     id = R.string.back
                 ),
-                tint = Color.LightGray,
+                tint = Color.White,
                 modifier = Modifier.size(24.dp)
             )
         }

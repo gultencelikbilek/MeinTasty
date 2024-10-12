@@ -1,28 +1,31 @@
 package com.example.meintasty.feature.component
 
-import androidx.compose.foundation.BorderStroke
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.restaurant_detail.Menu
@@ -33,46 +36,87 @@ fun MenuListCardComponent(menu: Menu?) {
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_light, weight = FontWeight.Bold)
     )
+
+    var count by remember {
+        mutableStateOf(0)
+    }
+
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
-            .width(200.dp)
-            .wrapContentHeight()
-            .padding(4.dp),
-       // elevation = CardDefaults.cardElevation(2.dp),
-       // border = BorderStroke(2.dp, Color.LightGray),
-        shape = RoundedCornerShape(25.dp),
+            .width(85.dp)
+            .height(170.dp)
+            .padding(start = 2.dp),
+        elevation = CardDefaults.cardElevation(1.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .height(150.dp)
+        ) {
             Image(
-                painter = painterResource(id = R.drawable.food_one),
+                painter = painterResource(id = R.drawable.restaurant_bg),
                 contentDescription = "",
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .border(1.dp, Color.Transparent, RoundedCornerShape(25.dp))
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .background(colorResource(id = R.color.white), RoundedCornerShape(12.dp))
+                        .clickable {
+                            count++
+                            Toast.makeText(context,"Count:$count",Toast.LENGTH_SHORT).show()
+                        }
+                        .border(1.dp, Color.LightGray, RoundedCornerShape(25.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.plus),
+                        contentDescription = stringResource(id = R.string.add),
+                        tint = Color.Black,
+                        modifier = Modifier.size(10.dp)
+                    )
+                }
+            }
+
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .padding(start = 8.dp),
+                verticalArrangement = Arrangement.Top
             ) {
                 Text(
-                    text = menu!!.menuName.toString(),
+                    text = menu?.menuName.toString(),
                     style = TextStyle(
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         color = Color.Black,
                         fontFamily = customFontFamily
-                    )
+                    ),
+                    modifier = Modifier.padding(bottom = 2.dp) // Space between texts
                 )
                 Text(
-                    text = menu!!.price.toString(),
+                    text = menu?.price.toString(),
                     style = TextStyle(
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         color = Color.Gray
-                    )
+                    ),
+                    modifier = Modifier.padding(bottom = 2.dp)
                 )
                 Text(
-                    text = menu.menuPic.toString(),
+                    text = menu?.menuPic.toString(),
                     style = TextStyle(
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         color = Color.Gray

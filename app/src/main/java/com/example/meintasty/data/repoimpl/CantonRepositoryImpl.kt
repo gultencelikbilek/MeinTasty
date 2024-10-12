@@ -1,6 +1,7 @@
 package com.example.meintasty.data.repoimpl
 
 import android.content.Context
+import android.util.Log
 import com.example.meintasty.data.di.AppModule
 import com.example.meintasty.domain.model.canton_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.CantonResponseModel
@@ -19,6 +20,12 @@ class CantonRepositoryImpl @Inject constructor(
     }
 
     suspend fun insertCanton(userLocationModel: UserLocationModel){
-        loginDao.loginDao().insertCanton(userLocationModel)
+        try {
+            loginDao.loginDao().insertCanton(userLocationModel)
+            Log.d("CantonRepositoryImpl", "Canton inserted successfully: ${userLocationModel.cantonName}")
+        } catch (e: Exception) {
+            Log.e("CantonRepositoryImpl", "Error inserting canton: ${e.message}")
+        }
     }
+
 }

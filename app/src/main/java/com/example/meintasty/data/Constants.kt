@@ -7,4 +7,6 @@ object Constants {
     const val END_POINT_RESTAURANT = "Restaurant/getRestaurantsByCityId"
     const val END_POINT_DETAIL_RESTAURANT = "Restaurant/getRestaurantDetailById"
     const val END_POINT_CATEGORY = "Category/getCategories"
+    const val END_POINT_CATEGORY_DETAIL = "Category/getRestaurantsByCategoryId"
+    const val END_POINT_SIGNUP = "Register/signup"
 }

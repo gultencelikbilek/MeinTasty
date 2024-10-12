@@ -29,4 +29,8 @@
     <string name="populer_restaurants">Popular Restaurants</string>
     <string name="restaurant_nearby">Restaurants Nearby</string>
     <string name="location_info">Location Info</string>
+    <string name="categories">Categories</string>
+    <string name="cart">Cart</string>
+    <string name="basket_epmty">Basket is Empty</string>
+    <string name="add">Add</string>
 </resources>

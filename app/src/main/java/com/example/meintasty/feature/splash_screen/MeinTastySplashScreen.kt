@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,22 +41,27 @@ fun MeinTastySplashScreen(
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_blackitalic, weight = FontWeight.Normal)
     )
+    val locationState = meinTastyViewModel.locaState.collectAsState()
 
-    LaunchedEffect (Unit){
-        //val splashTokenState = meinTastyViewModel.splashToken
+    LaunchedEffect(Unit) {
+
         val splashShowState = meinTastyViewModel.splashShow.value
         Log.v("splashShowState:", splashShowState.toString())
-        if (splashShowState != null) {
-            if (splashShowState.isNavigateLoginScreen == true){
-                Log.v("splashShowState:", splashShowState.toString())
-                navController.navigate(Screen.ChooseLoginRegisterScreen.route)
-            }else{
-                Log.v("splashShowState:","else")
-                navController.navigate(Screen.LoginScreen.route)
-            }
+        if (splashShowState?.data?.token != null) {
+            Log.d("tokenNotnull:","${splashShowState.data.token}")
+
+
+                if (splashShowState.isNavigateLoginScreen == true) {
+                    Log.v("splashShowState:", splashShowState.toString())
+                    navController.navigate(Screen.RestaurantScreen.route)
+                } else {
+                    Log.v("splashShowState:", "else")
+                    navController.navigate(Screen.CantonScreen.route)
+                }
+        } else {
+            navController.navigate(Screen.ChooseLoginRegisterScreen.route)
         }
     }
-
 
     Scaffold(
         content = { paddingValues ->

@@ -12,6 +12,8 @@ import com.example.meintasty.feature.login_screen.LoginScreen
 import com.example.meintasty.feature.signup_screen.SignUpScreen
 import com.example.meintasty.feature.splash_screen.MeinTastySplashScreen
 import com.example.meintasty.feature.canton_screen.CantonScreen
+import com.example.meintasty.feature.basket_screen.BasketScreen
+import com.example.meintasty.feature.category_detail_screen.CategoryDetailScreen
 import com.example.meintasty.feature.choose_login_register.ChooseLoginRegisterScreen
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
@@ -38,32 +40,39 @@ fun NavGraph() {
         composable(Screen.ChooseLoginRegisterScreen.route) {
             ChooseLoginRegisterScreen(navController)
         }
-        composable(
-            route = Screen.RestaurantScreen.route + "?selectedCityCode={selectedCityCode}",
-            arguments = listOf(
-                navArgument(name = "selectedCityCode") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
+        composable(route = Screen.RestaurantScreen.route) {
             RestaurantScreen(
-                cityCode = backStackEntry.arguments!!.getString("selectedCityCode"),
                 navController = navController
-                )
+            )
         }
         composable(
-           route = Screen.DetailRestaurantScreen.route+"?restaurantId={restaurantId}",
+            route = Screen.DetailRestaurantScreen.route + "?restaurantId={restaurantId}",
             arguments = listOf(
-                navArgument(name = "restaurantId"){
+                navArgument(name = "restaurantId") {
                     type = NavType.IntType
                 }
             )
-        ) {backStackEntry->
-
+        ) { backStackEntry ->
             DetailRestaurantScreen(
                 restaurantId = backStackEntry.arguments?.getInt("restaurantId"),
                 navController
             )
+        }
+        composable(
+            route = Screen.CategoryDetailScreen.route + "?categoryId={categoryId}",
+            arguments = listOf(
+                navArgument(name = "categoryId") {
+                    type = NavType.IntType
+                }
+            )
+        ) { navBackStack ->
+            CategoryDetailScreen(
+                categoryId = navBackStack.arguments?.getInt("categoryId"),
+                navController
+            )
+        }
+        composable(Screen.CartScreen.route) {
+            BasketScreen(navController)
         }
     }
 }
