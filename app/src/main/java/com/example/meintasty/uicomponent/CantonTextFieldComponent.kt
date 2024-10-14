@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.canton_model.Canton
+import com.example.meintasty.domain.model.canton_model.response_model.Canton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.restaurant_detail.Menu
+import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
 
 @Composable
 fun MenuListCardComponent(menu: Menu?) {

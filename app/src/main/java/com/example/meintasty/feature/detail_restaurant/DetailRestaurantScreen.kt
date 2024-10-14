@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -38,7 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.restaurant_detail.DetailRestaurantRequest
+import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.MenuListCardComponent
 
@@ -50,7 +48,7 @@ fun DetailRestaurantScreen(
     detailRestaurantViewModel: DetailRestaurantViewModel = hiltViewModel()
 ) {
 
-    val detailRestState = detailRestaurantViewModel.detailRestState.collectAsState()
+    val detailRestState = detailRestaurantViewModel.detailRestState.collectAsState().value
 
     val detailRestaurantRequest = DetailRestaurantRequest(restaurantId!!.toInt())
     val customFontFamily = FontFamily(
@@ -68,7 +66,7 @@ fun DetailRestaurantScreen(
                         BackIcon {
                             navController.navigateUp()
                         }
-                        detailRestState.value.data?.restaurantName?.let { it1 ->
+                        detailRestState.data?.restaurantName?.let { it1 ->
                             Text(
                                 text = it1,
                                 modifier = Modifier
@@ -86,16 +84,18 @@ fun DetailRestaurantScreen(
             )
         },
         content = { paddingValues ->
-          //  if (detailRestState.isLoading == true) {
+            if (detailRestState.isLoading == true) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(
+                        color = colorResource(id = R.color.mein_tasty_color)
+                    )
                 }
-          //  } else if (detailRestState.isSuccess == true) {
-                Log.d("succes:","${detailRestState.value.data}")
+            } else if (detailRestState.isSuccess == true) {
+                Log.d("succes:","${detailRestState.data}")
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
@@ -115,7 +115,7 @@ fun DetailRestaurantScreen(
                         )
                     }
 
-                    detailRestState.value.data?.let { list ->
+                    detailRestState.data?.let { list ->
                         val repeatedMenuList = List(10) { list.menuList!! }.flatten()
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
@@ -130,9 +130,9 @@ fun DetailRestaurantScreen(
                         }
                     }
                 }
-          //  }else{
-          //      Log.d("detailRestaurant:error","${detailRestState.isError}")
-          //  }
+            }else{
+                Log.d("detailRestaurant:error","${detailRestState.isError}")
+            }
         }
     )
 

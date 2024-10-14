@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
@@ -41,7 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.login_model.LoginUserRequest
+import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
 import com.example.meintasty.uicomponent.EmailLoginComponent
 import com.example.meintasty.uicomponent.ForgotPasswordComponent
 import com.example.meintasty.uicomponent.LoginButtonComponent
@@ -63,7 +64,7 @@ fun LoginScreen(
         mutableStateOf("")
     }
     val context = LocalContext.current
-    val loginState =  loginViewModel.loginState.collectAsState()
+    val loginState = loginViewModel.loginState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -75,77 +76,93 @@ fun LoginScreen(
             )
         },
         content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
-            ) {
+            if (loginState.value.isLoading == true) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .background(colorResource(id = R.color.mein_tasty_color))
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.meintast_logo),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(200.dp)
-                            .align(Alignment.Center)
+                    CircularProgressIndicator(
+                        color = colorResource(id = R.color.mein_tasty_color)
                     )
                 }
-                Card(
+            } else {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = White
-                    )
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .background(colorResource(id = R.color.mein_tasty_color))
                     ) {
-
-                        EmailLoginComponent(
-                            emailText = emailText,
-                            onEmailChange = { newEmail ->
-                                emailText = newEmail
-                            }
+                        Image(
+                            painter = painterResource(id = R.drawable.meintast_logo),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(200.dp)
+                                .align(Alignment.Center)
                         )
-                        PasswordLoginComponent(
-                            passwordText = passwordText,
-                            onPasswordChange = { password ->
-                                passwordText = password
-                            }
+                    }
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = White
                         )
-                        Row(
-                            horizontalArrangement = Arrangement.End
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
                         ) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Spacer(modifier = Modifier.width(200.dp))
-                            ForgotPasswordComponent()
-                        }
-                        Spacer(modifier = Modifier.height(12.dp))
-                        LoginButtonComponent(
+
+                            EmailLoginComponent(
+                                emailText = emailText,
+                                onEmailChange = { newEmail ->
+                                    emailText = newEmail
+                                }
+                            )
+                            PasswordLoginComponent(
+                                passwordText = passwordText,
+                                onPasswordChange = { password ->
+                                    passwordText = password
+                                }
+                            )
+                            Row(
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Spacer(modifier = Modifier.width(200.dp))
+                                ForgotPasswordComponent()
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            LoginButtonComponent(
                                 onLogin = {
                                     if (passwordText.isNotEmpty() && emailText.isNotEmpty()) {
                                         val request = LoginUserRequest(emailText, passwordText)
-                                        loginViewModel.loginFlowUser(request)
+                                        loginViewModel.insertLoginUser(request)
                                         navController.navigate(Screen.CantonScreen.route)
                                         Log.d("LoginScreen", "loginFlowUser called")
                                     } else {
-                                        Toast.makeText(context, "Missing information", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Missing information",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
-                                )
+                            )
 
-                        SignUpComponent(
-                            navController
-                        )
+                            SignUpComponent(
+                                navController
+                            )
+                        }
                     }
                 }
             }

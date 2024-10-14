@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.restaurant_model.Restaurant
+import com.example.meintasty.domain.model.restaurant_model.restaurant_response.Restaurant
 import com.example.meintasty.navigation.Screen
 
 @Composable

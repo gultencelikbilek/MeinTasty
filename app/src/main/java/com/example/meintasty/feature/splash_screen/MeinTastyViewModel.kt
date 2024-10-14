@@ -4,14 +4,13 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.repoimpl.RestaurantRepositoryImpl
 import com.example.meintasty.data.repoimpl.SplashScreenRepositoryImpl
+import com.example.meintasty.data.usecase.GetLocaitonInfoUseCase
+import com.example.meintasty.data.usecase.SplashUseCase
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.UserLocationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -20,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MeinTastyViewModel @Inject constructor(
     private val splashScreenRepositoryImpl: SplashScreenRepositoryImpl,
-    private val restaurantRepositoryImpl: RestaurantRepositoryImpl
+    private val getLocaitonInfoUseCase: GetLocaitonInfoUseCase,
+    private val splashUseCase: SplashUseCase
 ) : ViewModel() {
 
     private val _splashShow = MutableLiveData(TokenState())
@@ -36,7 +36,7 @@ class MeinTastyViewModel @Inject constructor(
 
     suspend fun getLocation(){
         viewModelScope.launch {
-            val locationInfo = restaurantRepositoryImpl.getLocationInfo()
+            val locationInfo = getLocaitonInfoUseCase.invoke()
             Log.d("splash:",locationInfo.toString())
             Log.d("splash:", locationInfo.cityName.toString())
             Log.d("splash:", locationInfo.cantonName.toString())
@@ -50,7 +50,7 @@ class MeinTastyViewModel @Inject constructor(
     }
     private suspend fun getToken() {
         viewModelScope.launch {
-            val userAccount = splashScreenRepositoryImpl.getToken()
+            val userAccount = splashUseCase.invoke()
             Log.d("splash:", userAccount?.token.toString())
             if (userAccount != null) {
                     Log.d("splash:navigate:t:", "")
