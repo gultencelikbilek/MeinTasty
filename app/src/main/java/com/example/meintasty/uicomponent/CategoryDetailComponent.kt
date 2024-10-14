@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.component
+package com.example.meintasty.uicomponent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -28,7 +28,7 @@ fun CategoryDetailComponent(categoryDetail: CategoryDetail?) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .padding(vertical = 16.dp),
+            .padding(vertical = 8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),

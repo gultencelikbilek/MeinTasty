@@ -41,11 +41,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.signup_model.SignupRequest
-import com.example.meintasty.feature.component.EmailComponent
-import com.example.meintasty.feature.component.NameSurnameComponent
-import com.example.meintasty.feature.component.PasswordSignUpComponent
-import com.example.meintasty.feature.component.PhoneComponent
-import com.example.meintasty.feature.component.SignUpButtonComponent
+import com.example.meintasty.uicomponent.EmailComponent
+import com.example.meintasty.uicomponent.NameSurnameComponent
+import com.example.meintasty.uicomponent.PasswordSignUpComponent
+import com.example.meintasty.uicomponent.PhoneComponent
+import com.example.meintasty.uicomponent.SignUpButtonComponent
 import com.example.meintasty.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,14 +1,16 @@
-package com.example.meintasty.feature.component
-
+package com.example.meintasty.uicomponent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,7 +21,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -37,46 +37,76 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.navigation.Screen
+import java.security.Key
 
 @Composable
-fun ScreenImage() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(400.dp)
-            .background(colorResource(id = R.color.mein_tasty_color))
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.meintast_logo),
-            contentDescription = "",
-            modifier = Modifier
-                .size(200.dp)
-                .align(Alignment.Center)
-        )
-    }
+fun SignUpImage() {
+
+    Image(painter = painterResource(id = R.drawable.account), contentDescription = "")
 }
 
 @Composable
-fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
+fun NameSurnameComponent(
+    name_surname: String,
+    onNameSurnameChange: (String) -> Unit
+) {
     OutlinedTextField(
-        value = emailText,
-        onValueChange = { newEmail ->
-            onEmailChange(newEmail)
+        value = name_surname,
+        onValueChange = {
+            onNameSurnameChange(it)
         },
         shape = RoundedCornerShape(25.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.user),
+                contentDescription = "",
+                tint = Color.LightGray,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        modifier = Modifier.fillMaxWidth(),
+        label = {
+            Text(
+                text = stringResource(id = R.string.name_surname),
+                style = TextStyle(
+                    color = Color.LightGray
+                )
+            )
+        },
+        textStyle = TextStyle(
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            color = Color.Black
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Next
+        ),
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color)
+        )
+
+    )
+}
+
+@Composable
+fun EmailComponent(
+    email: String,
+    onMailChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = email,
+        onValueChange = { newEmail ->
+            onMailChange(newEmail)
+        },
+        shape = RoundedCornerShape(25.dp),
+        modifier = Modifier.fillMaxWidth(),
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
             color = Color.Black
@@ -98,39 +128,81 @@ fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
             )
         },
         keyboardOptions = KeyboardOptions.Default.copy(
-            capitalization = KeyboardCapitalization.None,
-            keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Next
         ),
-
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White
+            unfocusedContainerColor = Color.White,
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color)
         )
     )
 }
 
 @Composable
-fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> Unit) {
+fun PhoneComponent(phone: String, onPhoneChange: (String) -> Unit) {
+
+    OutlinedTextField(
+        value = phone,
+        onValueChange = {
+            onPhoneChange(it)
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.phone),
+                contentDescription = "",
+                tint = Color.LightGray,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        shape = RoundedCornerShape(25.dp),
+        label = {
+            Text(
+                text = stringResource(id = R.string.phone),
+                style = TextStyle(
+                    color = Color.LightGray
+                )
+            )
+        },
+        modifier = Modifier.fillMaxWidth(),
+        textStyle = TextStyle(
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            color = Color.Black
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Phone,
+            imeAction = ImeAction.Next
+        ),
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color)
+        )
+    )
+}
+
+@Composable
+fun PasswordSignUpComponent(
+    password: String,
+    onPaswordChange: (String) -> Unit
+) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        value = passwordText,
+        value = password,
         onValueChange = { password ->
-            onPasswordChange(password)
+            onPaswordChange(password)
         },
-        shape = RoundedCornerShape(25.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
             fontWeight = FontWeight.ExtraBold,
             color = Color.Black
         ),
-
+        shape = RoundedCornerShape(25.dp),
         label = {
             Text(
                 text = stringResource(id = R.string.password),
@@ -140,6 +212,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
             )
         },
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.lock),
@@ -172,57 +245,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
             focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-            //focusedLabelColor =  colorResource(id = R.color.mein_tasty_color)
+            unfocusedTextColor = colorResource(id = R.color.mein_tasty_color),
         )
     )
-}
-
-@Composable
-fun LoginButtonComponent(onLogin: () -> Unit) {
-
-    Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 80.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.mein_tasty_color)
-        ),
-        onClick = {
-            onLogin()
-        }
-    ) {
-        Text(text = stringResource(id = R.string.login))
-    }
-}
-
-
-@Composable
-fun SignUpComponent(navController: NavController) {
-    TextButton(
-        onClick = {
-            navController.navigate(Screen.SignUpScreen.route)
-        },
-    ) {
-
-        Text(
-            text = stringResource(id = R.string.sign_up),
-            style = TextStyle(
-                textDecoration = TextDecoration.Underline,
-                color = colorResource(id = R.color.mein_tasty_color)
-            )
-        )
-    }
-
-}
-
-@Composable
-fun ForgotPasswordComponent() {
-    Text(
-        text = stringResource(id = R.string.forgot_password),
-        style = TextStyle(
-            textDecoration = TextDecoration.Underline
-        ),
-        textAlign = TextAlign.End
-    )
-
 }

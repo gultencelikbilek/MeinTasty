@@ -15,6 +15,7 @@ import com.example.meintasty.domain.model.restaurant_model.RestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.RestaurantDetailResponse
 import com.example.meintasty.domain.model.signup_model.SignupRequest
 import com.example.meintasty.domain.model.signup_model.SignupResponse
+import com.example.meintasty.feature.NetworkResult
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -33,6 +34,7 @@ interface ApiService {
     suspend fun getRestaurant(@Body restaurantRequest: RestaurantRequest) : RestaurantModelResponse
 
     @POST(Constants.END_POINT_DETAIL_RESTAURANT)
+    //suspend fun getDetailRestaurant(@Body detailRestaurantRequest: DetailRestaurantRequest) : NetworkResult<RestaurantDetailResponse>
     suspend fun getDetailRestaurant(@Body detailRestaurantRequest: DetailRestaurantRequest) : RestaurantDetailResponse
 
     @POST(Constants.END_POINT_CATEGORY)

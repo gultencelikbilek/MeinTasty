@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.component
+package com.example.meintasty.uicomponent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

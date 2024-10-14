@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.component
+package com.example.meintasty.uicomponent
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -17,47 +17,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.canton_model.City
+import com.example.meintasty.domain.model.canton_model.Canton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CitiesTextFieldComponent(
-    citiesList: List<City>,
-    citiesSelect : String,
-    onCitiesChange :(String) -> Unit
+fun CantonTextFieldComponent(
+    cantonList: List<Canton>, // ViewModel'den gelen kanton listesi
+    cantonSelect: String,
+    onCantonChange: (String) -> Unit
 ) {
     var isDropDownExpanded by remember { mutableStateOf(false) }
-    var selectedCities by remember { mutableStateOf(citiesSelect) }
+    var selectedCanton by remember { mutableStateOf(cantonSelect) }
 
 
     ExposedDropdownMenuBox(
         expanded = isDropDownExpanded,
-        onExpandedChange = { isDropDownExpanded = !isDropDownExpanded } // tıklamayla açma/kapama
+        onExpandedChange = { isDropDownExpanded = !isDropDownExpanded }
     ) {
 
         OutlinedTextField(
-            value = selectedCities,
-            onValueChange = { onCitiesChange(it) },
-            label = { Text(text = stringResource(id = R.string.select_cities)) },
+            value = selectedCanton,
+            onValueChange = { onCantonChange(it) },
+            label = { Text(text = stringResource(id = R.string.select_canton)) },
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth()
                 .wrapContentHeight(),
             shape = RoundedCornerShape(20.dp),
             readOnly = true
-
         )
         ExposedDropdownMenu(
             expanded = isDropDownExpanded,
             onDismissRequest = { isDropDownExpanded = false }
         ) {
-            citiesList.forEach {city ->
+            cantonList.forEach {canton ->
                 DropdownMenuItem(
-                    text = { Text(text = city.cityName) },
+                    text = { Text(text = canton.cantonName) },
                     onClick = {
-
-                        selectedCities = city.cityName
-                        onCitiesChange(city.cityName)
+                        selectedCanton = canton.cantonName
+                        onCantonChange(canton.cantonName)
                         isDropDownExpanded = false
                     }
                 )
@@ -65,3 +63,4 @@ fun CitiesTextFieldComponent(
         }
     }
 }
+

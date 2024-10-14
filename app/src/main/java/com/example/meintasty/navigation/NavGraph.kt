@@ -22,7 +22,6 @@ import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
 fun NavGraph() {
 
     val navController = rememberNavController()
-    val context = LocalContext.current
     NavHost(navController = navController, startDestination = Screen.SplashScreen.route) {
         composable(Screen.SplashScreen.route) {
             MeinTastySplashScreen(navController)
@@ -59,15 +58,19 @@ fun NavGraph() {
             )
         }
         composable(
-            route = Screen.CategoryDetailScreen.route + "?categoryId={categoryId}",
+            route = Screen.CategoryDetailScreen.route + "?categoryId={categoryId}?categoryName={categoryName}",
             arguments = listOf(
                 navArgument(name = "categoryId") {
                     type = NavType.IntType
+                },
+               navArgument(name = "categoryName") {
+                    type = NavType.StringType
                 }
             )
         ) { navBackStack ->
             CategoryDetailScreen(
                 categoryId = navBackStack.arguments?.getInt("categoryId"),
+                categoryName= navBackStack.arguments?.getString("categoryName"),
                 navController
             )
         }

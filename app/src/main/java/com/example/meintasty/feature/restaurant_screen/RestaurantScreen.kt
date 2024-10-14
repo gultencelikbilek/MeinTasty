@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -48,17 +47,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.category_model.CategoryRequest
 import com.example.meintasty.domain.model.restaurant_model.RestaurantRequest
 import com.example.meintasty.domain.model.foodList
-import com.example.meintasty.feature.component.CategoryCardComponent
-import com.example.meintasty.feature.component.FoodCardComponent
-import com.example.meintasty.feature.component.NearbyRestaurantCardComponent
-import com.example.meintasty.feature.component.PopulerRestaurantCardComponent
-import com.example.meintasty.feature.component.SearchComponent
-import com.example.meintasty.feature.component.SearchHeaderComponent
+import com.example.meintasty.uicomponent.CategoryCardComponent
+import com.example.meintasty.uicomponent.FoodCardComponent
+import com.example.meintasty.uicomponent.NearbyRestaurantCardComponent
+import com.example.meintasty.uicomponent.PopulerRestaurantCardComponent
+import com.example.meintasty.uicomponent.SearchComponent
+import com.example.meintasty.uicomponent.SearchHeaderComponent
 import com.example.meintasty.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,15 +81,15 @@ fun RestaurantScreen(
     val categoryState = restaurantViewModel.categoryState.collectAsState()
     val categoryRequest = CategoryRequest()
 
-    val cityCode =sharedPreferences.getString("city_code", null)
-    Log.d("city_code","$cityCode")
+    val cityCode = sharedPreferences.getString("city_code", null)
+    Log.d("city_code", "$cityCode")
     cityCode?.let {
         val restaurantRequest = RestaurantRequest(it.toInt())
 
-    LaunchedEffect(Unit) {
-        restaurantViewModel.getRestaurant(restaurantRequest)
-        Log.d("screen", "searchscreen")
-    }
+        LaunchedEffect(Unit) {
+            restaurantViewModel.getRestaurant(restaurantRequest)
+            Log.d("screen", "searchscreen")
+        }
     }
     LaunchedEffect(Unit) {
         restaurantViewModel.getLocationInfo()
@@ -119,7 +117,6 @@ fun RestaurantScreen(
                         locaitonState.value.data?.let { locationInfo ->
                             Text(
                                 text = "${locationInfo.cantonName}/${locationInfo.cityName}",
-                                // modifier = Modifier.padding(bottom = ),
                                 style = TextStyle(
                                     color = Color.White,
                                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -223,7 +220,9 @@ fun RestaurantScreen(
                             .fillMaxWidth()
                     ) {
                         restaurantState.value.data?.let { restaurantList ->
-                            items(restaurantList) { restaurant ->
+                            val repeatedList =
+                                List(10) { restaurantList }.flatten() // 10 kere categoryDetailList'i tekrarlıyoruz ve düz listeye dönüştürüyoruz
+                            items(repeatedList) { restaurant ->
                                 Log.d("restaurantList:", restaurantList.toString())
                                 PopulerRestaurantCardComponent(
                                     restaurant = restaurant,

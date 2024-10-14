@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.component
+package com.example.meintasty.uicomponent
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -25,7 +25,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.restaurant_detail.Menu
@@ -47,7 +46,7 @@ fun MenuListCardComponent(menu: Menu?) {
         modifier = Modifier
             .width(85.dp)
             .height(170.dp)
-            .padding(start = 2.dp),
+            .padding(4.dp),
         elevation = CardDefaults.cardElevation(1.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -67,10 +66,11 @@ fun MenuListCardComponent(menu: Menu?) {
                     .border(1.dp, Color.Transparent, RoundedCornerShape(25.dp))
             )
             Row(
+                horizontalArrangement = Arrangement.End,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 4.dp),
-                horizontalArrangement = Arrangement.End
+                    .padding(top = 4.dp, end = 4.dp),
+
             ) {
                 Box(
                     modifier = Modifier

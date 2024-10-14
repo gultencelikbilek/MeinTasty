@@ -23,11 +23,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.domain.model.canton_model.CantonRequestModel
 import com.example.meintasty.domain.model.foodList
-import com.example.meintasty.feature.component.BeatMeCardComponent
-import com.example.meintasty.feature.component.BreakfastCardComponent
-import com.example.meintasty.feature.component.FoodCardComponent
-import com.example.meintasty.feature.component.HotTodayComponent
-import com.example.meintasty.feature.component.MenuButtonComponent
+import com.example.meintasty.uicomponent.BeatMeCardComponent
+import com.example.meintasty.uicomponent.FoodCardComponent
 
 @Composable
 fun CantonScreen(
