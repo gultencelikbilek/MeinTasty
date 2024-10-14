@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.category_model.Category
+import com.example.meintasty.domain.model.category_model.category_response.Category
 import com.example.meintasty.navigation.Screen
 
 @Composable

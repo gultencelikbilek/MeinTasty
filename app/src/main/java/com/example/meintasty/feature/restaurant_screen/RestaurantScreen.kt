@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,8 +50,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.category_model.CategoryRequest
-import com.example.meintasty.domain.model.restaurant_model.RestaurantRequest
+import com.example.meintasty.data.Constants
+import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
+import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.foodList
 import com.example.meintasty.uicomponent.CategoryCardComponent
 import com.example.meintasty.uicomponent.FoodCardComponent
@@ -73,7 +76,8 @@ fun RestaurantScreen(
     )
     val context = LocalContext.current
 
-    val sharedPreferences = context.getSharedPreferences("city_code", Context.MODE_PRIVATE)
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
 
     val restaurantState = restaurantViewModel.restaurantState.collectAsState()
     val locaitonState = restaurantViewModel.locationState.collectAsState()
@@ -81,23 +85,18 @@ fun RestaurantScreen(
     val categoryState = restaurantViewModel.categoryState.collectAsState()
     val categoryRequest = CategoryRequest()
 
-    val cityCode = sharedPreferences.getString("city_code", null)
+    val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)
     Log.d("city_code", "$cityCode")
     cityCode?.let {
         val restaurantRequest = RestaurantRequest(it.toInt())
 
         LaunchedEffect(Unit) {
             restaurantViewModel.getRestaurant(restaurantRequest)
+            restaurantViewModel.getLocationInfo()
+            restaurantViewModel.getCategoryList(categoryRequest)
+
             Log.d("screen", "searchscreen")
         }
-    }
-    LaunchedEffect(Unit) {
-        restaurantViewModel.getLocationInfo()
-    }
-
-    LaunchedEffect(Unit) {
-        restaurantViewModel.getCategoryList(categoryRequest)
-        Log.d("screen", "categoryList")
     }
 
     Log.d("cityCode:", cityCode.toString())
@@ -147,115 +146,127 @@ fun RestaurantScreen(
             )
         },
         content = { padding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(padding)
-                    .background(colorResource(id = R.color.white))
-                    .wrapContentHeight()
-                    .verticalScroll(rememberScrollState())
-            ) {
+            if (restaurantState.value.isLoading == true) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(colorResource(id = R.color.mein_tasty_color))
-                        .height(70.dp)
+                        .fillMaxSize(),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
                 ) {
-                    SearchComponent(
-                        query = query,
-                        onQueryChange = {
-                            query = it
-                        }
+                    CircularProgressIndicator(
+                        color = colorResource(id = R.color.mein_tasty_color)
                     )
                 }
-                Box(
+            } else {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp)
-                        .padding(top = 6.dp)
+                        .padding(padding)
+                        .background(colorResource(id = R.color.white))
+                        .wrapContentHeight()
+                        .verticalScroll(rememberScrollState())
                 ) {
-                    SearchHeaderComponent(text = stringResource(id = R.string.compains))
-                    LazyRow(
+                    Box(
                         modifier = Modifier
-                            .padding(top = 30.dp)
-                            .background(Color.White)
+                            .fillMaxWidth()
+                            .background(colorResource(id = R.color.mein_tasty_color))
+                            .height(70.dp)
                     ) {
-                        foodList.let { listFood ->
-                            items(listFood) {
-                                FoodCardComponent(food = it)
+                        SearchComponent(
+                            query = query,
+                            onQueryChange = {
+                                query = it
+                            }
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .padding(top = 6.dp)
+                    ) {
+                        SearchHeaderComponent(text = stringResource(id = R.string.compains))
+                        LazyRow(
+                            modifier = Modifier
+                                .padding(top = 30.dp)
+                                .background(Color.White)
+                        ) {
+                            foodList.let { listFood ->
+                                items(listFood) {
+                                    FoodCardComponent(food = it)
+                                }
                             }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    SearchHeaderComponent(text = stringResource(id = R.string.categories))
-                    LazyRow(
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Box(
                         modifier = Modifier
-                            .padding(top = 30.dp)
                             .fillMaxWidth()
                     ) {
-                        categoryState.value.data?.let { categoryList ->
-                            items(categoryList) { category ->
-                                CategoryCardComponent(
-                                    navController,
-                                    category
-                                )
+                        SearchHeaderComponent(text = stringResource(id = R.string.categories))
+                        LazyRow(
+                            modifier = Modifier
+                                .padding(top = 30.dp)
+                                .fillMaxWidth()
+                        ) {
+                            categoryState.value.data?.let { categoryList ->
+                                items(categoryList) { category ->
+                                    CategoryCardComponent(
+                                        navController,
+                                        category
+                                    )
+                                }
                             }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    SearchHeaderComponent(text = stringResource(id = R.string.populer_restaurants))
-                    LazyRow(
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Box(
                         modifier = Modifier
-                            .padding(top = 30.dp)
                             .fillMaxWidth()
                     ) {
-                        restaurantState.value.data?.let { restaurantList ->
-                            val repeatedList =
-                                List(10) { restaurantList }.flatten() // 10 kere categoryDetailList'i tekrarlıyoruz ve düz listeye dönüştürüyoruz
-                            items(repeatedList) { restaurant ->
-                                Log.d("restaurantList:", restaurantList.toString())
-                                PopulerRestaurantCardComponent(
-                                    restaurant = restaurant,
-                                    navController
-                                )
-                                Spacer(modifier = Modifier.width(16.dp))
+                        SearchHeaderComponent(text = stringResource(id = R.string.populer_restaurants))
+                        LazyRow(
+                            modifier = Modifier
+                                .padding(top = 30.dp)
+                                .fillMaxWidth()
+                        ) {
+                            restaurantState.value.data?.let { restaurantList ->
+                                val repeatedList =
+                                    List(10) { restaurantList }.flatten() // 10 kere categoryDetailList'i tekrarlıyoruz ve düz listeye dönüştürüyoruz
+                                items(repeatedList) { restaurant ->
+                                    Log.d("restaurantList:", restaurantList.toString())
+                                    PopulerRestaurantCardComponent(
+                                        restaurant = restaurant,
+                                        navController
+                                    )
+                                    Spacer(modifier = Modifier.width(16.dp))
+                                }
                             }
-                        }
 
+                        }
                     }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                SearchHeaderComponent(text = stringResource(id = R.string.restaurant_nearby))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.google_maps),
-                        contentDescription = "Background Image",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    LazyRow(
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SearchHeaderComponent(text = stringResource(id = R.string.restaurant_nearby))
+                    Box(
                         modifier = Modifier
-                            .padding(top = 30.dp)
                             .fillMaxWidth()
+                            .height(250.dp)
+
                     ) {
-                        foodList.let { listFood ->
-                            items(listFood) {
-                                NearbyRestaurantCardComponent(food = it)
+                        Image(
+                            painter = painterResource(id = R.drawable.google_maps),
+                            contentDescription = "Background Image",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        LazyRow(
+                            modifier = Modifier
+                                .padding(top = 30.dp)
+                                .fillMaxWidth()
+                        ) {
+                            foodList.let { listFood ->
+                                items(listFood) {
+                                    NearbyRestaurantCardComponent(food = it)
+                                }
                             }
                         }
                     }

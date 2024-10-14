@@ -4,10 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.repoimpl.CantonRepositoryImpl
-import com.example.meintasty.domain.model.canton_model.Canton
-import com.example.meintasty.domain.model.canton_model.CantonRequestModel
-import com.example.meintasty.domain.model.canton_model.City
+import com.example.meintasty.data.usecase.CantonUseCase
+import com.example.meintasty.data.usecase.GetLocaitonInfoUseCase
+import com.example.meintasty.data.usecase.InsertCantonUseCase
+import com.example.meintasty.domain.model.canton_model.response_model.Canton
+import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
+import com.example.meintasty.domain.model.canton_model.response_model.City
 import com.example.meintasty.domain.model.UserLocationModel
+import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,19 +21,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CantonViewModel @Inject constructor(
+    private val cantonUseCase: CantonUseCase,
+    private val insertCantonUseCase: InsertCantonUseCase,
     private val repositoryImpl: CantonRepositoryImpl,
-) : ViewModel() {
+    ) : ViewModel() {
 
     private val _canton = MutableStateFlow<List<Canton>>(emptyList())
     val canton: StateFlow<List<Canton>> = _canton
 
     private val _cities = MutableStateFlow<List<City>>(emptyList())
     val cities: StateFlow<List<City>> = _cities
-
-
-    private val _addCantonState = MutableStateFlow(CantonState())
-    val addCantonState = _addCantonState.asStateFlow()
-
 
     suspend fun getCanton(requestModel: CantonRequestModel) {
         viewModelScope.launch {
@@ -61,7 +62,8 @@ class CantonViewModel @Inject constructor(
     fun saveCantonCities(userLocationModel: UserLocationModel) {
         viewModelScope.launch {
             try {
-                repositoryImpl.insertCanton(userLocationModel)
+                insertCantonUseCase.invoke(userLocationModel)
+               // repositoryImpl.insertCanton(userLocationModel)
              //   _addCantonState.value = CantonState(data = userLocationModel)
             } catch (e: Exception) {
                 // Hata durumunda işlemi yönetebilirsiniz
@@ -73,5 +75,8 @@ class CantonViewModel @Inject constructor(
 }
 
 data class CantonState(
-    val data :Canton? = null
+    val data : Canton? = null,
+    val isSucces : Boolean? = false,
+    val isLoading : Boolean? = false,
+    val isError : String? = ""
 )

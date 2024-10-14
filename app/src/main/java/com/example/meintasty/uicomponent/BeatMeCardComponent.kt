@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.UserLocationModel
 import com.example.meintasty.feature.canton_screen.CantonViewModel
 import com.example.meintasty.navigation.Screen
@@ -50,7 +51,7 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
     val cantonList by cantonViewModel.canton.collectAsState()
     val citiesList by cantonViewModel.cities.collectAsState()
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("city_code", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
 
     LaunchedEffect(cantonSelect) {
         val selectedCanton = cantonViewModel.canton.value.find { it.cantonName == cantonSelect }
