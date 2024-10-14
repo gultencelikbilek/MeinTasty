@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.component
+package com.example.meintasty.uicomponent
 
 import android.widget.ImageButton
 import androidx.compose.foundation.Image

@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(true)
             }
             val lifecycleOwner = LocalLifecycleOwner.current
-            val context = LocalContext.current
             LaunchedEffect(key1 = lifecycleOwner) {
                 lifecycleOwner.lifecycleScope.launch {
                     delay(3000)
@@ -43,7 +42,6 @@ class MainActivity : ComponentActivity() {
                     Log.v("Logg:loginNav","")
                     NavGraph()
                 }
-           // }
 
         }
     }

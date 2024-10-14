@@ -103,6 +103,10 @@ dependencies {
 
     //spalshscreen
     implementation (libs.androidx.core.splashscreen)
+    //animation
+    implementation (libs.androidx.animation)
+    implementation (libs.androidx.material)
+
 
 
 }

@@ -27,15 +27,20 @@ class CategoryDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val response = categoryDetailRepositoryImpl.getCategoryDetail(categoryDetailRequest)
             _categoryDetailState.value = CategoryDetailState(
-                data = response.value
+                data = response.value,
+                success = response.success,
+                error = response.errorMessage.toString(),
+                isLoading = true
             )
         }
     }
-
 }
 
 data class CategoryDetailState(
-    val data : List<CategoryDetail?>? = null
+    val data : List<CategoryDetail?>? = null,
+    val success : Boolean?= false,
+    val error : String? = "",
+    val isLoading : Boolean? = false
 )
 
 data class CategoryState(

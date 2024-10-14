@@ -1,6 +1,5 @@
 package com.example.meintasty.domain.model.canton_model
 
-import com.example.meintasty.domain.model.canton_model.Canton
 
 data class CantonResponseModel(
     val errorMessage: Any,

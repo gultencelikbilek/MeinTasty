@@ -1,5 +1,6 @@
 [versions]
 agp = "8.4.0"
+animation = "1.7.3"
 coilCompose = "2.3.0"
 coreSplashscreen = "1.0.1"
 kotlin = "1.9.0"
@@ -16,6 +17,7 @@ hiltNavigationCompose = "1.2.0"
 hilt = "2.48"
 lifecycleRuntimeKtxVersion = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
+material = "1.7.3"
 retrofit = "2.9.0"
 loggingInterceptor = "4.12.0"
 converterGson = "2.9.0"
@@ -24,6 +26,7 @@ runtimeLivedataVersion = "1.7.3"
 
 
 [libraries]
+androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
@@ -31,6 +34,7 @@ androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-ru
 androidx-lifecycle-runtime-ktx-v286 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-room-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
