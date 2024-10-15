@@ -1,7 +1,9 @@
 package com.example.meintasty.data.repoimpl
 
 import android.content.Context
+import com.example.meintasty.data.db.LoginDatabase
 import com.example.meintasty.data.di.AppModule
+import com.example.meintasty.data.network.ApiService
 import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.response_model.CantonResponseModel
 import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest
@@ -20,11 +22,11 @@ import com.example.meintasty.domain.repository.NetworkRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class NetworkRepositoryImpl @Inject constructor(@ApplicationContext context: Context) :
+class NetworkRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+) :
     NetworkRepository {
 
-    private val apiService = AppModule.providesRetrofit(context)
-    private val loginDao = AppModule.providesRoom(context)
     override suspend fun loginUser(loginUserRequest: LoginUserRequest): LoginResponseModel {
         return apiService.loginUser(loginUserRequest)
     }

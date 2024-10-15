@@ -128,6 +128,19 @@ fun RestaurantScreen(
                 actions = {
                     IconButton(
                         onClick = {
+                            navController.navigate(Screen.ProfileScreen.route)
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.user),
+                            contentDescription = "",
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(2.dp))
+                    IconButton(
+                        onClick = {
                             navController.navigate(Screen.CartScreen.route)
                         }
                     ) {

@@ -16,6 +16,7 @@ import com.example.meintasty.feature.basket_screen.BasketScreen
 import com.example.meintasty.feature.category_detail_screen.CategoryDetailScreen
 import com.example.meintasty.feature.choose_login_register.ChooseLoginRegisterScreen
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
+import com.example.meintasty.feature.profile_screen.ProfileScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
 
 @Composable
@@ -76,6 +77,9 @@ fun NavGraph() {
         }
         composable(Screen.CartScreen.route) {
             BasketScreen(navController)
+        }
+        composable(Screen.ProfileScreen.route){
+            ProfileScreen(navController = navController)
         }
     }
 }

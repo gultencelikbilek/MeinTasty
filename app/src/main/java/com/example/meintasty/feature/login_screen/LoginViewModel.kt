@@ -1,8 +1,11 @@
 package com.example.meintasty.feature.login_screen
 
+import android.content.Context
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.meintasty.data.Constants
 import com.example.meintasty.data.usecase.InsertUserUseCase
 import com.example.meintasty.data.usecase.LoginUserUseCase
 import com.example.meintasty.domain.model.UserAccountModel
@@ -59,9 +62,10 @@ class LoginViewModel @Inject constructor(
                                 roleList = response.value.roleList,
                                 token = response.value.token
                             )
+                            Log.d("LoginViewModel", " ${response.value.token}")
+
                             insertUserUseCase.invoke(userAccountModel)
                             Log.d("LoginViewModel", "insertUser called with: ${response.value.token}")
-
                         }
                     }
                 }

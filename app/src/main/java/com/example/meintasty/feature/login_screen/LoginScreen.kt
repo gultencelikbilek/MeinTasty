@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.login_screen
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -42,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
 import com.example.meintasty.uicomponent.EmailLoginComponent
 import com.example.meintasty.uicomponent.ForgotPasswordComponent
@@ -64,7 +66,7 @@ fun LoginScreen(
         mutableStateOf("")
     }
     val context = LocalContext.current
-    val loginState = loginViewModel.loginState.collectAsState()
+    val loginState by loginViewModel.loginState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -76,7 +78,7 @@ fun LoginScreen(
             )
         },
         content = { paddingValues ->
-            if (loginState.value.isLoading == true) {
+            if (loginState.isLoading == true) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -148,7 +150,7 @@ fun LoginScreen(
                                         val request = LoginUserRequest(emailText, passwordText)
                                         loginViewModel.insertLoginUser(request)
                                         navController.navigate(Screen.CantonScreen.route)
-                                        Log.d("LoginScreen", "loginFlowUser called")
+
                                     } else {
                                         Toast.makeText(
                                             context,
@@ -158,7 +160,6 @@ fun LoginScreen(
                                     }
                                 }
                             )
-
                             SignUpComponent(
                                 navController
                             )
