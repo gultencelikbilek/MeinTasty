@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.splash_screen
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.navigation.Screen
 
 @Composable
@@ -42,6 +45,9 @@ fun MeinTastySplashScreen(
         Font(resId = R.font.poppins_blackitalic, weight = FontWeight.Normal)
     )
     val locationState = meinTastyViewModel.locaState.collectAsState()
+    val context  = LocalContext.current
+    val sharedPrefrences =
+        context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
 
     LaunchedEffect(Unit) {
 
@@ -50,8 +56,13 @@ fun MeinTastySplashScreen(
         if (splashShowState?.data?.token != null) {
             Log.d("tokenNotnull:","${splashShowState.data.token}")
 
+            splashShowState.data.let {
+                val editor = sharedPrefrences.edit()
+                editor.putString(Constants.SHARED_TOKEN,it.token)
+                editor.apply()
+            }
 
-                if (splashShowState.isNavigateLoginScreen == true) {
+            if (splashShowState.isNavigateLoginScreen == true) {
                     Log.v("splashShowState:", splashShowState.toString())
                     navController.navigate(Screen.RestaurantScreen.route)
                 } else {
