@@ -3,6 +3,7 @@
     <string name="login">Log in</string>
     <string name="name_surname">Name Surname</string>
     <string name="email">Enter your email</string>
+    <string name="emailUpdate">Email</string>
     <string name="password">Enter your password</string>
     <string name="hide">Hide Password</string>
     <string name="show">Show Password</string>

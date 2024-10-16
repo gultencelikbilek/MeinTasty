@@ -1,4 +1,4 @@
-package com.example.meintasty.data.usecase
+package com.example.meintasty.domain.usecase
 
 import com.example.meintasty.data.repoimpl.NetworkRepositoryImpl
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest

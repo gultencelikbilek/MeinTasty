@@ -3,7 +3,7 @@ package com.example.meintasty.feature.detail_restaurant
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.usecase.RestaurantDetailUseCase
+import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
 import com.example.meintasty.feature.NetworkResult

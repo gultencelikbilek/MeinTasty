@@ -2,7 +2,6 @@ package com.example.meintasty.navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +17,7 @@ import com.example.meintasty.feature.choose_login_register.ChooseLoginRegisterSc
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
 import com.example.meintasty.feature.profile_screen.ProfileScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
+import com.example.meintasty.feature.update_screen.UpdateScreen
 
 @Composable
 fun NavGraph() {
@@ -80,6 +80,32 @@ fun NavGraph() {
         }
         composable(Screen.ProfileScreen.route){
             ProfileScreen(navController = navController)
+        }
+        composable(
+          route =  Screen.UpdateScreen.route+"?userId={userId}?email={email}?phone={phone}?updateType={updateType}",
+            arguments = listOf(
+                navArgument(name = "userId"){
+                    type = NavType.IntType
+                },
+                navArgument(name = "phone"){
+                    type = NavType.StringType
+                },
+                navArgument(name = "email"){
+                    type = NavType.StringType
+                },
+                navArgument(name = "updateType"){
+                    type = NavType.StringType
+                }
+            ),
+
+        ){navBackStack ->
+            UpdateScreen(
+                userId = navBackStack.arguments?.getInt("userId"),
+                email = navBackStack.arguments?.getString("phone"),
+                phoneNum = navBackStack.arguments?.getString("email"),
+                updateType = navBackStack.arguments?.getString("updateType"),
+                navController
+            )
         }
     }
 }

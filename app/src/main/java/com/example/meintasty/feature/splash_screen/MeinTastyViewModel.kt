@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.repoimpl.SplashScreenRepositoryImpl
-import com.example.meintasty.data.usecase.GetLocaitonInfoUseCase
-import com.example.meintasty.data.usecase.SplashUseCase
+import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
+import com.example.meintasty.domain.usecase.getUserDatabaseUseCase
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.UserLocationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class MeinTastyViewModel @Inject constructor(
     private val splashScreenRepositoryImpl: SplashScreenRepositoryImpl,
     private val getLocaitonInfoUseCase: GetLocaitonInfoUseCase,
-    private val splashUseCase: SplashUseCase
+    private val splashUseCase: getUserDatabaseUseCase
 ) : ViewModel() {
 
     private val _splashShow = MutableLiveData(TokenState())

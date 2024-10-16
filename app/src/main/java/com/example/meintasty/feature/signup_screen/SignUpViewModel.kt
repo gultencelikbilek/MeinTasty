@@ -3,7 +3,7 @@ package com.example.meintasty.feature.signup_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.usecase.SignUpUseCase
+import com.example.meintasty.domain.usecase.SignUpUseCase
 import com.example.meintasty.domain.model.signup_model.signup_response.Signup
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.feature.NetworkResult

@@ -3,9 +3,9 @@ package com.example.meintasty.feature.restaurant_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.usecase.CategoryUseCase
-import com.example.meintasty.data.usecase.GetLocaitonInfoUseCase
-import com.example.meintasty.data.usecase.RestaurantUseCase
+import com.example.meintasty.domain.usecase.CategoryUseCase
+import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
+import com.example.meintasty.domain.usecase.RestaurantUseCase
 import com.example.meintasty.domain.model.UserLocationModel
 import com.example.meintasty.domain.model.category_model.category_response.Category
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest

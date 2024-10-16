@@ -1,9 +1,12 @@
 package com.example.meintasty.feature.profile_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,15 +38,41 @@ import com.example.meintasty.uicomponent.ProfileUserIcon
 import com.example.meintasty.uicomponent.LabelUserText
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.colorResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
+import com.example.meintasty.navigation.Screen
+import com.google.gson.annotations.Until
+import kotlinx.coroutines.runBlocking
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    userViewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val userState = userViewModel.userState.collectAsState().value
+    val userDatabaseState = userViewModel.userDatabaseState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        userViewModel.getUserDatabaseModel()
+    }
+
+    val userId = userDatabaseState.value.data?.userId
+
+    LaunchedEffect(userId) {
+        userId?.let {
+            if (it > 0) {
+                val userRequest = UserRequest(it)
+                Log.d("userrequest:userId3:", "$it")
+                userViewModel.getUser(userRequest = userRequest)
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -57,9 +87,7 @@ fun ProfileScreen(
                             navController.navigateUp()
                         }
                         HeaderComponent(text = stringResource(id = R.string.profile))
-
                     }
-
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = colorResource(id = R.color.mein_tasty_color)
@@ -67,122 +95,138 @@ fun ProfileScreen(
             )
         },
         content = { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
-                Card(
+            if (userState.isLoading == true) {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    )
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Column(
-                        modifier = Modifier.padding(start = 16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            ProfileUserIcon(onClick = {}, painterResource(id = R.drawable.user))
-                            Spacer(modifier = Modifier.width(8.dp))
-                            LabelUserText("Gülten Çelikbilek")
-                            Spacer(modifier = Modifier.weight(1f))
-                            EditIconComponent(
-                                onClick = {},
-
-                                )
-                        }
-
-                        DividierProfile()
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp)
-                        ) {
-                            ProfileStartIcon(
-                                onClick = {},
-                                painter = painterResource(id = R.drawable.gmail)
-                            )
-                            BasicText(modifier, "gultencelikbilek924@gmail.com")
-                            Spacer(modifier = Modifier.weight(1f))
-                            EditIconComponent(onClick = {})
-                        }
-                        DividierProfile()
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp)
-                        ) {
-                            ProfileStartIcon(
-                                modifier,
-                                onClick = {},
-                                painter = painterResource(id = R.drawable.phone)
-                            )
-
-                            BasicText(modifier, "+90 555 555 5555")
-                            Spacer(modifier = Modifier.weight(1f))
-                            EditIconComponent(
-                                onClick = {},
-                                modifier
-                            )
-                        }
-                        DividierProfile()
-
-                    }
-
+                    CircularProgressIndicator(
+                        color = colorResource(id = R.color.mein_tasty_color)
+                    )
                 }
-                Spacer(modifier = Modifier.height(25.dp))
-
-                Column() {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentSize(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color.White
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(start = 16.dp)
+            } else if(userState.isSucces == true){ //!!!!!!
+                userState.data?.value.let { user ->
+                    Column(modifier = Modifier.padding(paddingValues)) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White
+                            )
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 10.dp)
+                            Column(
+                                modifier = Modifier.padding(start = 16.dp)
                             ) {
-                                ProfileStartIcon(
-                                    onClick = {},
-                                    painter = painterResource(id = R.drawable.navigation)
-                                )
-                                BasicText(modifier, "Address")
-                                Spacer(modifier = Modifier.weight(1f))
-                                EditIconComponent(
-                                    onClick = {}
-                                )
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    ProfileUserIcon(onClick = {}, painterResource(id = R.drawable.user))
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    LabelUserText(user?.fullName.toString())
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    EditIconComponent(
+                                        onClick = {},
+
+                                        )
+                                }
+
+                                DividierProfile()
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp)
+                                ) {
+                                    ProfileStartIcon(onClick = {}, painter = painterResource(id = R.drawable.gmail))
+                                    BasicText(modifier, user?.email.toString())
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    EditIconComponent(onClick = {
+                                        navController.navigate(Screen.UpdateScreen.route+"?userId=$userId?email=${user?.email}?phone=${user?.phoneNumber}?updateType=email"
+                                        )
+                                    })
+                                }
+                                DividierProfile()
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp)
+                                ) {
+                                    ProfileStartIcon(
+                                        modifier,
+                                        onClick = {},
+                                        painter = painterResource(id = R.drawable.phone)
+                                    )
+                                    BasicText(modifier, user?.phoneNumber.toString())
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    EditIconComponent(
+                                        onClick = {
+                                            navController.navigate(Screen.UpdateScreen.route+ "?userId=$userId?email=${user?.email}?phone=${user?.phoneNumber}?updateType=phone"
+                                            )
+                                        },
+                                        modifier
+                                    )
+                                }
+                                DividierProfile()
+
                             }
-                            Row(
+                        }
+
+                        Spacer(modifier = Modifier.height(25.dp))
+
+                        Column() {
+                            Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 10.dp)
-                            ) {
-                                ProfileStartIcon(
-                                    onClick = {},
-                                    painter = painterResource(id = R.drawable.love)
+                                    .wrapContentSize(),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color.White
                                 )
-                                BasicText(modifier, "Favorite Restaurants")
-                            }
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 10.dp)
                             ) {
-                                ProfileStartIcon(
-                                    onClick = {},
-                                    painter = painterResource(id = R.drawable.order)
-                                )
-                                BasicText(modifier, "Orders")
+                                Column(
+                                    modifier = Modifier.padding(start = 16.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 10.dp)
+                                    ) {
+                                        ProfileStartIcon(
+                                            onClick = {},
+                                            painter = painterResource(id = R.drawable.navigation)
+                                        )
+                                        BasicText(modifier, user?.userAdddress.toString())
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        EditIconComponent(
+                                            onClick = {}
+                                        )
+                                    }
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 10.dp)
+                                    ) {
+                                        ProfileStartIcon(
+                                            onClick = {},
+                                            painter = painterResource(id = R.drawable.love)
+                                        )
+                                        BasicText(modifier, "Favorite Restaurants")
+                                    }
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 10.dp)
+                                    ) {
+                                        ProfileStartIcon(
+                                            onClick = {},
+                                            painter = painterResource(id = R.drawable.order)
+                                        )
+                                        BasicText(modifier, "Orders")
+                                    }
+                                }
                             }
                         }
                     }
