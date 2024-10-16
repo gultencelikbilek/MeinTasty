@@ -1,8 +1,6 @@
 package com.example.meintasty.data.repoimpl
 
-import android.content.Context
-import com.example.meintasty.data.db.LoginDatabase
-import com.example.meintasty.data.di.AppModule
+
 import com.example.meintasty.data.network.ApiService
 import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.response_model.CantonResponseModel
@@ -10,6 +8,8 @@ import com.example.meintasty.domain.model.category_detail_model.category_detail_
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetailResponse
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
+import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
 import com.example.meintasty.domain.model.login_model.login_response.LoginResponseModel
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
@@ -18,14 +18,16 @@ import com.example.meintasty.domain.model.restaurant_model.restaurant_request.Re
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.RestaurantModelResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.domain.model.signup_model.signup_response.SignupResponse
+import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
+import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
+import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
+import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
 import com.example.meintasty.domain.repository.NetworkRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class NetworkRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-) :
-    NetworkRepository {
+) : NetworkRepository {
 
     override suspend fun loginUser(loginUserRequest: LoginUserRequest): LoginResponseModel {
         return apiService.loginUser(loginUserRequest)
@@ -53,5 +55,17 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun getCategoryDetail(categoryDetailRequest: CategoryDetailRequest): CategoryDetailResponse {
         return apiService.getCategoryDetail(categoryDetailRequest)
+    }
+
+    override suspend fun getUser(userRequest: UserRequest): UserResponse {
+        return apiService.getUser(userRequest)
+    }
+
+    override suspend fun updatePhone(updatePhoneRequest: UpdatePhoneRequest): UpdatePhoneResponse {
+        return apiService.updatePhone(updatePhoneRequest)
+    }
+
+    override suspend fun updateEmail(emailUpdateRequest: EmailUpdateRequest): EmailUpdateResponse {
+        return apiService.updateEmail(emailUpdateRequest)
     }
 }

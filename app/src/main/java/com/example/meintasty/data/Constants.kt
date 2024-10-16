@@ -9,6 +9,9 @@ object Constants {
     const val END_POINT_CATEGORY = "Category/getCategories"
     const val END_POINT_CATEGORY_DETAIL = "Category/getRestaurantsByCategoryId"
     const val END_POINT_SIGNUP = "Register/signup"
+    const val END_POINT_USER = "User/getUser"
+    const val ENT_POINT_UPDATE_PHONE ="User/updateUserPhone"
+    const val ENT_POINT_UPDATE_EMAIL ="User/updateUserEmail"
 
     const val SHARED_PREF = "city_code"
     const val SHARED_TOKEN = "token_code"

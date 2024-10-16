@@ -1,4 +1,4 @@
-package com.example.meintasty.data.usecase
+package com.example.meintasty.domain.usecase
 
 import android.util.Log
 import com.example.meintasty.data.repoimpl.LoginDaoRepositoryImpl
@@ -10,7 +10,7 @@ class InsertCantonUseCase @Inject constructor(private val loginDaoRepositoryImpl
     operator suspend fun invoke(userLocationModel: UserLocationModel) {
         try {
             loginDaoRepositoryImpl.insertCanton(userLocationModel)
-            Log.d("LoginRepositoryImpl", "Inserted Token: ${userLocationModel}")
+            Log.d("LoginRepositoryImpl", "Inserted location: ${userLocationModel}")
         } catch (e: Exception) {
             Log.e("LoginRepositoryImpl", "Insert failed: ${e.message}")
         }

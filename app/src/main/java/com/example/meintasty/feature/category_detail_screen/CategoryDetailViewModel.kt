@@ -2,7 +2,7 @@ package com.example.meintasty.feature.category_detail_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.usecase.CategoryDetailUseCase
+import com.example.meintasty.domain.usecase.CategoryDetailUseCase
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.Category
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetail
 import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest

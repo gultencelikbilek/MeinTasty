@@ -7,6 +7,8 @@ import com.example.meintasty.domain.model.category_detail_model.category_detail_
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetailResponse
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
+import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.login_model.login_response.LoginResponseModel
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
@@ -15,31 +17,44 @@ import com.example.meintasty.domain.model.restaurant_model.restaurant_request.Re
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.domain.model.signup_model.signup_response.SignupResponse
+import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
+import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
+import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
+import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
+import com.example.meintasty.domain.model.update_user_model.update_user_request.UpdateUserRequest
+import com.example.meintasty.domain.model.update_user_model.update_user_response.UpdateUserResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ApiService {
 
     @POST(Constants.END_POINT_LOGIN)
-    suspend fun loginUser(@Body loginUserRequest: LoginUserRequest) : LoginResponseModel
+    suspend fun loginUser(@Body loginUserRequest: LoginUserRequest): LoginResponseModel
 
     @POST(Constants.END_POINT_SIGNUP)
-    suspend fun signUp(@Body signupRequest: SignupRequest) : SignupResponse
+    suspend fun signUp(@Body signupRequest: SignupRequest): SignupResponse
 
     @POST(Constants.ENDPOINT_CANTON)
-    suspend fun getCanton(@Body cantonRequestModel: CantonRequestModel) : CantonResponseModel
+    suspend fun getCanton(@Body cantonRequestModel: CantonRequestModel): CantonResponseModel
 
     @POST(Constants.END_POINT_RESTAURANT)
-    suspend fun getRestaurant(@Body restaurantRequest: RestaurantRequest) : RestaurantModelResponse
+    suspend fun getRestaurant(@Body restaurantRequest: RestaurantRequest): RestaurantModelResponse
 
     @POST(Constants.END_POINT_DETAIL_RESTAURANT)
-    //suspend fun getDetailRestaurant(@Body detailRestaurantRequest: DetailRestaurantRequest) : NetworkResult<RestaurantDetailResponse>
-    suspend fun getDetailRestaurant(@Body detailRestaurantRequest: DetailRestaurantRequest) : RestaurantDetailResponse
+    suspend fun getDetailRestaurant(@Body detailRestaurantRequest: DetailRestaurantRequest): RestaurantDetailResponse
 
     @POST(Constants.END_POINT_CATEGORY)
-    suspend fun getCategoryList(@Body categoryRequest: CategoryRequest) : CategoryResponse
+    suspend fun getCategoryList(@Body categoryRequest: CategoryRequest): CategoryResponse
 
     @POST(Constants.END_POINT_CATEGORY_DETAIL)
-    suspend fun getCategoryDetail(@Body categoryDetailRequest: CategoryDetailRequest) : CategoryDetailResponse
+    suspend fun getCategoryDetail(@Body categoryDetailRequest: CategoryDetailRequest): CategoryDetailResponse
 
+    @POST(Constants.END_POINT_USER)
+    suspend fun getUser(@Body userRequest: UserRequest): UserResponse
+
+    @POST(Constants.ENT_POINT_UPDATE_PHONE)
+    suspend fun updatePhone(@Body updatePhoneRequest: UpdatePhoneRequest): UpdatePhoneResponse
+
+    @POST(Constants.ENT_POINT_UPDATE_EMAIL)
+    suspend fun updateEmail(@Body emailUpdateRequest: EmailUpdateRequest) : EmailUpdateResponse
 }

@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.repoimpl.CantonRepositoryImpl
-import com.example.meintasty.data.usecase.CantonUseCase
-import com.example.meintasty.data.usecase.GetLocaitonInfoUseCase
-import com.example.meintasty.data.usecase.InsertCantonUseCase
+import com.example.meintasty.domain.usecase.CantonUseCase
+import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
+import com.example.meintasty.domain.usecase.InsertCantonUseCase
 import com.example.meintasty.domain.model.canton_model.response_model.Canton
 import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.response_model.City

@@ -1,4 +1,4 @@
-package com.example.meintasty.data.usecase
+package com.example.meintasty.domain.usecase
 
 import android.util.Log
 import com.example.meintasty.data.repoimpl.NetworkRepositoryImpl

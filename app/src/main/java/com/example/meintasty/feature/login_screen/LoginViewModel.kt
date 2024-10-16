@@ -6,8 +6,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.data.Constants
-import com.example.meintasty.data.usecase.InsertUserUseCase
-import com.example.meintasty.data.usecase.LoginUserUseCase
+import com.example.meintasty.domain.usecase.InsertUserUseCase
+import com.example.meintasty.domain.usecase.LoginUserUseCase
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.login_model.login_response.LoginUser
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
@@ -29,8 +29,8 @@ class LoginViewModel @Inject constructor(
 
     fun insertLoginUser(loginUserRequest: LoginUserRequest) {
         viewModelScope.launch {
-            loginUserUseCase.invoke(loginUserRequest).collect{result ->
-                when(result){
+            loginUserUseCase.invoke(loginUserRequest).collect { result ->
+                when (result) {
                     is NetworkResult.Failure -> {
                         _loginState.value = LoginState(
                             data = null,
@@ -38,7 +38,7 @@ class LoginViewModel @Inject constructor(
                             isLoading = false,
                             isError = result.msg
                         )
-                        Log.d("loginviewmodel:","${result.msg}")
+                        Log.d("loginviewmodel:", "${result.msg}")
                     }
                     NetworkResult.Loading -> {
                         _loginState.value = LoginState(
@@ -55,16 +55,16 @@ class LoginViewModel @Inject constructor(
                             isLoading = false,
                             isError = ""
                         )
-                        result.data.let {response ->
+                        result.data.let { response ->
                             val userAccountModel = UserAccountModel(
                                 id = 0,
+                                userId = response.value.userId,
                                 fullName = response.value.fullName,
                                 roleList = response.value.roleList,
                                 token = response.value.token
                             )
                             Log.d("LoginViewModel", " ${response.value.token}")
-
-                            insertUserUseCase.invoke(userAccountModel)
+                              insertUserUseCase.invoke(userAccountModel)
                             Log.d("LoginViewModel", "insertUser called with: ${response.value.token}")
                         }
                     }
