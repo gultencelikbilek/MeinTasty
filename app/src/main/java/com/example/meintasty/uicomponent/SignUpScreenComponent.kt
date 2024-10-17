@@ -145,7 +145,10 @@ fun PhoneComponent(phone: String, onPhoneChange: (String) -> Unit) {
     OutlinedTextField(
         value = phone,
         onValueChange = {
-            onPhoneChange(it)
+            if (it.length <= 11) { // Eğer 11 karakterden az veya eşitse
+                onPhoneChange(it)
+            }
+
         },
         leadingIcon = {
             Icon(
@@ -184,8 +187,10 @@ fun PhoneComponent(phone: String, onPhoneChange: (String) -> Unit) {
 
 @Composable
 fun PasswordSignUpComponent(
+    modifier: Modifier = Modifier,
     password: String,
-    onPaswordChange: (String) -> Unit
+    onPaswordChange: (String) -> Unit,
+    text:String
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -195,7 +200,7 @@ fun PasswordSignUpComponent(
         onValueChange = { password ->
             onPaswordChange(password)
         },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(top = 8.dp),
 
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -205,7 +210,7 @@ fun PasswordSignUpComponent(
         shape = RoundedCornerShape(25.dp),
         label = {
             Text(
-                text = stringResource(id = R.string.password),
+                text = text,
                 style = TextStyle(
                     color = Color.LightGray
                 )

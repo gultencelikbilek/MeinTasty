@@ -8,11 +8,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -42,10 +47,10 @@ import com.example.meintasty.uicomponent.PhoneComponent
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateScreen(
-    userId : Int?,
-    email : String?,
-    phoneNum :String?,
-    updateType:String?,
+    userId: Int?,
+    email: String?,
+    phoneNum: String?,
+    updateType: String?,
     navController: NavHostController,
     updateViewModel: UpdateViewModel = hiltViewModel()
 ) {
@@ -70,48 +75,42 @@ fun UpdateScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         BackIcon {
-                            navController.navigateUp()
+                            when (updateType) {
+                                "phone" -> {
+                                    if (phoneUpdate.isEmpty().not()) {
+                                        val updatePhoneRequest =
+                                            UpdatePhoneRequest(phoneUpdate, userId = userId)
+                                        updateViewModel.updatePhone(updatePhoneRequest)
+                                        Toast.makeText(context, "Update Phone", Toast.LENGTH_SHORT)
+                                            .show()
+                                        navController.navigateUp()
+                                    }else {
+                                        navController.navigateUp()
+                                    }
+                                }
+
+                                "email" -> {
+                                    if (emailUpdate.isEmpty().not()) {
+                                        val updateEmailRequest = EmailUpdateRequest(emailUpdate, userId)
+                                        updateViewModel.updateEmail(updateEmailRequest)
+                                        Toast.makeText(context, "Update Email", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }else{
+                                        navController.navigateUp()
+                                    }
+                                }
+                            }
                         }
-                      val header =  when(updateType){
-                          "email" -> stringResource(id = R.string.emailUpdate)
-                          "phone" -> stringResource(id = R.string.phone)
-                          else -> {
-                              Toast.makeText(context,"Empty",Toast.LENGTH_SHORT).show()
-                          }
-                      }
+
+                        val header = when (updateType) {
+                            "email" -> stringResource(id = R.string.emailUpdate)
+                            "phone" -> stringResource(id = R.string.phone)
+                            else -> {
+                                Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                         HeaderComponent(text = header.toString())
 
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {
-                        when(updateType){
-                            "phone" ->  {
-                                val updatePhoneRequest = UpdatePhoneRequest(phoneUpdate, userId = userId)
-                                updateViewModel.updatePhone(updatePhoneRequest)
-                                Toast.makeText(context,"Update Phone",Toast.LENGTH_SHORT).show()
-                            }
-                            "email" ->{
-                                val updateEmailRequest = EmailUpdateRequest(emailUpdate,userId)
-                                updateViewModel.updateEmail(updateEmailRequest)
-                                Toast.makeText(context,"Update Email",Toast.LENGTH_SHORT).show()
-                            }
-                            else -> {
-                                Toast.makeText(context,"Empty",Toast.LENGTH_SHORT).show()
-                            }
-                        }
-
-                        navController.navigate(Screen.ProfileScreen.route)
-
-                    }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.correct
-                            ),
-                            contentDescription = "",
-                            modifier = Modifier.size(24.dp),
-                            tint = Color.White
-                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -127,8 +126,16 @@ fun UpdateScreen(
                     .padding(padding)
 
             ) {
-                 when(updateType){
+                when (updateType) {
                     "phone" -> {
+                        Text(
+                            text = stringResource(id = R.string.update_number),
+                            modifier = Modifier.padding(top = 16.dp),
+                            style = TextStyle(
+                                color = Color.Black,
+                                fontSize = MaterialTheme.typography.titleMedium.fontSize
+                            )
+                        )
                         PhoneComponent(
                             phone = phoneUpdate,
                             onPhoneChange = {
@@ -136,7 +143,16 @@ fun UpdateScreen(
                             }
                         )
                     }
-                    "email" ->{
+
+                    "email" -> {
+                        Text(
+                            modifier = Modifier.padding(top = 16.dp),
+                            text = stringResource(id = R.string.update_email),
+                            style = TextStyle(
+                                color = Color.Black,
+                                fontSize = MaterialTheme.typography.titleMedium.fontSize
+                            )
+                        )
                         EmailComponent(
                             email = emailUpdate,
                             onMailChange = {
@@ -144,11 +160,53 @@ fun UpdateScreen(
                             }
                         )
                     }
+
                     else -> {
-                        Toast.makeText(context,"Empty",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                     }
                 }
+                Button(
+                    onClick = {
+                        when (updateType) {
+                            "phone" -> {
+                                if (phoneUpdate.isEmpty().not()) {
+                                    val updatePhoneRequest =
+                                        UpdatePhoneRequest(phoneUpdate, userId = userId)
+                                    updateViewModel.updatePhone(updatePhoneRequest)
+                                    Toast.makeText(context, "Update Phone", Toast.LENGTH_SHORT)
+                                        .show()
+                                    navController.navigateUp()
+                                }
+                            }
 
+                            "email" -> {
+                                if (emailUpdate.isEmpty().not()) {
+                                    val updateEmailRequest = EmailUpdateRequest(emailUpdate, userId)
+                                    updateViewModel.updateEmail(updateEmailRequest)
+                                    Toast.makeText(context, "Update Email", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+
+                            else -> {
+                                Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(id = R.color.mein_tasty_color)
+                    )
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.save),
+                        style = TextStyle(
+                            color = Color.White
+                        )
+                    )
+                }
             }
         }
     )

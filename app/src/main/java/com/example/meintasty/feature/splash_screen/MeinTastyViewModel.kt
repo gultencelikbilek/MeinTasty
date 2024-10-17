@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.repoimpl.SplashScreenRepositoryImpl
 import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
-import com.example.meintasty.domain.usecase.getUserDatabaseUseCase
+import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.UserLocationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,9 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MeinTastyViewModel @Inject constructor(
-    private val splashScreenRepositoryImpl: SplashScreenRepositoryImpl,
     private val getLocaitonInfoUseCase: GetLocaitonInfoUseCase,
-    private val splashUseCase: getUserDatabaseUseCase
+    private val getUserDatabaseUseCase: GetUserDatabaseUseCase
 ) : ViewModel() {
 
     private val _splashShow = MutableLiveData(TokenState())
@@ -50,7 +48,7 @@ class MeinTastyViewModel @Inject constructor(
     }
     private suspend fun getToken() {
         viewModelScope.launch {
-            val userAccount = splashUseCase.invoke()
+            val userAccount = getUserDatabaseUseCase.invoke()
             Log.d("splash:", userAccount?.token.toString())
             if (userAccount != null) {
                     Log.d("splash:navigate:t:", "")
@@ -65,6 +63,8 @@ class MeinTastyViewModel @Inject constructor(
                         isNavigateLoginScreen = true,
                         error = ""
                     )
+                Log.d("splashLoc:navigate:f:", "${_splashShow.value}")
+
             } else {
                 Log.d("splash:navigate:f:", "")
                 _splashShow.value = TokenState(

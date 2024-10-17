@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,10 +28,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
+import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
+import com.example.meintasty.feature.detail_restaurant.DetailRestaurantViewModel
 
 @Composable
-fun MenuListCardComponent(menu: Menu?) {
+fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaurantViewModel) {
+
+    val addBasketState = detailRestaurantViewModel.addBasketState.collectAsState().value
+
+    val userModelState = detailRestaurantViewModel.userModelState.collectAsState().value
 
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_light, weight = FontWeight.Bold)
@@ -77,8 +84,21 @@ fun MenuListCardComponent(menu: Menu?) {
                         .size(20.dp)
                         .background(colorResource(id = R.color.white), RoundedCornerShape(12.dp))
                         .clickable {
-                            count++
-                            Toast.makeText(context,"Count:$count",Toast.LENGTH_SHORT).show()
+                            menu?.let { menu ->
+                                val addBasketRequest = AddBasketRequest(
+                                    basketDate = "",
+                                    currencyCode = menu.currency.toString(),
+                                    menuId = menu.menuId,
+                                    price = menu.price.toString(),
+                                    quantity = 1,
+                                    restaurantId = menu.restaurantId,
+                                    userId = userModelState.data?.userId,
+                                )
+                                detailRestaurantViewModel.addBasket(addBasketRequest)
+                            }
+                            Toast
+                                .makeText(context, "added basket", Toast.LENGTH_SHORT)
+                                .show()
                         }
                         .border(1.dp, Color.LightGray, RoundedCornerShape(25.dp)),
                     contentAlignment = Alignment.Center
@@ -88,6 +108,7 @@ fun MenuListCardComponent(menu: Menu?) {
                         contentDescription = stringResource(id = R.string.add),
                         tint = Color.Black,
                         modifier = Modifier.size(10.dp)
+
                     )
                 }
             }

@@ -2,6 +2,8 @@ package com.example.meintasty.data.repoimpl
 
 
 import com.example.meintasty.data.network.ApiService
+import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
+import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasketResponse
 import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.response_model.CantonResponseModel
 import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest
@@ -22,6 +24,8 @@ import com.example.meintasty.domain.model.update_email_model.update_email_reques
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
+import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
+import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
 import com.example.meintasty.domain.repository.NetworkRepository
 import javax.inject.Inject
 
@@ -67,5 +71,13 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun updateEmail(emailUpdateRequest: EmailUpdateRequest): EmailUpdateResponse {
         return apiService.updateEmail(emailUpdateRequest)
+    }
+
+    override suspend fun updatePassword(updatePasswordRequest: UpdatePasswordRequest): UpdatePasswordResponse {
+        return apiService.updatePassword(updatePasswordRequest)
+    }
+
+    override suspend fun addBasket(addBasketRequest: AddBasketRequest): AddBasketResponse {
+        return apiService.addBasket(addBasketRequest)
     }
 }
