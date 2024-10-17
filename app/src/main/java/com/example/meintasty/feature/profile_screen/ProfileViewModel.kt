@@ -4,11 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.UserLocationModel
 import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
 import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.usecase.GetUserUseCase
-import com.example.meintasty.domain.usecase.getUserDatabaseUseCase
+import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val getUserDatabaseUseCase: getUserDatabaseUseCase
+    private val getUserDatabaseUseCase: GetUserDatabaseUseCase
 ) :
     ViewModel() {
 

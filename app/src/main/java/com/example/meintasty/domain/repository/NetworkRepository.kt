@@ -1,5 +1,7 @@
 package com.example.meintasty.domain.repository
 
+import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
+import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasketResponse
 import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.response_model.CantonResponseModel
 import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest
@@ -22,6 +24,8 @@ import com.example.meintasty.domain.model.update_phone_model.update_phone_reques
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
 import com.example.meintasty.domain.model.update_user_model.update_user_request.UpdateUserRequest
 import com.example.meintasty.domain.model.update_user_model.update_user_response.UpdateUserResponse
+import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
+import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
 
 interface NetworkRepository {
 
@@ -35,4 +39,6 @@ interface NetworkRepository {
     suspend fun getUser(userRequest: UserRequest): UserResponse
     suspend fun updatePhone(updatePhoneRequest: UpdatePhoneRequest): UpdatePhoneResponse
     suspend fun updateEmail(emailUpdateRequest: EmailUpdateRequest): EmailUpdateResponse
+    suspend fun updatePassword(updatePasswordRequest: UpdatePasswordRequest) : UpdatePasswordResponse
+    suspend fun addBasket(addBasketRequest: AddBasketRequest) : AddBasketResponse
 }

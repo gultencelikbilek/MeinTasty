@@ -95,143 +95,153 @@ fun ProfileScreen(
             )
         },
         content = { paddingValues ->
-            if (userState.isLoading == true) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = colorResource(id = R.color.mein_tasty_color)
-                    )
-                }
-            } else if(userState.isSucces == true){ //!!!!!!
-                userState.data?.value.let { user ->
-                    Column(modifier = Modifier.padding(paddingValues)) {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 16.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color.White
-                            )
+            /*    if (userState.isLoading == true) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = colorResource(id = R.color.mein_tasty_color)
+                        )
+                    }
+                } else if (userState.isSucces == true) { //!!!!!!*/
+            userState.data?.value.let { user ->
+                Column(modifier = Modifier.padding(paddingValues)) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.White
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(start = 16.dp)
                         ) {
-                            Column(
-                                modifier = Modifier.padding(start = 16.dp)
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 10.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    ProfileUserIcon(onClick = {}, painterResource(id = R.drawable.user))
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    LabelUserText(user?.fullName.toString())
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    EditIconComponent(
-                                        onClick = {},
-
-                                        )
-                                }
-
-                                DividierProfile()
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 10.dp)
-                                ) {
-                                    ProfileStartIcon(onClick = {}, painter = painterResource(id = R.drawable.gmail))
-                                    BasicText(modifier, user?.email.toString())
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    EditIconComponent(onClick = {
-                                        navController.navigate(Screen.UpdateScreen.route+"?userId=$userId?email=${user?.email}?phone=${user?.phoneNumber}?updateType=email"
-                                        )
-                                    })
-                                }
-                                DividierProfile()
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 10.dp)
-                                ) {
-                                    ProfileStartIcon(
-                                        modifier,
-                                        onClick = {},
-                                        painter = painterResource(id = R.drawable.phone)
-                                    )
-                                    BasicText(modifier, user?.phoneNumber.toString())
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    EditIconComponent(
-                                        onClick = {
-                                            navController.navigate(Screen.UpdateScreen.route+ "?userId=$userId?email=${user?.email}?phone=${user?.phoneNumber}?updateType=phone"
-                                            )
-                                        },
-                                        modifier
-                                    )
-                                }
-                                DividierProfile()
-
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(25.dp))
-
-                        Column() {
-                            Card(
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .wrapContentSize(),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = Color.White
-                                )
+                                    .padding(vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Column(
-                                    modifier = Modifier.padding(start = 16.dp)
-                                ) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 10.dp)
-                                    ) {
-                                        ProfileStartIcon(
-                                            onClick = {},
-                                            painter = painterResource(id = R.drawable.navigation)
-                                        )
-                                        BasicText(modifier, user?.userAdddress.toString())
-                                        Spacer(modifier = Modifier.weight(1f))
-                                        EditIconComponent(
-                                            onClick = {}
-                                        )
-                                    }
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 10.dp)
-                                    ) {
-                                        ProfileStartIcon(
-                                            onClick = {},
-                                            painter = painterResource(id = R.drawable.love)
-                                        )
-                                        BasicText(modifier, "Favorite Restaurants")
-                                    }
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 10.dp)
-                                    ) {
-                                        ProfileStartIcon(
-                                            onClick = {},
-                                            painter = painterResource(id = R.drawable.order)
-                                        )
-                                        BasicText(modifier, "Orders")
-                                    }
-                                }
+                                ProfileUserIcon(
+                                    onClick = {},
+                                    painterResource(id = R.drawable.user)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                LabelUserText(user?.fullName.toString())
                             }
+
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.gmail)
+                                )
+                                BasicText(modifier, user?.email.toString())
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(onClick = {
+                                    navController.navigate(
+                                        Screen.UpdateScreen.route + "?userId=$userId?email=${user?.email}?phone=${user?.phoneNumber}?updateType=email"
+                                    )
+                                })
+                            }
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    modifier,
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.phone)
+                                )
+                                BasicText(modifier, user?.phoneNumber.toString())
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.UpdateScreen.route + "?userId=$userId?email=${user?.email}?phone=${user?.phoneNumber}?updateType=phone"
+                                        )
+                                    },
+                                    modifier
+                                )
+                            }
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                ProfileStartIcon(
+                                    modifier,
+                                    onClick = {},
+                                    painterResource(id = R.drawable.lock)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                BasicText(modifier,stringResource(id = R.string.password_change))
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(
+                                    onClick = {
+                                        navController.navigate(Screen.PasswordScreen.route+"?userId=$userId")
+                                    }
+                                )
+                            }
+                            DividierProfile()
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.navigation)
+                                )
+                                BasicText(modifier, user?.userAdddress.toString())
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(
+                                    onClick = {}
+                                )
+                            }
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.love)
+                                )
+                                BasicText(modifier, "Favorite Restaurants")
+                            }
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.order)
+                                )
+                                BasicText(modifier, "Orders")
+                            }
+                            DividierProfile()
                         }
                     }
                 }
             }
+
+            // }
         }
     )
 }

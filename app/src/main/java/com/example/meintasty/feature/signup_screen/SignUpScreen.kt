@@ -52,6 +52,7 @@ import com.example.meintasty.navigation.Screen
 @Composable
 fun SignUpScreen(
     navController: NavController,
+    modifier: Modifier = Modifier,
     signUpViewModel: SignUpViewModel = hiltViewModel()
 ) {
 
@@ -154,10 +155,12 @@ fun SignUpScreen(
                                 }
                             )
                             PasswordSignUpComponent(
+                                modifier = modifier,
                                 password = password,
                                 onPaswordChange = {
                                     password = it
-                                }
+                                },
+                                text = stringResource(id = R.string.password)
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             SignUpButtonComponent(

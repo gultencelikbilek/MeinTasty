@@ -49,6 +49,7 @@ fun DetailRestaurantScreen(
 ) {
 
     val detailRestState = detailRestaurantViewModel.detailRestState.collectAsState().value
+    val addBasketState = detailRestaurantViewModel.addBasketState.collectAsState().value
 
     val detailRestaurantRequest = DetailRestaurantRequest(restaurantId!!.toInt())
     val customFontFamily = FontFamily(
@@ -125,7 +126,7 @@ fun DetailRestaurantScreen(
                                 .background(Color.White)
                         ) {
                             items(repeatedMenuList) { menu ->
-                                MenuListCardComponent(menu)
+                                MenuListCardComponent(menu,detailRestaurantViewModel)
                             }
                         }
                     }

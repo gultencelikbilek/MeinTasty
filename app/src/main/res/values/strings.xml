@@ -3,12 +3,12 @@
     <string name="login">Log in</string>
     <string name="name_surname">Name Surname</string>
     <string name="email">Enter your email</string>
-    <string name="emailUpdate">Email</string>
+    <string name="emailUpdate">Change Email</string>
     <string name="password">Enter your password</string>
     <string name="hide">Hide Password</string>
     <string name="show">Show Password</string>
     <string name="sign_up">Sign Up</string>
-    <string name="phone">Phone</string>
+    <string name="phone"> Change Phone</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="back">Back</string>
     <string name="sign_in">Sign In</string>
@@ -35,4 +35,13 @@
     <string name="basket_epmty">Basket is Empty</string>
     <string name="add">Add</string>
     <string name="profile">Profile</string>
+    <string name="password_change">Change password</string>
+    <string name="save">Save</string>
+    <string name="update_number">Enter your new number</string>
+    <string name="update_email">Enter your new email</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="corfirm_password">Confirm new password</string>
+    <string name="change_password">Change password</string>
+    <string name="update_password">Change Password</string>
 </resources>

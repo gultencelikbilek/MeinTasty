@@ -1,6 +1,8 @@
 package com.example.meintasty.data.network
 
 import com.example.meintasty.data.Constants
+import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
+import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasketResponse
 import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.response_model.CantonResponseModel
 import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest
@@ -23,6 +25,8 @@ import com.example.meintasty.domain.model.update_phone_model.update_phone_reques
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
 import com.example.meintasty.domain.model.update_user_model.update_user_request.UpdateUserRequest
 import com.example.meintasty.domain.model.update_user_model.update_user_response.UpdateUserResponse
+import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
+import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -57,4 +61,10 @@ interface ApiService {
 
     @POST(Constants.ENT_POINT_UPDATE_EMAIL)
     suspend fun updateEmail(@Body emailUpdateRequest: EmailUpdateRequest) : EmailUpdateResponse
+
+    @POST(Constants.ENT_POINT_UPDATE_PASSWORD)
+    suspend fun updatePassword(@Body updatePasswordRequest: UpdatePasswordRequest) : UpdatePasswordResponse
+
+    @POST(Constants.END_POINT_ADD_BASKET)
+    suspend fun addBasket(@Body addBasketRequest: AddBasketRequest) : AddBasketResponse
 }

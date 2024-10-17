@@ -12,6 +12,9 @@ object Constants {
     const val END_POINT_USER = "User/getUser"
     const val ENT_POINT_UPDATE_PHONE ="User/updateUserPhone"
     const val ENT_POINT_UPDATE_EMAIL ="User/updateUserEmail"
+    const val ENT_POINT_UPDATE_PASSWORD ="User/updateUserPassword"
+    const val END_POINT_ADD_BASKET = "Basket/addBasket"
+    const val END_POINT_GET_BASKET = "Basket/getBaskets"
 
     const val SHARED_PREF = "city_code"
     const val SHARED_TOKEN = "token_code"
