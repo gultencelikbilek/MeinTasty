@@ -56,6 +56,7 @@ fun MeinTastySplashScreen(
         if (splashShowState?.data?.token != null) {
             Log.d("tokenNotnull:","${splashShowState.data.token}")
             splashShowState.data.let {
+
                 val editor = sharedPrefrences.edit()
                 editor.putString(Constants.SHARED_TOKEN,it.token)
                 editor.apply()

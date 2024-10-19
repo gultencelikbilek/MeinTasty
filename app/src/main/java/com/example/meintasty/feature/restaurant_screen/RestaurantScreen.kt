@@ -141,7 +141,7 @@ fun RestaurantScreen(
                     Spacer(modifier = Modifier.width(2.dp))
                     IconButton(
                         onClick = {
-                            navController.navigate(Screen.CartScreen.route)
+                            navController.navigate(Screen.BasketScreen.route)
                         }
                     ) {
                         Icon(

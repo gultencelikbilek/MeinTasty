@@ -76,7 +76,7 @@ fun NavGraph() {
                 navController
             )
         }
-        composable(Screen.CartScreen.route) {
+        composable(Screen.BasketScreen.route) {
             BasketScreen(navController)
         }
         composable(Screen.ProfileScreen.route){

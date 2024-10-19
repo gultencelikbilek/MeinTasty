@@ -18,4 +18,5 @@ object Constants {
 
     const val SHARED_PREF = "city_code"
     const val SHARED_TOKEN = "token_code"
+    const val SHARED_RESTAURANT_ID = "restaurant_id"
 }

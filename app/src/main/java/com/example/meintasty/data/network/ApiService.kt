@@ -9,6 +9,8 @@ import com.example.meintasty.domain.model.category_detail_model.category_detail_
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetailResponse
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
+import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
 import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
 import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
@@ -23,8 +25,6 @@ import com.example.meintasty.domain.model.update_email_model.update_email_reques
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
-import com.example.meintasty.domain.model.update_user_model.update_user_request.UpdateUserRequest
-import com.example.meintasty.domain.model.update_user_model.update_user_response.UpdateUserResponse
 import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
 import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
 import retrofit2.http.Body
@@ -60,11 +60,14 @@ interface ApiService {
     suspend fun updatePhone(@Body updatePhoneRequest: UpdatePhoneRequest): UpdatePhoneResponse
 
     @POST(Constants.ENT_POINT_UPDATE_EMAIL)
-    suspend fun updateEmail(@Body emailUpdateRequest: EmailUpdateRequest) : EmailUpdateResponse
+    suspend fun updateEmail(@Body emailUpdateRequest: EmailUpdateRequest): EmailUpdateResponse
 
     @POST(Constants.ENT_POINT_UPDATE_PASSWORD)
-    suspend fun updatePassword(@Body updatePasswordRequest: UpdatePasswordRequest) : UpdatePasswordResponse
+    suspend fun updatePassword(@Body updatePasswordRequest: UpdatePasswordRequest): UpdatePasswordResponse
 
     @POST(Constants.END_POINT_ADD_BASKET)
-    suspend fun addBasket(@Body addBasketRequest: AddBasketRequest) : AddBasketResponse
+    suspend fun addBasket(@Body addBasketRequest: AddBasketRequest): AddBasketResponse
+
+    @POST(Constants.END_POINT_GET_BASKET)
+    suspend fun getBasket(@Body getBasketRequest: GetBasketRequest): GetBasketResponse
 }

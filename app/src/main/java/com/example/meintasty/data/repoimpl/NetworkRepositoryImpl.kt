@@ -10,6 +10,8 @@ import com.example.meintasty.domain.model.category_detail_model.category_detail_
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetailResponse
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
+import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
 import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
 import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
@@ -79,5 +81,9 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun addBasket(addBasketRequest: AddBasketRequest): AddBasketResponse {
         return apiService.addBasket(addBasketRequest)
+    }
+
+    override suspend fun getBasket(getBasketRequest: GetBasketRequest): GetBasketResponse {
+        return apiService.getBasket(getBasketRequest)
     }
 }
