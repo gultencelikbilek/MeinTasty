@@ -119,7 +119,7 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
                         Log.d("userLocationModelScreen:", "$userLocationModel")
 
                         val editor = sharedPreferences.edit()
-                        editor.putString("city_code", selectedCityCode)
+                        editor.putString(Constants.SHARED_PREF, selectedCityCode)
                         editor.apply() // Değişiklikleri kaydet
 
                         navController.navigate(Screen.RestaurantScreen.route)

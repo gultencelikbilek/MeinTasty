@@ -9,7 +9,7 @@ import com.example.meintasty.domain.model.add_basket_model.add_basket_response.A
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
-import com.example.meintasty.domain.usecase.AddBasketUseCase
+import com.example.meintasty.domain.usecase.BasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailRestaurantViewModel @Inject constructor(
     private val restaurantDetailUseCase: RestaurantDetailUseCase,
-    private val addBasketUseCase: AddBasketUseCase,
+    private val basketUseCase: BasketUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase
 ) : ViewModel() {
 
@@ -33,6 +33,11 @@ class DetailRestaurantViewModel @Inject constructor(
 
     private val _addBasketState = MutableStateFlow(AddBasketState())
     val addBasketState = _addBasketState.asStateFlow()
+
+    init {
+        getUserModel()
+    }
+
     fun getDetailRestaurant(detailRestaurantRequest: DetailRestaurantRequest) {
         viewModelScope.launch {
             restaurantDetailUseCase.invoke(detailRestaurantRequest)
@@ -71,19 +76,19 @@ class DetailRestaurantViewModel @Inject constructor(
         }
     }
 
-    fun getUserModel(){
+    fun getUserModel() {
         viewModelScope.launch {
-           val response =  getUserDatabaseUseCase.invoke()
+            val response = getUserDatabaseUseCase.invoke()
             _userModelState.value = UserModelState(
                 data = response
             )
         }
     }
 
-    fun addBasket(addBasketRequest: AddBasketRequest){
+    fun addBasket(addBasketRequest: AddBasketRequest) {
         viewModelScope.launch {
-            addBasketUseCase.invoke(addBasketRequest).collect{result ->
-                when(result){
+            basketUseCase.addBasketUseCase(addBasketRequest).collect { result ->
+                when (result) {
                     is NetworkResult.Failure -> {
                         _addBasketState.value = AddBasketState(
                             data = null,
@@ -92,6 +97,7 @@ class DetailRestaurantViewModel @Inject constructor(
                             isError = result.msg
                         )
                     }
+
                     NetworkResult.Loading -> {
                         _addBasketState.value = AddBasketState(
                             data = null,
@@ -100,6 +106,7 @@ class DetailRestaurantViewModel @Inject constructor(
                             isError = ""
                         )
                     }
+
                     is NetworkResult.Success -> {
                         _addBasketState.value = AddBasketState(
                             data = result.data,
@@ -129,5 +136,5 @@ data class AddBasketState(
 )
 
 data class UserModelState(
-    val data : UserAccountModel? = null
+    val data: UserAccountModel? = null
 )

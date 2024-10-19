@@ -1,5 +1,7 @@
 package com.example.meintasty.uicomponent
 
+import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantViewModel
@@ -38,6 +41,9 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
     val addBasketState = detailRestaurantViewModel.addBasketState.collectAsState().value
 
     val userModelState = detailRestaurantViewModel.userModelState.collectAsState().value
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID,Context.MODE_PRIVATE)
+
 
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_light, weight = FontWeight.Bold)
@@ -46,8 +52,6 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
     var count by remember {
         mutableStateOf(0)
     }
-
-    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -91,9 +95,18 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                                     menuId = menu.menuId,
                                     price = menu.price.toString(),
                                     quantity = 1,
-                                    restaurantId = menu.restaurantId,
+                                    restaurantId = 2,
                                     userId = userModelState.data?.userId,
                                 )
+                                val editorRestaurantId = sharedPreferences.edit()
+                                editorRestaurantId.putString(Constants.SHARED_RESTAURANT_ID,
+                                    menu.restaurantId.toString()
+                                )
+                                editorRestaurantId.apply()
+
+                                Log.d("restaurant:","${menu.restaurantId}")
+                                Log.d("restaurant:","${userModelState.data?.userId}")
+                                Log.d("addBasketRequest:","$addBasketRequest")
                                 detailRestaurantViewModel.addBasket(addBasketRequest)
                             }
                             Toast
