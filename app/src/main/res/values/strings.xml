@@ -44,4 +44,7 @@
     <string name="corfirm_password">Confirm new password</string>
     <string name="change_password">Change password</string>
     <string name="update_password">Change Password</string>
+    <string name="delete_alert">Are you sure you want to delete it?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>
