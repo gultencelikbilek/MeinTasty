@@ -99,12 +99,10 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                                     userId = userModelState.data?.userId,
                                 )
                                 val editorRestaurantId = sharedPreferences.edit()
-                                editorRestaurantId.putString(Constants.SHARED_RESTAURANT_ID,
-                                    menu.restaurantId.toString()
-                                )
+                                editorRestaurantId.putInt(Constants.SHARED_RESTAURANT_ID, 0)
                                 editorRestaurantId.apply()
 
-                                Log.d("restaurant:","${menu.restaurantId}")
+                                Log.d("restaurantId:","${menu.restaurantId}")
                                 Log.d("restaurant:","${userModelState.data?.userId}")
                                 Log.d("addBasketRequest:","$addBasketRequest")
                                 detailRestaurantViewModel.addBasket(addBasketRequest)
