@@ -47,7 +47,8 @@ fun CategoryCardComponent(
             painter = painterResource(id = R.drawable.food_one),
             contentDescription = "",
             contentScale = ContentScale.Crop,
-            alignment = Alignment.Center
+            alignment = Alignment.Center,
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
         Text(
             text = category?.categoryName.toString(),

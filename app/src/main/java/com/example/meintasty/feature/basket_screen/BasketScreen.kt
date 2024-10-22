@@ -3,15 +3,21 @@ package com.example.meintasty.feature.basket_screen
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +33,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +42,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
@@ -43,9 +51,12 @@ import com.example.meintasty.domain.model.get_basket_model.get_basket_request.Ge
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.BasketCardComponent
 import com.example.meintasty.uicomponent.HeaderComponent
-import com.example.meintasty.uicomponent.SwipeToDeleteContainer
+import com.kevinnzou.swipebox.SwipeBox
+import com.kevinnzou.swipebox.SwipeDirection
+import com.kevinnzou.swipebox.widget.SwipeIcon
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun BasketScreen(
     navController: NavController,
@@ -65,8 +76,8 @@ fun BasketScreen(
 
         mutableStateOf(false)
     }
-    
-    
+
+
     Log.d("basketState:","$basketState")
     userState?.let { user ->
         restaurant_id.let { restaurant_id ->
@@ -130,15 +141,35 @@ fun BasketScreen(
                             if (basketList.isNotEmpty()) {
                                 items(basketList) { basketItem ->
                                     basketItem?.let { basket ->
-
-                                        SwipeToDeleteContainer(
-                                            item = basket,
-                                            onDelete = { deletedBasket ->
-                                                // Silme işlemi burada yapılabilir
+                                        val coroutineScope = rememberCoroutineScope()
+                                        SwipeBox(
+                                            modifier = Modifier.wrapContentSize().padding(8.dp),
+                                            swipeDirection = SwipeDirection.EndToStart,
+                                            endContentWidth = 60.dp,
+                                            endContent = { swipeableState, endSwipeProgress -> SwipeIcon(
+                                                imageVector = Icons.Outlined.Delete,
+                                                contentDescription = "Delete",
+                                                tint = Color.White,
+                                                background = Color(0xFFFA1E32),
+                                                weight = 1f,
+                                                iconSize = 20.dp,
+                                            ) {
+                                                Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
+                                                coroutineScope.launch {
+                                                    swipeableState.animateTo(0)
+                                                }
                                             }
+                                            }
+                                        ) { _, _, _ ->Box(
+                                            modifier = Modifier
+                                                .wrapContentSize()
+                                                .padding(8.dp)
+                                                .background(Color(148, 184, 216)),
+                                            contentAlignment = Alignment.Center
                                         ) {
+                                        }
                                             BasketCardComponent(
-                                                basket = it,
+                                                basket = basket,
                                                 onClick = {},
                                                 onLongClick = {
                                                     openDialogState.value = true
@@ -151,7 +182,7 @@ fun BasketScreen(
                                 Toast.makeText(context, "Basket is Empty", Toast.LENGTH_SHORT).show()
                             }
                         } ?: run {
-                            Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
+                           // Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
                         }
                     }
 
