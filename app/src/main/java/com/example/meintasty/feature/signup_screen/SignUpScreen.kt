@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.signup_screen
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -40,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.uicomponent.EmailComponent
 import com.example.meintasty.uicomponent.NameSurnameComponent
@@ -75,7 +77,8 @@ fun SignUpScreen(
     val context = LocalContext.current
 
     val signuState = signUpViewModel.signupState.collectAsState()
-
+    val sharedPrefrences =
+        context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
 
     Scaffold(
         topBar = {
@@ -178,7 +181,12 @@ fun SignUpScreen(
                                         )
                                         signUpViewModel.signUp(signUpRequest)
                                         Log.d("signuprequest:", "$signUpRequest")
-                                        navController.navigate(Screen.CantonScreen.route)
+                                        signuState.value.data?.let{
+                                            val editor = sharedPrefrences.edit()
+                                            editor.putString(Constants.SHARED_TOKEN,it.token)
+                                            editor.apply()
+                                            navController.navigate(Screen.CantonScreen.route)
+                                        }
                                         Toast.makeText(
                                             context,
                                             "Success signup",

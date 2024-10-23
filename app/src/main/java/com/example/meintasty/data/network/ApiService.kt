@@ -20,7 +20,7 @@ import com.example.meintasty.domain.model.restaurant_model.restaurant_response.R
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
-import com.example.meintasty.domain.model.signup_model.signup_response.SignupResponse
+import com.example.meintasty.domain.model.signup_model.signup_response.SignUpResponse
 import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
@@ -36,7 +36,7 @@ interface ApiService {
     suspend fun loginUser(@Body loginUserRequest: LoginUserRequest): LoginResponseModel
 
     @POST(Constants.END_POINT_SIGNUP)
-    suspend fun signUp(@Body signupRequest: SignupRequest): SignupResponse
+    suspend fun signUp(@Body signupRequest: SignupRequest): SignUpResponse
 
     @POST(Constants.ENDPOINT_CANTON)
     suspend fun getCanton(@Body cantonRequestModel: CantonRequestModel): CantonResponseModel

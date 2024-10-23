@@ -21,7 +21,7 @@ import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_re
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.RestaurantModelResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
-import com.example.meintasty.domain.model.signup_model.signup_response.SignupResponse
+import com.example.meintasty.domain.model.signup_model.signup_response.SignUpResponse
 import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
@@ -43,7 +43,7 @@ class NetworkRepositoryImpl @Inject constructor(
         return apiService.getCanton(cantonRequestModel)
     }
 
-    override suspend fun signUp(signupRequest: SignupRequest): SignupResponse {
+    override suspend fun signUp(signupRequest: SignupRequest): SignUpResponse {
         return apiService.signUp(signupRequest)
     }
 

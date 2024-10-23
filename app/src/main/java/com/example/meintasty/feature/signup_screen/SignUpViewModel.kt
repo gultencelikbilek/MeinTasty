@@ -3,9 +3,11 @@ package com.example.meintasty.feature.signup_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.usecase.SignUpUseCase
-import com.example.meintasty.domain.model.signup_model.signup_response.Signup
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
+import com.example.meintasty.domain.model.signup_model.signup_response.SignUp
+import com.example.meintasty.domain.usecase.InsertUserUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    private val insertUserUseCase: InsertUserUseCase
 ) : ViewModel() {
 
     private val _signUpState = MutableStateFlow(SignUpState())
@@ -50,30 +53,26 @@ class SignUpViewModel @Inject constructor(
                             isError = ""
                         )
                         Log.d("signupviewmodel:","${result}")
+                        result.data.value?.let {
+                            val userAccountModel = UserAccountModel(
+                                0,
+                               userId =  it.userId,
+                                fullName = it.fullName,
+                                roleList = it.roleList,
+                                token = it.token
+                            )
+                            insertUserUseCase.invoke(userAccountModel)
+                            Log.d("useraccountModel:","$userAccountModel")
+                        }
                     }
                 }
-           /* val response = signUpRepositoryImpl.signUp(signupRequest)
-            response.value.let {
-                _signUpState.value = SignUpState(
-                    data = response.value,
-                    success = response.success
-                )*/
-                //signup yapınca token dönmüyor !!!!!!
-              //val userAccountModel = UserAccountModel(
-              //    0,
-              //    fullName = response.value.fullName,
-              //    roleList = emptyList(),
-              //    token = response.value.
-              //)
-              //loginUserRepositoryImpl.insertToken()
-              //Log.d("response:value","$response")
             }
         }
     }
 }
 
 data class SignUpState(
-    val data: Signup? = null,
+    val data: SignUp? = null,
     val isSuccess : Boolean? = false,
     val isLoading : Boolean? = false,
     val isError:  String? = ""
