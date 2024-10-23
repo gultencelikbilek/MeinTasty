@@ -67,7 +67,8 @@ fun LoginScreen(
     }
     val context = LocalContext.current
     val loginState by loginViewModel.loginState.collectAsState()
-
+    val sharedPrefrences =
+        context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
     Scaffold(
         topBar = {
             TopAppBar(
@@ -149,7 +150,16 @@ fun LoginScreen(
                                     if (passwordText.isNotEmpty() && emailText.isNotEmpty()) {
                                         val request = LoginUserRequest(emailText, passwordText)
                                         loginViewModel.insertLoginUser(request)
-                                        navController.navigate(Screen.CantonScreen.route)
+                                        loginState.data?.let {
+                                        Log.d("loginUser","$it")
+                                            Log.d("tokenLogin:","${it.token}")
+                                            val editor = sharedPrefrences.edit()
+                                            editor.putString(Constants.SHARED_TOKEN,it.token)
+                                            editor.apply()
+                                            navController.navigate(Screen.CantonScreen.route)
+
+                                        }
+
 
                                     } else {
                                         Toast.makeText(

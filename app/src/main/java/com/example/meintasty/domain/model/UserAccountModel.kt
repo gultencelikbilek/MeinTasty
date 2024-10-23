@@ -9,6 +9,6 @@ data class UserAccountModel(
     val id : Int? = 0,
     val userId : Int?=0,
     val fullName: String? ="",
-    val roleList : List<String>? = emptyList(),
+    val roleList : List<String?>? = emptyList(),
     val token: String? =""
 )
