@@ -12,8 +12,7 @@ import javax.inject.Inject
 
 class LoginDaoRepositoryImpl @Inject constructor(
     private val loginDatabase: LoginDatabase
-) :
-    LoginDaoRepository {
+) : LoginDaoRepository {
 
     override suspend fun insertToken(userAccountModel: UserAccountModel) {
         loginDatabase.loginDao().insertToken(userAccountModel)

@@ -78,7 +78,9 @@ fun ChooseLoginRegisterScreen(
                 Spacer(modifier = Modifier.height(26.dp))
                 SignUpButtonComponent(onClick = {
                     navController.navigate(Screen.SignUpScreen.route)
-                }, text = stringResource(id = R.string.sign_up))
+                },
+                    text = stringResource(id = R.string.sign_up)
+                )
                 DividerComponent()
                 SignInButtonComponent(onClick = {
                     navController.navigate(Screen.LoginScreen.route)

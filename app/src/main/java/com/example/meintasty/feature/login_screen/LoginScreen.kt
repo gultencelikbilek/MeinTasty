@@ -151,16 +151,19 @@ fun LoginScreen(
                                         val request = LoginUserRequest(emailText, passwordText)
                                         loginViewModel.insertLoginUser(request)
                                         loginState.data?.let {
-                                        Log.d("loginUser","$it")
-                                            Log.d("tokenLogin:","${it.token}")
-                                            val editor = sharedPrefrences.edit()
-                                            editor.putString(Constants.SHARED_TOKEN,it.token)
-                                            editor.apply()
-                                            navController.navigate(Screen.CantonScreen.route)
+                                            if (it.token != null){
+                                                Log.d("loginUser","$it")
+                                                Log.d("tokenLogin:","${it.token}")
 
+                                                val editor = sharedPrefrences.edit()
+                                                editor.putString(Constants.SHARED_TOKEN,it.token)
+                                                editor.apply()
+
+                                                navController.navigate(Screen.CantonScreen.route)
+                                            }else{
+                                                Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+                                            }
                                         }
-
-
                                     } else {
                                         Toast.makeText(
                                             context,

@@ -7,6 +7,7 @@ import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
+import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.usecase.BasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
@@ -64,6 +65,9 @@ class BasketViewModel @Inject constructor(
             }
         }
     }
+
+
+
     fun getUserModel() {
         viewModelScope.launch {
             val response = getUserDatabaseUseCase.invoke()
@@ -86,4 +90,11 @@ data class BasketState(
 
 data class UserState(
     val data : UserAccountModel? = null
+)
+
+data class RemoveBasketState(
+    val data : RemoveBasketResponse? = null,
+    val isSuccess: Boolean? = false,
+    val isLoading: Boolean? = false,
+    val isError: String? = ""
 )

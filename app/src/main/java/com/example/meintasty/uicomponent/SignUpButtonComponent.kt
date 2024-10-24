@@ -21,7 +21,8 @@ import com.example.meintasty.R
 @Composable
 fun SignUpButtonComponent(
     onClick: () -> Unit,
-    text:String
+    text:String,
+
 ) {
     Button(
         onClick = { onClick() },

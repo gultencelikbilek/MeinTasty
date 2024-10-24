@@ -31,9 +31,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -71,6 +73,13 @@ fun BasketScreen(
 
     val userState = basketViewModel.userState.collectAsState().value.data
     val basketState = basketViewModel.basketState.collectAsState()
+
+    var basketMinus   by remember {
+        mutableStateOf(0)
+    }
+    var basketAdd by remember {
+        mutableStateOf(0)
+    }
 
     val openDialogState = remember {
 
@@ -143,7 +152,9 @@ fun BasketScreen(
                                     basketItem?.let { basket ->
                                         val coroutineScope = rememberCoroutineScope()
                                         SwipeBox(
-                                            modifier = Modifier.wrapContentSize().padding(8.dp),
+                                            modifier = Modifier
+                                                .wrapContentSize()
+                                                .padding(8.dp),
                                             swipeDirection = SwipeDirection.EndToStart,
                                             endContentWidth = 60.dp,
                                             endContent = { swipeableState, endSwipeProgress -> SwipeIcon(
@@ -173,6 +184,12 @@ fun BasketScreen(
                                                 onClick = {},
                                                 onLongClick = {
                                                     openDialogState.value = true
+                                                },
+                                                onProductAdd ={
+                                                    basketAdd++
+                                                },
+                                                onProductMinus ={
+                                                    basketMinus--
                                                 }
                                             )
                                         }

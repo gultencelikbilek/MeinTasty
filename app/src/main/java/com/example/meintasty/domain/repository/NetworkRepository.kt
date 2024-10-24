@@ -14,6 +14,8 @@ import com.example.meintasty.domain.model.get_user_model.user_request.UserReques
 import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
 import com.example.meintasty.domain.model.login_model.login_response.LoginResponseModel
+import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
+import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
@@ -26,6 +28,7 @@ import com.example.meintasty.domain.model.update_phone_model.update_phone_reques
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
 import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
 import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
+import retrofit2.http.Body
 
 interface NetworkRepository {
 
@@ -42,4 +45,6 @@ interface NetworkRepository {
     suspend fun updatePassword(updatePasswordRequest: UpdatePasswordRequest) : UpdatePasswordResponse
     suspend fun addBasket(addBasketRequest: AddBasketRequest) : AddBasketResponse
     suspend fun getBasket(getBasketRequest: GetBasketRequest) : GetBasketResponse
+    suspend fun removeBasket(removeBasketRequest: RemoveBasketRequest) : RemoveBasketResponse
+
 }
