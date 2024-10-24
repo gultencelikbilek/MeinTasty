@@ -16,6 +16,8 @@ import com.example.meintasty.domain.model.get_user_model.user_response.UserRespo
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.login_model.login_response.LoginResponseModel
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
+import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
+import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.RestaurantModelResponse
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
@@ -70,4 +72,6 @@ interface ApiService {
 
     @POST(Constants.END_POINT_GET_BASKET)
     suspend fun getBasket(@Body getBasketRequest: GetBasketRequest): GetBasketResponse
+    @POST(Constants.END_POINT_REMOVE_BASKET)
+    suspend fun removeBasket(@Body removeBasketRequest: RemoveBasketRequest) : RemoveBasketResponse
 }

@@ -11,6 +11,7 @@ import com.example.meintasty.domain.usecase.InsertUserUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -53,16 +54,19 @@ class SignUpViewModel @Inject constructor(
                             isError = ""
                         )
                         Log.d("signupviewmodel:","${result}")
-                        result.data.value?.let {
-                            val userAccountModel = UserAccountModel(
-                                0,
-                               userId =  it.userId,
-                                fullName = it.fullName,
-                                roleList = it.roleList,
-                                token = it.token
-                            )
-                            insertUserUseCase.invoke(userAccountModel)
-                            Log.d("useraccountModel:","$userAccountModel")
+                        result.data.value.let {response ->
+                        if (response?.token != null){
+                                val userAccountModel = UserAccountModel(
+                                    0,
+                                    userId =  response.userId,
+                                    fullName = response.fullName,
+                                    roleList = response.roleList,
+                                    token = response.token
+                                )
+                                insertUserUseCase.invoke(userAccountModel)
+                                Log.d("useraccountModel:","$userAccountModel")
+
+                        }
                         }
                     }
                 }

@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -77,8 +78,10 @@ fun SignUpScreen(
     val context = LocalContext.current
 
     val signuState = signUpViewModel.signupState.collectAsState()
+
     val sharedPrefrences =
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
+
 
     Scaffold(
         topBar = {
@@ -168,30 +171,41 @@ fun SignUpScreen(
                             Spacer(modifier = Modifier.height(12.dp))
                             SignUpButtonComponent(
                                 onClick = {
-                                    if (fullName.isNullOrEmpty().not() && email.isNullOrEmpty()
-                                            .not() && phone.isNullOrEmpty()
-                                            .not() && password.isNullOrEmpty().not()
+                                    if (fullName.isEmpty().not() && email.isEmpty()
+                                            .not() && phone.isEmpty()
+                                            .not() && password.isEmpty().not()
                                     ) {
                                         val signUpRequest = SignupRequest(
-                                            email,
-                                            fullName,
-                                            phone,
-                                            password,
-                                            password
+                                            email = email,
+                                           fullName= fullName,
+                                            password= password,
+                                            phoneNumber = phone,
+                                           rePassword =  password
                                         )
-                                        signUpViewModel.signUp(signUpRequest)
-                                        Log.d("signuprequest:", "$signUpRequest")
-                                        signuState.value.data?.let{
-                                            val editor = sharedPrefrences.edit()
-                                            editor.putString(Constants.SHARED_TOKEN,it.token)
-                                            editor.apply()
-                                            navController.navigate(Screen.CantonScreen.route)
+                                            signUpViewModel.signUp(signUpRequest)
+                                            Log.d("signuprequest:", "${signUpRequest}")
+                                        Log.d("signuprequest:", "${signuState.value}")
+                                        if (signuState.value != null){
+                                            signuState.value.data?.let{
+                                                val editor = sharedPrefrences.edit()
+                                                editor.putString(Constants.SHARED_TOKEN,it.token)
+                                                editor.apply()
+                                                navController.navigate(Screen.CantonScreen.route)
+                                                Toast.makeText(
+                                                    context,
+                                                    "Success signup",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        }else{
+                                            Toast.makeText(
+                                                context,
+                                                "Unssucces signup",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
-                                        Toast.makeText(
-                                            context,
-                                            "Success signup",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+
+
                                     } else {
                                         Toast.makeText(
                                             context,

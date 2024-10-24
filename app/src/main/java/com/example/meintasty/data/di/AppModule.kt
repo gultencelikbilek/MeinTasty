@@ -6,6 +6,9 @@ import androidx.room.Room
 import com.example.meintasty.data.Constants
 import com.example.meintasty.data.db.LoginDatabase
 import com.example.meintasty.data.network.ApiService
+import com.example.meintasty.data.repoimpl.LoginDaoRepositoryImpl
+import com.example.meintasty.domain.repository.LoginDaoRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +27,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context) =
+     fun provideSharedPreferences(@ApplicationContext context: Context) =
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
 
     @Provides
@@ -81,4 +84,5 @@ object AppModule {
             "login_db"
         ).build()
     }
+
 }

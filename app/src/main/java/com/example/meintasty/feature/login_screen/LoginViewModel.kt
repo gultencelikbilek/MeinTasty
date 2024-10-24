@@ -56,16 +56,18 @@ class LoginViewModel @Inject constructor(
                             isError = ""
                         )
                         result.data.let { response ->
-                            val userAccountModel = UserAccountModel(
-                                id = 0,
-                                userId = response.value.userId,
-                                fullName = response.value.fullName,
-                                roleList = response.value.roleList,
-                                token = response.value.token
-                            )
-                            Log.d("LoginViewModel", " ${response.value.token}")
-                              insertUserUseCase.invoke(userAccountModel)
-                            Log.d("LoginViewModel", "insertUser called with: ${response.value.token}")
+                            if (response.value.token != null){
+                                    val userAccountModel = UserAccountModel(
+                                        id = 0,
+                                        userId = response.value.userId,
+                                        fullName = response.value.fullName,
+                                        roleList = response.value.roleList,
+                                        token = response.value.token
+                                    )
+                                    Log.d("LoginViewModel", " ${response.value.token}")
+                                    insertUserUseCase.invoke(userAccountModel)
+                                    Log.d("LoginViewModel", "insertUser called with: ${response.value.token}")
+                            }
                         }
                     }
                 }
