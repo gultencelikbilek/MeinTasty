@@ -74,30 +74,23 @@ fun BasketScreen(
     val userState = basketViewModel.userState.collectAsState().value.data
     val basketState = basketViewModel.basketState.collectAsState()
 
-    var basketMinus   by remember {
-        mutableStateOf(0)
-    }
-    var basketAdd by remember {
-        mutableStateOf(0)
-    }
-
     val openDialogState = remember {
 
         mutableStateOf(false)
     }
 
 
-    Log.d("basketState:","$basketState")
-    userState?.let { user ->
-        restaurant_id.let { restaurant_id ->
-            val getBasketRequest = GetBasketRequest(restaurant_id?.toInt(), user.userId)
-            Log.d("getBasketRequest:", "$getBasketRequest")
-            LaunchedEffect(basketState) {
-                basketViewModel.getBasket(getBasketRequest)
-                Log.d("getBasketRequest:", "$basketState")
-            }
+
+    userState?.userId.let {user_id->
+        val getBasketRequest = GetBasketRequest(restaurant_id, userId = user_id)
+        Log.d("basketRequest:","$getBasketRequest")
+        LaunchedEffect(user_id) {// addbasket dedikten sonra get baskette görünmyor verileri
+         basketViewModel.getBasket(getBasketRequest)
+            Log.d("response","succes")
         }
     }
+
+
 
     Scaffold(
         topBar = {
@@ -141,16 +134,20 @@ fun BasketScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                    val basketState = basketViewModel.basketState.collectAsState()
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        basketState.value.data?.let { basketList ->
+                        basketState.value.data.let { basketList ->
                             Log.d("basketList:","$basketList")
-                            if (basketList.isNotEmpty()) {
+                            Log.d("basketListData:","$basketState.value.data?")
+                            if (basketList !=null) {
                                 items(basketList) { basketItem ->
                                     basketItem?.let { basket ->
+                                        Log.d("basketItem","$basket")
                                         val coroutineScope = rememberCoroutineScope()
+                                        var count by remember {
+                                            mutableStateOf(0)
+                                        }
                                         SwipeBox(
                                             modifier = Modifier
                                                 .wrapContentSize()
@@ -185,11 +182,12 @@ fun BasketScreen(
                                                 onLongClick = {
                                                     openDialogState.value = true
                                                 },
+                                                count,
                                                 onProductAdd ={
-                                                    basketAdd++
+                                                    count++
                                                 },
                                                 onProductMinus ={
-                                                    basketMinus--
+                                                    count--
                                                 }
                                             )
                                         }

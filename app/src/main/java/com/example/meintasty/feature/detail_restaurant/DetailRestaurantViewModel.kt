@@ -9,7 +9,7 @@ import com.example.meintasty.domain.model.add_basket_model.add_basket_response.A
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
-import com.example.meintasty.domain.usecase.BasketUseCase
+import com.example.meintasty.domain.usecase.AddBasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailRestaurantViewModel @Inject constructor(
     private val restaurantDetailUseCase: RestaurantDetailUseCase,
-    private val basketUseCase: BasketUseCase,
+    private val addBasketUseCase: AddBasketUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase
 ) : ViewModel() {
 
@@ -87,9 +87,10 @@ class DetailRestaurantViewModel @Inject constructor(
 
     fun addBasket(addBasketRequest: AddBasketRequest) {
         viewModelScope.launch {
-            basketUseCase.addBasketUseCase(addBasketRequest).collect { result ->
+            addBasketUseCase.invoke(addBasketRequest).collect { result ->
                 when (result) {
                     is NetworkResult.Failure -> {
+                        Log.e("AddBasket", "Failure: ${result.msg}")
                         _addBasketState.value = AddBasketState(
                             data = null,
                             isSuccess = false,
@@ -99,6 +100,7 @@ class DetailRestaurantViewModel @Inject constructor(
                     }
 
                     NetworkResult.Loading -> {
+                        Log.d("AddBasket", "Loading")
                         _addBasketState.value = AddBasketState(
                             data = null,
                             isSuccess = false,
@@ -108,6 +110,7 @@ class DetailRestaurantViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Success -> {
+                        Log.d("AddBasket", "Success: ${result.data}")
                         _addBasketState.value = AddBasketState(
                             data = result.data,
                             isSuccess = true,

@@ -54,14 +54,14 @@ class SignUpViewModel @Inject constructor(
                             isError = ""
                         )
                         Log.d("signupviewmodel:","${result}")
-                        result.data.value.let {response ->
-                        if (response?.token != null){
+                        result.data?.let {response ->
+                            if (response.value?.token != null){
                                 val userAccountModel = UserAccountModel(
                                     0,
-                                    userId =  response.userId,
-                                    fullName = response.fullName,
-                                    roleList = response.roleList,
-                                    token = response.token
+                                    userId =  response.value.userId,
+                                    fullName = response.value.fullName,
+                                    roleList = response.value.roleList,
+                                    token = response.value.token
                                 )
                                 insertUserUseCase.invoke(userAccountModel)
                                 Log.d("useraccountModel:","$userAccountModel")

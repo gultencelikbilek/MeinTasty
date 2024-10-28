@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,8 +68,26 @@ fun LoginScreen(
     }
     val context = LocalContext.current
     val loginState by loginViewModel.loginState.collectAsState()
+
     val sharedPrefrences =
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
+
+    LaunchedEffect(loginState.data) {
+        loginState.data?.let {
+            if (it.token != null) {
+                Log.d("loginUser", "$it")
+                Log.d("tokenLogin:", "${it.token}")
+
+                val editor = sharedPrefrences.edit()
+                editor.putString(Constants.SHARED_TOKEN, it.token)
+                editor.apply()
+
+                navController.navigate(Screen.CantonScreen.route)
+            } else {
+                Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -150,20 +169,6 @@ fun LoginScreen(
                                     if (passwordText.isNotEmpty() && emailText.isNotEmpty()) {
                                         val request = LoginUserRequest(emailText, passwordText)
                                         loginViewModel.insertLoginUser(request)
-                                        loginState.data?.let {
-                                            if (it.token != null){
-                                                Log.d("loginUser","$it")
-                                                Log.d("tokenLogin:","${it.token}")
-
-                                                val editor = sharedPrefrences.edit()
-                                                editor.putString(Constants.SHARED_TOKEN,it.token)
-                                                editor.apply()
-
-                                                navController.navigate(Screen.CantonScreen.route)
-                                            }else{
-                                                Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
-                                            }
-                                        }
                                     } else {
                                         Toast.makeText(
                                             context,

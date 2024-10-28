@@ -1,8 +1,10 @@
 package com.example.meintasty.uicomponent
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +37,10 @@ import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaurantViewModel) {
 
@@ -42,15 +48,19 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
 
     val userModelState = detailRestaurantViewModel.userModelState.collectAsState().value
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID,Context.MODE_PRIVATE)
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
 
 
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_light, weight = FontWeight.Bold)
     )
 
-    var count by remember {
-        mutableStateOf(0)
+    LaunchedEffect(Unit) {
+        val editorRestaurantId = sharedPreferences.edit()
+        editorRestaurantId.putInt(Constants.SHARED_RESTAURANT_ID, 0)
+        editorRestaurantId.apply()
+        Log.d("restaurant_id","${Constants.SHARED_RESTAURANT_ID}")
     }
 
     Card(
@@ -82,34 +92,37 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                     .fillMaxWidth()
                     .padding(top = 4.dp, end = 4.dp),
 
-            ) {
+                ) {
                 Box(
                     modifier = Modifier
                         .size(20.dp)
                         .background(colorResource(id = R.color.white), RoundedCornerShape(12.dp))
                         .clickable {
                             menu?.let { menu ->
-                                val addBasketRequest = AddBasketRequest(
-                                    basketDate = "",
-                                    currencyCode = menu.currency.toString(),
-                                    menuId = menu.menuId,
-                                    price = menu.price.toString(),
-                                    quantity = 1,
-                                    restaurantId = 2,
-                                    userId = userModelState.data?.userId,
-                                )
-                                val editorRestaurantId = sharedPreferences.edit()
-                                editorRestaurantId.putInt(Constants.SHARED_RESTAURANT_ID, 0)
-                                editorRestaurantId.apply()
+                                Log.d("menu","$menu")
+                                if (userModelState.data?.userId != null) {
+                                    Log.d("menu","$userModelState.data?.userId")
+                                    val currentDateTime = LocalDateTime.now()
+                                    val formattedDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                                    val addBasketRequest = AddBasketRequest(
+                                        basketDate = formattedDate,
+                                        currencyCode = menu.currency.toString(),
+                                        menuId = menu.menuId,
+                                        price = menu.price.toString(),
+                                        quantity = 1,
+                                        restaurantId = menu.restaurantId,
+                                        userId = userModelState.data?.userId,
+                                    )
 
-                                Log.d("restaurantId:","${menu.restaurantId}")
-                                Log.d("restaurant:","${userModelState.data?.userId}")
-                                Log.d("addBasketRequest:","$addBasketRequest")
-                                detailRestaurantViewModel.addBasket(addBasketRequest)
+                                    Log.d("restaurantId:", "${menu.restaurantId}")
+                                    Log.d("restaurant:", "${userModelState.data?.userId}")
+                                    Log.d("addBasketRequest:", "$addBasketRequest")
+                                    detailRestaurantViewModel.addBasket(addBasketRequest)
+                                    Toast
+                                        .makeText(context, "added basket", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
                             }
-                            Toast
-                                .makeText(context, "added basket", Toast.LENGTH_SHORT)
-                                .show()
                         }
                         .border(1.dp, Color.LightGray, RoundedCornerShape(25.dp)),
                     contentAlignment = Alignment.Center

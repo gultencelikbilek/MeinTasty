@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.signup_screen
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -51,6 +52,7 @@ import com.example.meintasty.uicomponent.PhoneComponent
 import com.example.meintasty.uicomponent.SignUpButtonComponent
 import com.example.meintasty.navigation.Screen
 
+@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
@@ -82,6 +84,27 @@ fun SignUpScreen(
     val sharedPrefrences =
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
 
+    LaunchedEffect(signuState.value.data) {
+        if (signuState.value != null){
+            signuState.value.data?.let{
+                val editor = sharedPrefrences.edit()
+                editor.putString(Constants.SHARED_TOKEN,it.token)
+                editor.apply()
+                navController.navigate(Screen.CantonScreen.route)
+                Toast.makeText(
+                    context,
+                    "Success signup",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }else{
+            Toast.makeText(
+                context,
+                "Unssucces signup",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -185,25 +208,6 @@ fun SignUpScreen(
                                             signUpViewModel.signUp(signUpRequest)
                                             Log.d("signuprequest:", "${signUpRequest}")
                                         Log.d("signuprequest:", "${signuState.value}")
-                                        if (signuState.value != null){
-                                            signuState.value.data?.let{
-                                                val editor = sharedPrefrences.edit()
-                                                editor.putString(Constants.SHARED_TOKEN,it.token)
-                                                editor.apply()
-                                                navController.navigate(Screen.CantonScreen.route)
-                                                Toast.makeText(
-                                                    context,
-                                                    "Success signup",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                            }
-                                        }else{
-                                            Toast.makeText(
-                                                context,
-                                                "Unssucces signup",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
 
 
                                     } else {
