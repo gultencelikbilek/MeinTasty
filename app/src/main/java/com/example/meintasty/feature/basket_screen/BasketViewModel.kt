@@ -4,11 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.UserAccountModel
+import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasketResponse
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
-import com.example.meintasty.domain.usecase.BasketUseCase
+import com.example.meintasty.domain.usecase.GetBasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BasketViewModel @Inject constructor(
-    private val basketUseCase: BasketUseCase,
+    private val getBasketUseCase: GetBasketUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase
 ) : ViewModel() {
 
@@ -31,10 +32,10 @@ class BasketViewModel @Inject constructor(
     init {
         getUserModel()
     }
-    fun getBasket(getBasketRequest: GetBasketRequest) {
+    fun getBasket(basketRequest: GetBasketRequest){
         viewModelScope.launch {
-            basketUseCase.getBasketUseCase(getBasketRequest).collect { result ->
-                when (result) {
+            getBasketUseCase.invoke(getBasketRequest = basketRequest).collect{result ->
+                when(result){
                     is NetworkResult.Failure -> {
                         _basketState.value = BasketState(
                             data = null,
@@ -42,8 +43,8 @@ class BasketViewModel @Inject constructor(
                             isLoading = true,
                             isError = result.msg
                         )
+                        Log.d("basketViewmodelError:","${result.msg}")
                     }
-
                     NetworkResult.Loading -> {
                         _basketState.value = BasketState(
                             data = null,
@@ -52,10 +53,11 @@ class BasketViewModel @Inject constructor(
                             isError = ""
                         )
                     }
-
                     is NetworkResult.Success -> {
+                        val basketData = result.data.value
+                        Log.d("API Response:", "$basketData")
                         _basketState.value = BasketState(
-                            data = result.data.value,
+                            data = basketData,
                             isSuccess = true,
                             isLoading = false,
                             isError = ""
@@ -65,7 +67,6 @@ class BasketViewModel @Inject constructor(
             }
         }
     }
-
 
 
     fun getUserModel() {
@@ -82,7 +83,7 @@ class BasketViewModel @Inject constructor(
 }
 
 data class BasketState(
-    val data: List<Basket?>? = null,
+    val data : List<Basket?>? = null,
     val isSuccess: Boolean? = false,
     val isLoading: Boolean? = false,
     val isError: String? = ""

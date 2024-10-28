@@ -44,7 +44,7 @@ interface NetworkRepository {
     suspend fun updateEmail(emailUpdateRequest: EmailUpdateRequest): EmailUpdateResponse
     suspend fun updatePassword(updatePasswordRequest: UpdatePasswordRequest) : UpdatePasswordResponse
     suspend fun addBasket(addBasketRequest: AddBasketRequest) : AddBasketResponse
-    suspend fun getBasket(getBasketRequest: GetBasketRequest) : GetBasketResponse
+    suspend fun getBasket(getBasketRequest: GetBasketRequest): GetBasketResponse
     suspend fun removeBasket(removeBasketRequest: RemoveBasketRequest) : RemoveBasketResponse
 
 }
