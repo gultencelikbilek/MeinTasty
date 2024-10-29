@@ -1,6 +1,8 @@
 package com.example.meintasty.feature.detail_restaurant
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -40,6 +42,7 @@ import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_re
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.MenuListCardComponent
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailRestaurantScreen(
@@ -57,6 +60,7 @@ fun DetailRestaurantScreen(
     )
     LaunchedEffect(Unit) {
         detailRestaurantViewModel.getDetailRestaurant(detailRestaurantRequest)
+
     }
 
     Scaffold(
@@ -96,7 +100,7 @@ fun DetailRestaurantScreen(
                     )
                 }
             } else if (detailRestState.isSuccess == true) {
-                Log.d("succes:","${detailRestState.data}")
+                Log.d("succes:", "${detailRestState.data}")
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
@@ -116,8 +120,7 @@ fun DetailRestaurantScreen(
                         )
                     }
 
-                    detailRestState.data?.let { list ->
-                        val repeatedMenuList = List(10) { list.menuList!! }.flatten()
+                    detailRestState.data?.menuList?.let { menuList ->
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
                             modifier = Modifier
@@ -125,24 +128,27 @@ fun DetailRestaurantScreen(
                                 .padding(16.dp)
                                 .background(Color.White)
                         ) {
-                            items(repeatedMenuList) { menu ->
-                                MenuListCardComponent(menu,detailRestaurantViewModel)
+                            items(menuList.filterNotNull()) { menu ->
+                                MenuListCardComponent(
+                                    menu = menu,
+                                    detailRestaurantViewModel = detailRestaurantViewModel
+                                )
                             }
                         }
                     }
                 }
-            }else{
-                Log.d("detailRestaurant:error","${detailRestState.isError}")
+            } else {
+                Log.d("detailRestaurant:error", "${detailRestState.isError}")
             }
         }
     )
-
 }
 
 
-    @Composable
-    fun DetailRestaurantPrew(restaurantId: Int?) {
-        val navController = rememberNavController()
-        DetailRestaurantScreen(restaurantId = restaurantId, navController = navController)
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun DetailRestaurantPrew(restaurantId: Int?) {
+    val navController = rememberNavController()
+    DetailRestaurantScreen(restaurantId = restaurantId, navController = navController)
 
-    }
+}

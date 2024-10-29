@@ -110,7 +110,7 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                                         menuId = menu.menuId,
                                         price = menu.price.toString(),
                                         quantity = 1,
-                                        restaurantId = menu.restaurantId,
+                                        restaurantId = 1,
                                         userId = userModelState.data?.userId,
                                     )
 
@@ -119,8 +119,9 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                                     Log.d("addBasketRequest:", "$addBasketRequest")
                                     detailRestaurantViewModel.addBasket(addBasketRequest)
                                     Toast
-                                        .makeText(context, "added basket", Toast.LENGTH_SHORT)
+                                        .makeText(context, "addedBasket", Toast.LENGTH_SHORT)
                                         .show()
+
                                 }
                             }
                         }

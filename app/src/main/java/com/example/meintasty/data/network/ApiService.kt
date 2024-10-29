@@ -71,8 +71,8 @@ interface ApiService {
     suspend fun addBasket(@Body addBasketRequest: AddBasketRequest): AddBasketResponse
 
     @POST(Constants.END_POINT_GET_BASKET)
-    suspend fun getBasket(@Body getBasketRequest: GetBasketRequest) : GetBasketResponse
+    suspend fun getBasket(@Body getBasketRequest: GetBasketRequest): GetBasketResponse
 
     @POST(Constants.END_POINT_REMOVE_BASKET)
-    suspend fun removeBasket(@Body removeBasketRequest: RemoveBasketRequest) : RemoveBasketResponse
+    suspend fun removeBasket(@Body removeBasketRequest: RemoveBasketRequest): RemoveBasketResponse
 }

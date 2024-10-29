@@ -4,5 +4,5 @@ data class AddBasketResponse(
     val errorMessage: Any?,
     val infoMessage: String?,
     val success: Boolean?,
-    val value: Value?
+    val value: AddBasket?
 )
