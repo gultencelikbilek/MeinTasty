@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
+import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasket
 import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasketResponse
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
@@ -66,8 +67,8 @@ class DetailRestaurantViewModel @Inject constructor(
                         NetworkResult.Loading -> {
                             _detailRestState.value = DetailRestaurantState(
                                 data = null,
-                                isSuccess = false,
-                                isLoading = true,
+                                isSuccess = true,
+                                isLoading = false,
                                 isError = null
                             )
                         }
@@ -85,22 +86,20 @@ class DetailRestaurantViewModel @Inject constructor(
         }
     }
 
-    fun addBasket(addBasketRequest: AddBasketRequest) {
+    fun addBasket(addBasketRequest: AddBasketRequest){
         viewModelScope.launch {
-            addBasketUseCase.invoke(addBasketRequest).collect { result ->
-                when (result) {
+            addBasketUseCase.invoke(addBasketRequest).collect{
+                when(it){
                     is NetworkResult.Failure -> {
-                        Log.e("AddBasket", "Failure: ${result.msg}")
                         _addBasketState.value = AddBasketState(
                             data = null,
                             isSuccess = false,
                             isLoading = true,
-                            isError = result.msg
+                            isError = it.msg
                         )
+                        Log.d("addBasketState:error:","${it.msg}")
                     }
-
-                    NetworkResult.Loading -> {
-                        Log.d("AddBasket", "Loading")
+                    NetworkResult.Loading ->{
                         _addBasketState.value = AddBasketState(
                             data = null,
                             isSuccess = false,
@@ -108,22 +107,27 @@ class DetailRestaurantViewModel @Inject constructor(
                             isError = ""
                         )
                     }
-
                     is NetworkResult.Success -> {
-                        Log.d("AddBasket", "Success: ${result.data}")
                         _addBasketState.value = AddBasketState(
-                            data = result.data,
-                            isSuccess = true,
-                            isLoading = false,
+                            data = it.data.value,
+                            isSuccess = false,
+                            isLoading = true,
                             isError = ""
                         )
+                        Log.d("addBasketState:succes","${it.data.value}")
+
                     }
                 }
             }
         }
     }
 }
-
+data class AddBasketState(
+    val data: AddBasket? = null,
+    val isSuccess: Boolean? = false,
+    val isLoading: Boolean? = false,
+    val isError: String? = ""
+)
 data class DetailRestaurantState(
     val data: DetailRestaurant? = null,
     val isSuccess: Boolean? = false,
@@ -131,12 +135,7 @@ data class DetailRestaurantState(
     val isError: String? = ""
 )
 
-data class AddBasketState(
-    val data: AddBasketResponse? = null,
-    val isSuccess: Boolean? = false,
-    val isLoading: Boolean? = false,
-    val isError: String? = ""
-)
+
 
 data class UserModelState(
     val data: UserAccountModel? = null
