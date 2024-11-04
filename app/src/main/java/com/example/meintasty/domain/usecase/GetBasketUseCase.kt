@@ -13,16 +13,24 @@ import javax.inject.Inject
 
 class GetBasketUseCase @Inject constructor(private val repositoryImpl: NetworkRepositoryImpl) {
 
-    operator suspend fun invoke(getBasketRequest: GetBasketRequest) : Flow<NetworkResult<GetBasketResponse>> = flow {
-        try {
-            emit(NetworkResult.Loading)
-            val response = repositoryImpl.getBasket(getBasketRequest)
-            emit(NetworkResult.Success(response))
-            Log.d("getBasketUseCase","$response")
-        }catch (e:HttpException){
-            emit(NetworkResult.Failure(e.message().toString()))
-        }catch (e:IOException){
-            emit(NetworkResult.Failure(e.toString()))
+    operator suspend fun invoke(getBasketRequest: GetBasketRequest): Flow<NetworkResult<GetBasketResponse>> =
+        flow {
+            try {
+                emit(NetworkResult.Loading)
+                val response = repositoryImpl.getBasket(getBasketRequest)
+                val menuIdCountMap = response.value
+                    ?.filterNotNull()
+                    ?.groupingBy { it.menuId }
+                    ?.eachCount()
+                Log.d("getBasketUseCase","$menuIdCountMap")
+
+                emit(NetworkResult.Success(response))
+
+                Log.d("getBasketUseCase", "$response")
+            } catch (e: HttpException) {
+                emit(NetworkResult.Failure(e.message().toString()))
+            } catch (e: IOException) {
+                emit(NetworkResult.Failure(e.toString()))
+            }
         }
-    }
 }

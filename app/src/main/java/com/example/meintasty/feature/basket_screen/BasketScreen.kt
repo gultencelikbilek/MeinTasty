@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -81,12 +80,12 @@ fun BasketScreen(
 
 
 
-    userState?.userId.let {user_id->
+    userState?.userId.let { user_id ->
         val getBasketRequest = GetBasketRequest(restaurant_id, userId = user_id)
-        Log.d("basketRequest:","$getBasketRequest")
-        LaunchedEffect(user_id) {// addbasket dedikten sonra get baskette görünmyor verileri
-         basketViewModel.getBasket(getBasketRequest)
-            Log.d("response","succes")
+        Log.d("basketRequest:", "$getBasketRequest")
+        LaunchedEffect(user_id) {
+            basketViewModel.getBasket(getBasketRequest)
+            Log.d("response", "succes")
         }
     }
 
@@ -113,7 +112,7 @@ fun BasketScreen(
             )
         },
         content = { paddingValues ->
-            if (basketState.value.isLoading == true){
+            if (basketState.value.isLoading == true) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -122,28 +121,29 @@ fun BasketScreen(
                     CircularProgressIndicator(
                         color = colorResource(id = R.color.mein_tasty_color)
                     )
-                    Log.d("basketList:","hereloading")
+                    Log.d("basketList:", "hereloading")
                 }
-            }else{
-                Log.d("basketList:","heresuccess")
+            } else {
+                Log.d("basketList:", "heresuccess")
 
                 Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         basketState.value.data.let { basketList ->
-                            Log.d("basketList:","$basketList")
-                            Log.d("basketListData:","$basketState.value.data?")
-                            if (basketList !=null) {
+                            Log.d("basketList:", "$basketList")
+                            Log.d("basketListData:", "$basketState.value.data?")
+
+                            if (basketList != null) {
                                 items(basketList) { basketItem ->
                                     basketItem?.let { basket ->
-                                        Log.d("basketItem","$basket")
+                                        Log.d("basketItem", "$basket")
                                         val coroutineScope = rememberCoroutineScope()
                                         var count by remember {
                                             mutableStateOf(0)
@@ -154,28 +154,34 @@ fun BasketScreen(
                                                 .padding(8.dp),
                                             swipeDirection = SwipeDirection.EndToStart,
                                             endContentWidth = 60.dp,
-                                            endContent = { swipeableState, endSwipeProgress -> SwipeIcon(
-                                                imageVector = Icons.Outlined.Delete,
-                                                contentDescription = "Delete",
-                                                tint = Color.White,
-                                                background = Color(0xFFFA1E32),
-                                                weight = 1f,
-                                                iconSize = 20.dp,
-                                            ) {
-                                                Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
-                                                coroutineScope.launch {
-                                                    swipeableState.animateTo(0)
+                                            endContent = { swipeableState, endSwipeProgress ->
+                                                SwipeIcon(
+                                                    imageVector = Icons.Outlined.Delete,
+                                                    contentDescription = "Delete",
+                                                    tint = Color.White,
+                                                    background = Color(0xFFFA1E32),
+                                                    weight = 1f,
+                                                    iconSize = 20.dp,
+                                                ) {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Delete",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                    coroutineScope.launch {
+                                                        swipeableState.animateTo(0)
+                                                    }
                                                 }
                                             }
+                                        ) { _, _, _ ->
+                                            Box(
+                                                modifier = Modifier
+                                                    .wrapContentSize()
+                                                    .padding(8.dp)
+                                                    .background(Color(148, 184, 216)),
+                                                contentAlignment = Alignment.Center
+                                            ) {
                                             }
-                                        ) { _, _, _ ->Box(
-                                            modifier = Modifier
-                                                .wrapContentSize()
-                                                .padding(8.dp)
-                                                .background(Color(148, 184, 216)),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                        }
                                             BasketCardComponent(
                                                 basket = basket,
                                                 onClick = {},
@@ -183,10 +189,10 @@ fun BasketScreen(
                                                     openDialogState.value = true
                                                 },
                                                 count,
-                                                onProductAdd ={
+                                                onProductAdd = {
                                                     count++
                                                 },
-                                                onProductMinus ={
+                                                onProductMinus = {
                                                     count--
                                                 }
                                             )
@@ -194,15 +200,17 @@ fun BasketScreen(
                                     }
                                 }
                             } else {
-                                Toast.makeText(context, "Basket is Empty", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Basket is Empty", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         } ?: run {
-                           // Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
+                            // Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
                         }
                     }
 
-                } }
-            if (openDialogState.value ){
+                }
+            }
+            if (openDialogState.value) {
                 AlertDialogBasket(openDialogState = openDialogState)
             }
         }
@@ -213,16 +221,18 @@ fun BasketScreen(
 
 @Composable
 fun AlertDialogBasket(openDialogState: MutableState<Boolean>) {
-    if (openDialogState.value){
-        AlertDialog(onDismissRequest = {
-            openDialogState.value = false
-        },
+    if (openDialogState.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialogState.value = false
+            },
             title = {
                 Text(
                     text = stringResource(id = R.string.delete_alert),
                     style = TextStyle(
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        color = Color.Black)
+                        color = Color.Black
+                    )
                 )
             },
             confirmButton = {

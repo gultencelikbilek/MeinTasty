@@ -5,10 +5,19 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -16,12 +25,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -40,11 +49,29 @@ import com.example.meintasty.feature.detail_restaurant.DetailRestaurantViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaurantViewModel) {
+fun SharedTransitionScope.MenuListCardComponent(
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    menu: Menu?,
+    detailRestaurantViewModel: DetailRestaurantViewModel
+) {
 
     val addBasketState = detailRestaurantViewModel.addBasketState.collectAsState().value
+
+    val mutableInteractionSource = remember {
+        MutableInteractionSource()
+    }
+    val pressed = mutableInteractionSource.collectIsPressedAsState()
+    val elevation = animateDpAsState(
+        targetValue = if (pressed.value) {
+            316.dp
+        } else {
+            8.dp
+        },
+        label = "elevation"
+    )
 
     val userModelState = detailRestaurantViewModel.userModelState.collectAsState().value
     val context = LocalContext.current
@@ -60,7 +87,7 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
         val editorRestaurantId = sharedPreferences.edit()
         editorRestaurantId.putInt(Constants.SHARED_RESTAURANT_ID, 0)
         editorRestaurantId.apply()
-        Log.d("restaurant_id","${Constants.SHARED_RESTAURANT_ID}")
+        Log.d("restaurant_id", "${Constants.SHARED_RESTAURANT_ID}")
     }
 
     Card(
@@ -85,6 +112,7 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                     .fillMaxWidth()
                     .height(80.dp)
                     .border(1.dp, Color.Transparent, RoundedCornerShape(25.dp))
+
             )
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -97,13 +125,20 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                     modifier = Modifier
                         .size(20.dp)
                         .background(colorResource(id = R.color.white), RoundedCornerShape(12.dp))
-                        .clickable {
+                        .graphicsLayer {
+                            this.shadowElevation = elevation.value.toPx()
+                        }
+                        .clickable(
+                            interactionSource = mutableInteractionSource,
+                            indication = null
+                        ) {
                             menu?.let { menu ->
-                                Log.d("menu","$menu")
+                                Log.d("menu", "$menu")
                                 if (userModelState.data?.userId != null) {
-                                    Log.d("menu","$userModelState.data?.userId")
+                                    Log.d("menu", "${userModelState.data?.userId}")
                                     val currentDateTime = LocalDateTime.now()
-                                    val formattedDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                                    val formattedDate =
+                                        currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
                                     val addBasketRequest = AddBasketRequest(
                                         basketDate = formattedDate,
                                         currencyCode = menu.currency.toString(),
@@ -151,8 +186,7 @@ fun MenuListCardComponent(menu: Menu?, detailRestaurantViewModel: DetailRestaura
                         color = Color.Black,
                         fontFamily = customFontFamily
                     ),
-                    modifier = Modifier.padding(bottom = 2.dp) // Space between texts
-                )
+                    modifier = Modifier.padding(bottom = 2.dp))
                 Text(
                     text = menu?.price.toString(),
                     style = TextStyle(

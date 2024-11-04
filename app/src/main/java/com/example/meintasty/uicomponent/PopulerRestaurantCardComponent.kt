@@ -1,5 +1,9 @@
 package com.example.meintasty.uicomponent
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,8 +32,12 @@ import com.example.meintasty.R
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.Restaurant
 import com.example.meintasty.navigation.Screen
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun PopulerRestaurantCardComponent(restaurant: Restaurant, navController: NavController) {
+fun SharedTransitionScope.PopulerRestaurantCardComponent(
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    restaurant: Restaurant,
+    navController: NavController) {
 
     Card(
         modifier = Modifier
@@ -39,16 +47,20 @@ fun PopulerRestaurantCardComponent(restaurant: Restaurant, navController: NavCon
             .height(150.dp)
             .background(Color.White)
             .clickable {
-                       navController.navigate(Screen.DetailRestaurantScreen.route+"?restaurantId=${restaurant.id}")
+                navController.navigate(Screen.DetailRestaurantScreen.route + "?restaurantId=${restaurant.id}")
             },
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Column(
             modifier = Modifier
-                .background(Color.White).fillMaxWidth().fillMaxHeight()
+                .background(Color.White)
+                .fillMaxWidth()
+                .fillMaxHeight()
         ) {
             Box(
-                modifier = Modifier.background(Color.LightGray).align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .background(Color.LightGray)
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.food_one),
