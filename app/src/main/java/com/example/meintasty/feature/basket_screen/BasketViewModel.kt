@@ -15,6 +15,7 @@ import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,6 +35,7 @@ class BasketViewModel @Inject constructor(
     }
     fun getBasket(basketRequest: GetBasketRequest){
         viewModelScope.launch {
+
             getBasketUseCase.invoke(getBasketRequest = basketRequest).collect{result ->
                 when(result){
                     is NetworkResult.Failure -> {
@@ -57,7 +59,7 @@ class BasketViewModel @Inject constructor(
                         val basketData = result.data.value
                         Log.d("API Response:", "$basketData")
                         _basketState.value = BasketState(
-                            data = basketData,
+                            data = basketData?.distinctBy { it?.menuId },
                             isSuccess = true,
                             isLoading = false,
                             isError = ""

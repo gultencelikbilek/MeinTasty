@@ -108,6 +108,9 @@ dependencies {
     //animation
     implementation (libs.androidx.animation)
     implementation (libs.androidx.material)
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.navigation.compose)
+
     //swipe
     implementation(libs.compose.swipebox.multiplatform)
 

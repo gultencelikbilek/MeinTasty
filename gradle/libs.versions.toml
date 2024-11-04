@@ -26,10 +26,14 @@ converterGson = "2.9.0"
 roomRuntime = "2.6.1"
 runtimeLivedataVersion = "1.7.3"
 constraintlayoutComposeAndroid = "1.1.0-rc01"
+composeAnimation = "1.7.0-alpha07"
+navigationCompose = "2.7.7"
 
 
 [libraries]
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }

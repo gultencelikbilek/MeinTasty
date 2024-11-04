@@ -1,8 +1,15 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.example.meintasty.feature.detail_restaurant
 
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -42,10 +49,11 @@ import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_re
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.MenuListCardComponent
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DetailRestaurantScreen(
+fun SharedTransitionScope.DetailRestaurantScreen(
+    animatedVisibilityScope: AnimatedVisibilityScope,
     restaurantId: Int?,
     navController: NavController,
     detailRestaurantViewModel: DetailRestaurantViewModel = hiltViewModel()
@@ -115,7 +123,15 @@ fun DetailRestaurantScreen(
                         Image(
                             painter = painterResource(id = R.drawable.food_one),
                             contentDescription = "",
-                            modifier = Modifier.size(180.dp),
+                            modifier = Modifier
+                                .size(180.dp)
+                                .sharedBounds(
+                                    rememberSharedContentState(key = "image/${R.drawable.restaurant_bg}"),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    enter = fadeIn(),
+                                    exit = fadeOut(),
+                                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                                ),
                             contentScale = ContentScale.Crop
                         )
                     }
@@ -130,8 +146,9 @@ fun DetailRestaurantScreen(
                         ) {
                             items(menuList.filterNotNull()) { menu ->
                                 MenuListCardComponent(
+                                    animatedVisibilityScope,
                                     menu = menu,
-                                    detailRestaurantViewModel = detailRestaurantViewModel
+                                    detailRestaurantViewModel = detailRestaurantViewModel,
                                 )
                             }
                         }
@@ -149,6 +166,6 @@ fun DetailRestaurantScreen(
 @Composable
 fun DetailRestaurantPrew(restaurantId: Int?) {
     val navController = rememberNavController()
-    DetailRestaurantScreen(restaurantId = restaurantId, navController = navController)
+    //  DetailRestaurantScreen(restaurantId = restaurantId, navController = navController)
 
 }

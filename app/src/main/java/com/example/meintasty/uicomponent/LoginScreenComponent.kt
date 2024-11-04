@@ -68,11 +68,12 @@ fun ScreenImage() {
 
 @Composable
 fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
+
     OutlinedTextField(
-        value = emailText,
-        onValueChange = { newEmail ->
-            onEmailChange(newEmail)
-        },
+         value = emailText,
+         onValueChange = { newEmail ->
+             onEmailChange(newEmail)
+         },
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -117,10 +118,10 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        value = passwordText,
-        onValueChange = { password ->
-            onPasswordChange(password)
-        },
+        value = passwordText ,//passwordText,
+       onValueChange = {password->
+           onPasswordChange(password)
+                       },
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier
             .fillMaxWidth()

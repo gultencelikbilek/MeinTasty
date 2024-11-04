@@ -1,6 +1,12 @@
 package com.example.meintasty.navigation
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,106 +26,111 @@ import com.example.meintasty.feature.profile_screen.ProfileScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
 import com.example.meintasty.feature.update_screen.UpdateScreen
 
+@OptIn(ExperimentalSharedTransitionApi::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph() {
-
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.SplashScreen.route) {
-        composable(Screen.SplashScreen.route) {
-            MeinTastySplashScreen(navController)
-        }
-        composable(route = Screen.CantonScreen.route) {
-            CantonScreen(navController)
-        }
-        composable(route = Screen.LoginScreen.route) {
-            Log.v("Logg:loginNav", "")
-            LoginScreen(navController)
-        }
-        composable(Screen.SignUpScreen.route) {
-            SignUpScreen(navController)
-        }
-        composable(Screen.ChooseLoginRegisterScreen.route) {
-            ChooseLoginRegisterScreen(navController)
-        }
-        composable(route = Screen.RestaurantScreen.route) {
-            RestaurantScreen(
-                navController = navController
-            )
-        }
-        composable(
-            route = Screen.DetailRestaurantScreen.route + "?restaurantId={restaurantId}",
-            arguments = listOf(
-                navArgument(name = "restaurantId") {
-                    type = NavType.IntType
-                }
-            )
-        ) { backStackEntry ->
-            DetailRestaurantScreen(
-                restaurantId = backStackEntry.arguments?.getInt("restaurantId"),
-                navController
-            )
-        }
-        composable(
-            route = Screen.CategoryDetailScreen.route + "?categoryId={categoryId}?categoryName={categoryName}",
-            arguments = listOf(
-                navArgument(name = "categoryId") {
-                    type = NavType.IntType
-                },
-               navArgument(name = "categoryName") {
-                    type = NavType.StringType
-                }
-            )
-        ) { navBackStack ->
-            CategoryDetailScreen(
-                categoryId = navBackStack.arguments?.getInt("categoryId"),
-                categoryName= navBackStack.arguments?.getString("categoryName"),
-                navController
-            )
-        }
-        composable(Screen.BasketScreen.route) {
-            BasketScreen(navController)
-        }
-        composable(Screen.ProfileScreen.route){
-            ProfileScreen(navController = navController)
-        }
-        composable(
-          route =  Screen.UpdateScreen.route+"?userId={userId}?email={email}?phone={phone}?updateType={updateType}",
-            arguments = listOf(
-                navArgument(name = "userId"){
-                    type = NavType.IntType
-                },
-                navArgument(name = "phone"){
-                    type = NavType.StringType
-                },
-                navArgument(name = "email"){
-                    type = NavType.StringType
-                },
-                navArgument(name = "updateType"){
-                    type = NavType.StringType
-                }
-            ),
+    SharedTransitionLayout {
+        NavHost(navController = navController, startDestination = Screen.SplashScreen.route) {
+            composable(Screen.SplashScreen.route) {
+                MeinTastySplashScreen(navController)
+            }
+            composable(route = Screen.CantonScreen.route) {
+                CantonScreen(navController)
+            }
+            composable(route = Screen.LoginScreen.route) {
+                Log.v("Logg:loginNav", "")
+                LoginScreen(navController)
+            }
+            composable(Screen.SignUpScreen.route) {
+                SignUpScreen(navController)
+            }
+            composable(Screen.ChooseLoginRegisterScreen.route) {
+                ChooseLoginRegisterScreen(navController)
+            }
+            composable(Screen.RestaurantScreen.route) {
+                RestaurantScreen(
+                    animatedVisibilityScope = this,
+                    navController = navController
+                )
+            }
+            composable(
+                route = Screen.DetailRestaurantScreen.route + "?restaurantId={restaurantId}",
+                arguments = listOf(
+                    navArgument(name = "restaurantId") {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+                DetailRestaurantScreen(
+                    animatedVisibilityScope = this,
+                    restaurantId = backStackEntry.arguments?.getInt("restaurantId"),
+                    navController
+                )
+            }
+            composable(
+                route = Screen.CategoryDetailScreen.route + "?categoryId={categoryId}?categoryName={categoryName}",
+                arguments = listOf(
+                    navArgument(name = "categoryId") {
+                        type = NavType.IntType
+                    },
+                    navArgument(name = "categoryName") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { navBackStack ->
+                CategoryDetailScreen(
+                    categoryId = navBackStack.arguments?.getInt("categoryId"),
+                    categoryName = navBackStack.arguments?.getString("categoryName"),
+                    navController
+                )
+            }
+            composable(Screen.BasketScreen.route) {
+                BasketScreen(navController)
+            }
+            composable(Screen.ProfileScreen.route) {
+                ProfileScreen(navController = navController)
+            }
+            composable(
+                route = Screen.UpdateScreen.route + "?userId={userId}?email={email}?phone={phone}?updateType={updateType}",
+                arguments = listOf(
+                    navArgument(name = "userId") {
+                        type = NavType.IntType
+                    },
+                    navArgument(name = "phone") {
+                        type = NavType.StringType
+                    },
+                    navArgument(name = "email") {
+                        type = NavType.StringType
+                    },
+                    navArgument(name = "updateType") {
+                        type = NavType.StringType
+                    }
+                ),
 
-        ){navBackStack ->
-            UpdateScreen(
-                userId = navBackStack.arguments?.getInt("userId"),
-                email = navBackStack.arguments?.getString("phone"),
-                phoneNum = navBackStack.arguments?.getString("email"),
-                updateType = navBackStack.arguments?.getString("updateType"),
-                navController
-            )
-        }
-        composable(
-            route=Screen.PasswordScreen.route+"?userId={userId}",
-            arguments = listOf(
-                navArgument(name = "userId"){
-                    type = NavType.IntType
-                }
-            )
-        ){navBackStack->
-            PasswordScreen(
-                userId = navBackStack.arguments?.getInt("userId"),
-                navController = navController
-            )
+                ) { navBackStack ->
+                UpdateScreen(
+                    userId = navBackStack.arguments?.getInt("userId"),
+                    email = navBackStack.arguments?.getString("phone"),
+                    phoneNum = navBackStack.arguments?.getString("email"),
+                    updateType = navBackStack.arguments?.getString("updateType"),
+                    navController
+                )
+            }
+            composable(
+                route = Screen.PasswordScreen.route + "?userId={userId}",
+                arguments = listOf(
+                    navArgument(name = "userId") {
+                        type = NavType.IntType
+                    }
+                )
+            ) { navBackStack ->
+                PasswordScreen(
+                    userId = navBackStack.arguments?.getInt("userId"),
+                    navController = navController
+                )
+            }
         }
     }
 }
