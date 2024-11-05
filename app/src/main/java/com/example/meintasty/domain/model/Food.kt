@@ -10,23 +10,23 @@ data class Food(
 
 val foodList = listOf(
     Food(
-        R.drawable.food_one,
+        R.drawable.restaurant_bg,
         "Food 1"
     ),
     Food(
-        R.drawable.food_one,
+        R.drawable.restaurant_bg,
         "Food 2"
     ),
     Food(
-        R.drawable.food_one,
+        R.drawable.restaurant_bg,
         "Food 3"
     ),
     Food(
-        R.drawable.food_one,
+        R.drawable.restaurant_bg,
         "Food 4"
     ),
     Food(
-        R.drawable.food_one,
+        R.drawable.restaurant_bg,
         "Food 5"
     ),
 

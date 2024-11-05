@@ -45,6 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
+import com.example.meintasty.feature.UiMethod
 import com.example.meintasty.uicomponent.EmailComponent
 import com.example.meintasty.uicomponent.NameSurnameComponent
 import com.example.meintasty.uicomponent.PasswordSignUpComponent
@@ -85,10 +86,10 @@ fun SignUpScreen(
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
 
     LaunchedEffect(signuState.value.data) {
-        if (signuState.value != null){
-            signuState.value.data?.let{
+        if (signuState.value != null) {
+            signuState.value.data?.let {
                 val editor = sharedPrefrences.edit()
-                editor.putString(Constants.SHARED_TOKEN,it.token)
+                editor.putString(Constants.SHARED_TOKEN, it.token)
                 editor.apply()
                 navController.navigate(Screen.CantonScreen.route)
                 Toast.makeText(
@@ -97,7 +98,7 @@ fun SignUpScreen(
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        }else{
+        } else {
             Toast.makeText(
                 context,
                 "Unssucces signup",
@@ -200,13 +201,13 @@ fun SignUpScreen(
                                     ) {
                                         val signUpRequest = SignupRequest(
                                             email = email,
-                                           fullName= fullName,
-                                            password= password,
+                                            fullName = fullName,
+                                            password = password,
                                             phoneNumber = phone,
-                                           rePassword =  password
+                                            rePassword = password
                                         )
-                                            signUpViewModel.signUp(signUpRequest)
-                                            Log.d("signuprequest:", "${signUpRequest}")
+                                        signUpViewModel.signUp(signUpRequest)
+                                        Log.d("signuprequest:", "${signUpRequest}")
                                         Log.d("signuprequest:", "${signuState.value}")
 
 
@@ -228,7 +229,6 @@ fun SignUpScreen(
         }
     )
 }
-
 @Preview
 @Composable
 fun SignUpPrew(modifier: Modifier = Modifier) {
