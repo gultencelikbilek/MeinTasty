@@ -23,12 +23,12 @@ import com.example.meintasty.R
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetail
 
 @Composable
-fun CategoryDetailComponent(categoryDetail: CategoryDetail?) {
+fun CategoryDetailComponent(categoryDetail: CategoryDetail?,modifier: Modifier=Modifier) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .padding(vertical = 8.dp),
+            .padding(vertical = 2.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
