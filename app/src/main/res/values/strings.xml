@@ -47,4 +47,5 @@
     <string name="delete_alert">Are you sure you want to delete it?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="favorite_restaurant">Favorite Screen</string>
 </resources>

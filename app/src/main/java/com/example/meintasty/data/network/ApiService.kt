@@ -9,6 +9,9 @@ import com.example.meintasty.domain.model.category_detail_model.category_detail_
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetailResponse
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_request.FavoritesRestaurantRequest
+import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurant
+import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurantResponse
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
 import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
@@ -75,4 +78,7 @@ interface ApiService {
 
     @POST(Constants.END_POINT_REMOVE_BASKET)
     suspend fun removeBasket(@Body removeBasketRequest: RemoveBasketRequest): RemoveBasketResponse
+
+    @POST(Constants.END_POINT_FAVORITE_RESTAURANT)
+    suspend fun getFavoritesRestaurant(@Body favoriteRestaurantRequest: FavoritesRestaurantRequest): FavoriteRestaurantResponse
 }

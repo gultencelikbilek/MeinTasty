@@ -1,6 +1,7 @@
 package com.example.meintasty.feature.profile_screen
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -84,7 +85,7 @@ fun ProfileScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         BackIcon {
-                            navController.navigateUp()
+                            navController.navigate(Screen.RestaurantScreen.route)
                         }
                         HeaderComponent(text = stringResource(id = R.string.profile))
                     }
@@ -186,11 +187,11 @@ fun ProfileScreen(
                                     painterResource(id = R.drawable.lock)
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                BasicText(modifier,stringResource(id = R.string.password_change))
+                                BasicText(modifier, stringResource(id = R.string.password_change))
                                 Spacer(modifier = Modifier.weight(1f))
                                 EditIconComponent(
                                     onClick = {
-                                        navController.navigate(Screen.PasswordScreen.route+"?userId=$userId")
+                                        navController.navigate(Screen.PasswordScreen.route + "?userId=$userId")
                                     }
                                 )
                             }
@@ -216,6 +217,9 @@ fun ProfileScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
+                                    .clickable {
+                                        navController.navigate(Screen.FavoriteRestaurant.route)
+                                    }
                             ) {
                                 ProfileStartIcon(
                                     onClick = {},

@@ -10,6 +10,8 @@ import com.example.meintasty.domain.model.category_detail_model.category_detail_
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetailResponse
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_request.FavoritesRestaurantRequest
+import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurantResponse
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
 import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
@@ -91,5 +93,9 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun removeBasket(removeBasketRequest: RemoveBasketRequest): RemoveBasketResponse {
         return apiService.removeBasket(removeBasketRequest)
+    }
+
+    override suspend fun getFavoritesRestaurant(favoriteRestaurantRequest: FavoritesRestaurantRequest): FavoriteRestaurantResponse {
+        return apiService.getFavoritesRestaurant(favoriteRestaurantRequest)
     }
 }
