@@ -45,7 +45,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
-import com.example.meintasty.feature.UiMethod
 import com.example.meintasty.uicomponent.EmailComponent
 import com.example.meintasty.uicomponent.NameSurnameComponent
 import com.example.meintasty.uicomponent.PasswordSignUpComponent

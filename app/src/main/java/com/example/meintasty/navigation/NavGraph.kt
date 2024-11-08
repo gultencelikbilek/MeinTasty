@@ -3,10 +3,8 @@ package com.example.meintasty.navigation
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,6 +19,7 @@ import com.example.meintasty.feature.basket_screen.BasketScreen
 import com.example.meintasty.feature.category_detail_screen.CategoryDetailScreen
 import com.example.meintasty.feature.choose_login_register.ChooseLoginRegisterScreen
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
+import com.example.meintasty.feature.favorite_restaurant.FavoriteRestaurantScreen
 import com.example.meintasty.feature.password_screen.PasswordScreen
 import com.example.meintasty.feature.profile_screen.ProfileScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
@@ -130,6 +129,9 @@ fun NavGraph() {
                     userId = navBackStack.arguments?.getInt("userId"),
                     navController = navController
                 )
+            }
+            composable(Screen.FavoriteRestaurant.route){
+                FavoriteRestaurantScreen(navController)
             }
         }
     }

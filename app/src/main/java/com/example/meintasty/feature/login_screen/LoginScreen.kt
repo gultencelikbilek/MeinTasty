@@ -61,10 +61,11 @@ fun LoginScreen(
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     var emailText by remember {
-        mutableStateOf("gultencelikbilek924@gmail.com")
+        mutableStateOf("")
     }
+
     var passwordText by remember {
-        mutableStateOf("a123")
+        mutableStateOf("")
     }
     val context = LocalContext.current
     val loginState by loginViewModel.loginState.collectAsState()

@@ -48,31 +48,59 @@ fun MeinTastySplashScreen(
     val context  = LocalContext.current
     val sharedPrefrences =
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
+    val splashShowState = meinTastyViewModel.splashShow.collectAsState().value
+    val locInfo = meinTastyViewModel.locaState.collectAsState().value
 
-    LaunchedEffect(Unit) {
-
-        val splashShowState = meinTastyViewModel.splashShow.value
-        Log.v("splashShowState:", splashShowState.toString())
-        if (splashShowState?.data?.token != null) {
-            Log.d("tokenNotnull:","${splashShowState.data.token}")
-            splashShowState.data.let {
-
+    LaunchedEffect(splashShowState) {
+        if (splashShowState.data != null) {
+            Log.d("splashshowstate:data:", "${splashShowState.data}")
+            splashShowState?.data?.let {token ->
+                Log.v("splashShowState:", splashShowState.toString())
+                Log.d("tokenNotnull:", "${token}")
                 val editor = sharedPrefrences.edit()
-                editor.putString(Constants.SHARED_TOKEN,it.token)
+                editor.putString(Constants.SHARED_TOKEN, token.token.toString())
+                editor.apply()
+            }
+                if (locInfo.isNavigateLoginScreen == true) {
+                    Log.v("splashShowStateLoc:", splashShowState.toString())
+                    navController.navigate(Screen.RestaurantScreen.route)
+                } else {
+                    Log.v("splashShowStateLoc:", "else")
+                    navController.navigate(Screen.CantonScreen.route)
+                }
+
+        }else {
+            Log.d("splash:else","")
+                navController.navigate(Screen.ChooseLoginRegisterScreen.route)
+            }
+        }
+
+    /*LaunchedEffect(splashShowState) {
+        if (splashShowState?.data != null) {
+            // splashShowState.data null değilse burası çalışır
+            Log.d("tokenNotnull:", "${splashShowState.data}")
+            Log.d("tokenNotnull:", "${splashShowState.data.token}")
+
+            splashShowState.data.let {
+                val editor = sharedPrefrences.edit()
+                editor.putString(Constants.SHARED_TOKEN, it.token)
                 editor.apply()
             }
 
-            if (splashShowState.isNavigateLoginScreen == true) {
-                    Log.v("splashShowState:", splashShowState.toString())
-                    navController.navigate(Screen.RestaurantScreen.route)
-                } else {
-                    Log.v("splashShowState:", "else")
-                    navController.navigate(Screen.CantonScreen.route)
-                }
+            if (locInfo.isNavigateLoginScreen == true) {
+                Log.v("splashShowStateLoc:", splashShowState.toString())
+                navController.navigate(Screen.RestaurantScreen.route)
+            } else {
+                Log.v("splashShowStateLoc:", "else")
+                navController.navigate(Screen.CantonScreen.route)
+            }
         } else {
+            // splashShowState.data null olduğunda burası çalışır
+            Log.v("splashShowState:", "Data is null, navigating to ChooseLoginRegisterScreen")
             navController.navigate(Screen.ChooseLoginRegisterScreen.route)
         }
-    }
+    }*/
+
 
     Scaffold(
         content = { paddingValues ->
