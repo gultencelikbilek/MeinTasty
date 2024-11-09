@@ -9,6 +9,7 @@ import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.UserLocationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -22,8 +23,8 @@ class MeinTastyViewModel @Inject constructor(
 
     private val _splashShow = MutableStateFlow(TokenState())
     val splashShow = _splashShow.asStateFlow()
-    private val _locaState = MutableStateFlow(LocationState())
-    val locaState = _locaState.asStateFlow()
+    private val _locaState = MutableStateFlow(LocationState(data = null, isNavigateLoginScreen = false))
+    val locaState: StateFlow<LocationState> get() = _locaState
 
     init {
         runBlocking {
@@ -44,11 +45,12 @@ class MeinTastyViewModel @Inject constructor(
                     data = loca,
                     isNavigateLoginScreen = true
                 )
+                Log.d("locaInfo:","$loca")
             } else {
                 Log.d("splashLoc:", "locationInfo is null")
                 _locaState.value = LocationState(
                     data = null,
-                    isNavigateLoginScreen = true
+                    isNavigateLoginScreen = false
                 )
             }
         }
