@@ -92,7 +92,7 @@ fun NavGraph() {
                 ProfileScreen(navController = navController)
             }
             composable(
-                route = Screen.UpdateScreen.route + "?userId={userId}?email={email}?phone={phone}?updateType={updateType}",
+                route = Screen.UpdateScreen.route + "&userId={userId}&email={email}&phone={phone}&updateType={updateType}",
                 arguments = listOf(
                     navArgument(name = "userId") {
                         type = NavType.IntType
@@ -118,7 +118,7 @@ fun NavGraph() {
                 )
             }
             composable(
-                route = Screen.PasswordScreen.route + "?userId={userId}",
+                route = Screen.PasswordScreen.route + "&userId={userId}",
                 arguments = listOf(
                     navArgument(name = "userId") {
                         type = NavType.IntType

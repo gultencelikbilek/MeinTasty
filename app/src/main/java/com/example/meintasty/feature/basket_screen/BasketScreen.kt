@@ -138,7 +138,7 @@ fun BasketScreen(
                     ) {
                         basketState.value.data.let { basketList ->
                             Log.d("basketList:", "$basketList")
-                            Log.d("basketListData:", "$basketState.value.data?")
+                            Log.d("basketListData:", "${basketState.value.data}")
 
                             if (basketList != null) {
                                 items(basketList) { basketItem ->
