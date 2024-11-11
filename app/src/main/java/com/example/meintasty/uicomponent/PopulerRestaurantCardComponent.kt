@@ -64,7 +64,6 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            // Resim bileşeni
             Image(
                 painter = painterResource(id = R.drawable.restaurant_bg),
                 contentDescription = "",
@@ -73,9 +72,8 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
                     .fillMaxSize()
             )
 
-            // Sağ üst köşeye tıklanabilir "like" ikonu
             IconButton(
-                onClick = { /* Like işlemini burada yapabilirsiniz */ },
+                onClick = { },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
@@ -89,7 +87,6 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
                 )
             }
 
-            // Yazıları resmin üstünde göstermek için yarı şeffaf bir arka plan kutusu
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -135,7 +132,7 @@ fun Prew(modifier: Modifier = Modifier) {
                 .align(Alignment.CenterHorizontally)
         ) {
             IconButton(
-                onClick = { /* Like işlemini burada yapabilirsiniz */ },
+                onClick = { },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .size(24.dp)
@@ -143,7 +140,7 @@ fun Prew(modifier: Modifier = Modifier) {
                     .zIndex(1f) // IconButton'un diğer bileşenlerin üstünde yer almasını sağlar
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.heart), // Like ikonu, tercihe göre değiştirilebilir
+                    painter = painterResource(id = R.drawable.heart),
                     contentDescription = "Like",
                     tint = Color.Red
                 )

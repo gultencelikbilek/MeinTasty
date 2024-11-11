@@ -62,6 +62,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.constraintlayout.compose.android)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -114,7 +116,24 @@ dependencies {
     //swipe
     implementation(libs.compose.swipebox.multiplatform)
 
+    //work manager
+    // (Java only)
+    implementation(libs.androidx.work.runtime)
 
+    // Kotlin + coroutines
+    implementation(libs.androidx.work.runtime.ktx)
+
+    // optional - RxJava2 support
+    implementation(libs.androidx.work.rxjava2)
+
+    // optional - GCMNetworkManager support
+    implementation(libs.androidx.work.gcm)
+
+    // optional - Test helpers
+    androidTestImplementation(libs.androidx.work.testing)
+
+    // optional - Multiprocess support
+    implementation(libs.androidx.work.multiprocess)
 
 
 }

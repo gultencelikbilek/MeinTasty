@@ -13,7 +13,7 @@ interface LoginDao {
     suspend fun insertToken(userAccountModel: UserAccountModel)
 
     @Query("SELECT * FROM useraccountmodel")
-    suspend fun getToken():  UserAccountModel
+     suspend fun getToken():  UserAccountModel
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCanton(userLocationModel: UserLocationModel)
