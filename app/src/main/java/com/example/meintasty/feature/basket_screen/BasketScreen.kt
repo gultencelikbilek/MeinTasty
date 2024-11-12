@@ -8,22 +8,27 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -42,6 +47,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,33 +69,29 @@ fun BasketScreen(
     navController: NavController,
     basketViewModel: BasketViewModel = hiltViewModel()
 ) {
-
     val context = LocalContext.current
-
     val sharedPreferences =
         context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
     val restaurant_id = sharedPreferences.getInt(Constants.SHARED_RESTAURANT_ID, 0)
 
     val userState = basketViewModel.userState.collectAsState().value.data
     val basketState = basketViewModel.basketState.collectAsState()
-
-    val openDialogState = remember {
-
-        mutableStateOf(false)
+    val openDialogState = remember { mutableStateOf(false) }
+    var totalPrice by remember {
+        mutableStateOf(0)
     }
 
+   //totalPrice = basketState.value.data?.sumOf { basketItem -> price değişkeni string tipinde ondan dolayı hata veriyor
+   //    basketItem?.price?.toInt() ?: 0
+   //} ?: 0
 
 
     userState?.userId.let { user_id ->
         val getBasketRequest = GetBasketRequest(restaurant_id, userId = user_id)
-        Log.d("basketRequest:", "$getBasketRequest")
         LaunchedEffect(user_id) {
             basketViewModel.getBasket(getBasketRequest)
-            Log.d("response", "succes")
         }
     }
-
-
 
     Scaffold(
         topBar = {
@@ -112,109 +114,114 @@ fun BasketScreen(
             )
         },
         content = { paddingValues ->
-            if (basketState.value.isLoading == true) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = colorResource(id = R.color.mein_tasty_color)
-                    )
-                    Log.d("basketList:", "hereloading")
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                if (basketState.value.isLoading == true) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = colorResource(id = R.color.mein_tasty_color)
+                        )
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        basketState.value.data?.let { basketList ->
+                            items(basketList) { basketItem ->
+                                basketItem?.let { basket ->
+                                    var count by remember { mutableStateOf(0) }
+                                    val coroutineScope = rememberCoroutineScope()
+                                    SwipeBox(
+                                        modifier = Modifier
+                                            .wrapContentSize()
+                                            .padding(8.dp),
+                                        swipeDirection = SwipeDirection.EndToStart,
+                                        endContentWidth = 60.dp,
+                                        endContent = { swipeableState, endSwipeProgress ->
+                                            SwipeIcon(
+                                                imageVector = Icons.Outlined.Delete,
+                                                contentDescription = "Delete",
+                                                tint = Color.White,
+                                                background = Color(0xFFFA1E32),
+                                                weight = 1f,
+                                                iconSize = 20.dp
+                                            ) {
+                                                Toast.makeText(
+                                                    context, "Delete", Toast.LENGTH_SHORT
+                                                ).show()
+                                                coroutineScope.launch {
+                                                    swipeableState.animateTo(0)
+                                                }
+                                            }
+                                        }
+                                    ) { _, _, _ ->
+                                        BasketCardComponent(
+                                            basket = basket,
+                                            onClick = {},
+                                            onLongClick = { openDialogState.value = true },
+                                            count = count,
+                                            onProductAdd = { count++ },
+                                            onProductMinus = { count-- }
+                                        )
+                                    }
+                                }
+                            }
+                        } ?: run {
+                            Toast.makeText(context, "Basket is Empty", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
-            } else {
-                Log.d("basketList:", "heresuccess")
+
+                if (openDialogState.value) {
+                    AlertDialogBasket(openDialogState = openDialogState)
+                }
 
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize()
+                    TextField(
+                        value = " Total Price: $totalPrice",
+                        onValueChange = {},
+                        textStyle = TextStyle(
+                            color = Color.Black,
+                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            textAlign = TextAlign.Center
+                        ),
+                        enabled = false,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.White,
+                            disabledIndicatorColor = Color.Transparent
+                        )
+                    )
+
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(id = R.color.mein_tasty_color),
+                        )
                     ) {
-                        basketState.value.data.let { basketList ->
-                            Log.d("basketList:", "$basketList")
-                            Log.d("basketListData:", "${basketState.value.data}")
-
-                            if (basketList != null) {
-                                items(basketList) { basketItem ->
-                                    basketItem?.let { basket ->
-                                        Log.d("basketItem", "$basket")
-                                        val coroutineScope = rememberCoroutineScope()
-                                        var count by remember {
-                                            mutableStateOf(0)
-                                        }
-                                        SwipeBox(
-                                            modifier = Modifier
-                                                .wrapContentSize()
-                                                .padding(8.dp),
-                                            swipeDirection = SwipeDirection.EndToStart,
-                                            endContentWidth = 60.dp,
-                                            endContent = { swipeableState, endSwipeProgress ->
-                                                SwipeIcon(
-                                                    imageVector = Icons.Outlined.Delete,
-                                                    contentDescription = "Delete",
-                                                    tint = Color.White,
-                                                    background = Color(0xFFFA1E32),
-                                                    weight = 1f,
-                                                    iconSize = 20.dp,
-                                                ) {
-                                                    Toast.makeText(
-                                                        context,
-                                                        "Delete",
-                                                        Toast.LENGTH_SHORT
-                                                    ).show()
-                                                    coroutineScope.launch {
-                                                        swipeableState.animateTo(0)
-                                                    }
-                                                }
-                                            }
-                                        ) { _, _, _ ->
-                                            Box(
-                                                modifier = Modifier
-                                                    .wrapContentSize()
-                                                    .padding(8.dp)
-                                                    .background(Color(148, 184, 216)),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                            }
-                                            BasketCardComponent(
-                                                basket = basket,
-                                                onClick = {},
-                                                onLongClick = {
-                                                    openDialogState.value = true
-                                                },
-                                                count,
-                                                onProductAdd = {
-                                                    count++
-                                                },
-                                                onProductMinus = {
-                                                    count--
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(context, "Basket is Empty", Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        } ?: run {
-                            // Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
-                        }
+                        Text(text = stringResource(id = R.string.confirm_cart))
                     }
-
                 }
             }
-            if (openDialogState.value) {
-                AlertDialogBasket(openDialogState = openDialogState)
-            }
         }
-
     )
 }
 

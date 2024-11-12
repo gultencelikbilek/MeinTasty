@@ -48,4 +48,6 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="favorite_restaurant">Favorite Screen</string>
+    <string name="confirm_cart">Confirm Cart</string>
+    <string name="total_price">Total Price</string>
 </resources>
