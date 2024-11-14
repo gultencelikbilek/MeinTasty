@@ -123,11 +123,8 @@ fun SharedTransitionScope.MenuListCardComponent(
                 ) {
                 Box(
                     modifier = Modifier
-                        .size(20.dp)
-                        .background(colorResource(id = R.color.white), RoundedCornerShape(12.dp))
-                        .graphicsLayer {
-                            this.shadowElevation = elevation.value.toPx()
-                        }
+                        .wrapContentSize()
+                        .border(1.dp, Color.LightGray, shape = RoundedCornerShape(25.dp))
                         .clickable(
                             interactionSource = mutableInteractionSource,
                             indication = null
@@ -143,7 +140,7 @@ fun SharedTransitionScope.MenuListCardComponent(
                                         basketDate = formattedDate,
                                         currencyCode = menu.currency.toString(),
                                         menuId = menu.menuId,
-                                        price = menu.price.toString(),
+                                        price = menu.menuPrice.toString(),
                                         quantity = 1,
                                         restaurantId = 1,
                                         userId = userModelState.data?.userId,
@@ -156,21 +153,72 @@ fun SharedTransitionScope.MenuListCardComponent(
                                     Toast
                                         .makeText(context, "addedBasket", Toast.LENGTH_SHORT)
                                         .show()
-
                                 }
                             }
                         }
-                        .border(1.dp, Color.LightGray, RoundedCornerShape(25.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.plus),
-                        contentDescription = stringResource(id = R.string.add),
-                        tint = Color.Black,
-                        modifier = Modifier.size(10.dp)
 
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.add_to_basket),
+                        modifier = Modifier.padding(4.dp),
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                            color = Color.Gray
+                        )
                     )
                 }
+
+
+                /* Box(
+                     modifier = Modifier
+                         .size(20.dp)
+                         .background(colorResource(id = R.color.white), RoundedCornerShape(12.dp))
+                         .graphicsLayer {
+                             this.shadowElevation = elevation.value.toPx()
+                         }
+                         .clickable(
+                             interactionSource = mutableInteractionSource,
+                             indication = null
+                         ) {
+                             menu?.let { menu ->
+                                 Log.d("menu", "$menu")
+                                 if (userModelState.data?.userId != null) {
+                                     Log.d("menu", "${userModelState.data?.userId}")
+                                     val currentDateTime = LocalDateTime.now()
+                                     val formattedDate =
+                                         currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                                     val addBasketRequest = AddBasketRequest(
+                                         basketDate = formattedDate,
+                                         currencyCode = menu.currency.toString(),
+                                         menuId = menu.menuId,
+                                         price = menu.price.toString(),
+                                         quantity = 1,
+                                         restaurantId = 1,
+                                         userId = userModelState.data?.userId,
+                                     )
+
+                                     Log.d("restaurantId:", "${menu.restaurantId}")
+                                     Log.d("restaurant:", "${userModelState.data?.userId}")
+                                     Log.d("addBasketRequest:", "$addBasketRequest")
+                                     detailRestaurantViewModel.addBasket(addBasketRequest)
+                                     Toast
+                                         .makeText(context, "addedBasket", Toast.LENGTH_SHORT)
+                                         .show()
+
+                                 }
+                             }
+                         }
+                         .border(1.dp, Color.LightGray, RoundedCornerShape(25.dp)),
+                     contentAlignment = Alignment.Center
+                 ) {
+                     Icon(
+                         painter = painterResource(id = R.drawable.plus),
+                         contentDescription = stringResource(id = R.string.add),
+                         tint = Color.Black,
+                         modifier = Modifier.size(10.dp)
+
+                     )
+                 }*/
             }
 
             Column(
@@ -186,9 +234,10 @@ fun SharedTransitionScope.MenuListCardComponent(
                         color = Color.Black,
                         fontFamily = customFontFamily
                     ),
-                    modifier = Modifier.padding(bottom = 2.dp))
+                    modifier = Modifier.padding(bottom = 2.dp)
+                )
                 Text(
-                    text = menu?.price.toString(),
+                    text = menu?.menuPrice.toString(),
                     style = TextStyle(
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         color = Color.Gray

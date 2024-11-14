@@ -7,9 +7,11 @@ import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasket
 import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasketResponse
+import com.example.meintasty.domain.model.add_basket_model.db_model.AddBasketDataModel
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
+import com.example.meintasty.domain.usecase.AddBasketLocalUseCase
 import com.example.meintasty.domain.usecase.AddBasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class DetailRestaurantViewModel @Inject constructor(
     private val restaurantDetailUseCase: RestaurantDetailUseCase,
     private val addBasketUseCase: AddBasketUseCase,
-    private val getUserDatabaseUseCase: GetUserDatabaseUseCase
+    private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
+    private val addBasketLocalUseCase: AddBasketLocalUseCase
 ) : ViewModel() {
 
     private val _detailRestState = MutableStateFlow(DetailRestaurantState())
@@ -34,6 +37,9 @@ class DetailRestaurantViewModel @Inject constructor(
 
     private val _addBasketState = MutableStateFlow(AddBasketState())
     val addBasketState = _addBasketState.asStateFlow()
+
+    private val _addBasketLocalState = MutableStateFlow(AddBasketLocalState())
+    val addBasketLocalState = _addBasketLocalState.asStateFlow()
 
     init {
         getUserModel()
@@ -86,10 +92,10 @@ class DetailRestaurantViewModel @Inject constructor(
         }
     }
 
-    fun addBasket(addBasketRequest: AddBasketRequest){
+    fun addBasket(addBasketRequest: AddBasketRequest) {
         viewModelScope.launch {
-            addBasketUseCase.invoke(addBasketRequest).collect{
-                when(it){
+            addBasketUseCase.invoke(addBasketRequest).collect {
+                when (it) {
                     is NetworkResult.Failure -> {
                         _addBasketState.value = AddBasketState(
                             data = null,
@@ -97,9 +103,10 @@ class DetailRestaurantViewModel @Inject constructor(
                             isLoading = true,
                             isError = it.msg
                         )
-                        Log.d("addBasketState:error:","${it.msg}")
+                        Log.d("addBasketState:error:", "${it.msg}")
                     }
-                    NetworkResult.Loading ->{
+
+                    NetworkResult.Loading -> {
                         _addBasketState.value = AddBasketState(
                             data = null,
                             isSuccess = false,
@@ -107,6 +114,7 @@ class DetailRestaurantViewModel @Inject constructor(
                             isError = ""
                         )
                     }
+
                     is NetworkResult.Success -> {
                         _addBasketState.value = AddBasketState(
                             data = it.data.value,
@@ -114,20 +122,39 @@ class DetailRestaurantViewModel @Inject constructor(
                             isLoading = true,
                             isError = ""
                         )
-                        Log.d("addBasketState:succes","${it.data.value}")
-
+                        Log.d("addBasketState:succes", "${it.data.value}")
+                        val addBasketLocalRequest = AddBasketDataModel(
+                            id = 0,
+                            basketDate = addBasketRequest.basketDate,
+                            currencyCode = addBasketRequest.currencyCode,
+                            menuId = addBasketRequest.menuId,
+                            price = addBasketRequest.price,
+                            quantity = addBasketRequest.quantity,
+                            restaurantId = addBasketRequest.restaurantId,
+                            userId =  addBasketRequest.userId
+                        )
+                         addBasketLocalUseCase.invoke(addBasketLocalRequest)
+                        _addBasketLocalState.value = AddBasketLocalState(
+                            data = addBasketLocalRequest,
+                            isSuccess = false,
+                            isLoading = true,
+                            isError = ""
+                        )
+                        Log.d("addBasketState:succes:local", "$addBasketLocalRequest")
                     }
                 }
             }
         }
     }
 }
+
 data class AddBasketState(
     val data: AddBasket? = null,
     val isSuccess: Boolean? = false,
     val isLoading: Boolean? = false,
     val isError: String? = ""
 )
+
 data class DetailRestaurantState(
     val data: DetailRestaurant? = null,
     val isSuccess: Boolean? = false,
@@ -135,7 +162,12 @@ data class DetailRestaurantState(
     val isError: String? = ""
 )
 
-
+data class AddBasketLocalState(
+    val data: AddBasketDataModel? = null,
+    val isSuccess: Boolean? = false,
+    val isLoading: Boolean? = false,
+    val isError: String? = ""
+)
 
 data class UserModelState(
     val data: UserAccountModel? = null

@@ -103,7 +103,7 @@ fun BasketCardComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "279",
+                    text = "${basket?.price}",
                     style = TextStyle(
                         color = Color.DarkGray,
                         fontSize = MaterialTheme.typography.titleMedium.fontSize
@@ -144,7 +144,7 @@ fun BasketCardComponent(
                         }
                         val countItem= if(count <=0)  0 else count //0 olunca sepetten kaldır işlemi olacak
                         Text(
-                            text = "$countItem" ,//basket?.quantity.toString(),
+                            text = "${basket?.quantity}",
                             style = TextStyle(
                                 fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                                 color = Color.Black

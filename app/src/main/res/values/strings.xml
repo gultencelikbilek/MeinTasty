@@ -50,4 +50,5 @@
     <string name="favorite_restaurant">Favorite Screen</string>
     <string name="confirm_cart">Confirm Cart</string>
     <string name="total_price">Total Price</string>
+    <string name="add_to_basket">Add to Basket</string>
 </resources>
