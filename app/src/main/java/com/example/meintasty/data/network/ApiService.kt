@@ -26,6 +26,9 @@ import com.example.meintasty.domain.model.restaurant_model.restaurant_request.Re
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.domain.model.signup_model.signup_response.SignUpResponse
+import com.example.meintasty.domain.model.update_basket_model.update_basket_request.UpdateBasketRequest
+import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasket
+import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasketResponse
 import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
@@ -81,4 +84,8 @@ interface ApiService {
 
     @POST(Constants.END_POINT_FAVORITE_RESTAURANT)
     suspend fun getFavoritesRestaurant(@Body favoriteRestaurantRequest: FavoritesRestaurantRequest): FavoriteRestaurantResponse
+
+    @POST(Constants.END_POINT_UPDATE_BASKET)
+    suspend fun updateBasket(@Body updateBasket: UpdateBasketRequest) : UpdateBasketResponse
+
 }

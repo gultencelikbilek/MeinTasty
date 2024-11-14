@@ -24,6 +24,9 @@ import com.example.meintasty.domain.model.restaurant_model.restaurant_request.Re
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.RestaurantModelResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.domain.model.signup_model.signup_response.SignUpResponse
+import com.example.meintasty.domain.model.update_basket_model.update_basket_request.UpdateBasketRequest
+import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasket
+import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasketResponse
 import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
@@ -49,6 +52,6 @@ interface NetworkRepository {
     suspend fun getBasket(getBasketRequest: GetBasketRequest): GetBasketResponse
     suspend fun removeBasket(removeBasketRequest: RemoveBasketRequest) : RemoveBasketResponse
     suspend fun getFavoritesRestaurant(favoriteRestaurantRequest: FavoritesRestaurantRequest): FavoriteRestaurantResponse
-
+    suspend fun updateBasket(updateBasket: UpdateBasketRequest) : UpdateBasketResponse
 
 }

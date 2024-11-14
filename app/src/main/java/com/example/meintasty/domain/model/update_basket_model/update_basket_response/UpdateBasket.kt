@@ -1,0 +1,3 @@
+package com.example.meintasty.domain.model.update_basket_model.update_basket_response
+
+class UpdateBasket

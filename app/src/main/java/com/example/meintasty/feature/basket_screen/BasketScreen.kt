@@ -1,14 +1,11 @@
 package com.example.meintasty.feature.basket_screen
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -55,6 +52,8 @@ import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
+import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
+import com.example.meintasty.domain.model.update_basket_model.update_basket_request.UpdateBasketRequest
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.BasketCardComponent
 import com.example.meintasty.uicomponent.HeaderComponent
@@ -76,14 +75,16 @@ fun BasketScreen(
 
     val userState = basketViewModel.userState.collectAsState().value.data
     val basketState = basketViewModel.basketState.collectAsState()
+    val removeBasketState = basketViewModel.removeBasketState.collectAsState()
+
     val openDialogState = remember { mutableStateOf(false) }
     var totalPrice by remember {
-        mutableStateOf(0)
+        mutableStateOf(0.0)
     }
 
-   //totalPrice = basketState.value.data?.sumOf { basketItem -> price değişkeni string tipinde ondan dolayı hata veriyor
-   //    basketItem?.price?.toInt() ?: 0
-   //} ?: 0
+   totalPrice = basketState.value.data?.sumOf { basketItem ->// price değişkeni string tipinde ondan dolayı hata veriyor
+       basketItem?.price?.toDouble() ?: 0.0
+   } ?: 0.0
 
 
     userState?.userId.let { user_id ->
@@ -160,6 +161,11 @@ fun BasketScreen(
                                                 coroutineScope.launch {
                                                     swipeableState.animateTo(0)
                                                 }
+                                                val removeBasketRequest = RemoveBasketRequest(restaurant_id)
+                                                basketViewModel.removeBasket(removeBasketRequest)
+                                                Toast.makeText(
+                                                    context, "Deleteddd", Toast.LENGTH_SHORT
+                                                ).show()
                                             }
                                         }
                                     ) { _, _, _ ->
@@ -168,8 +174,19 @@ fun BasketScreen(
                                             onClick = {},
                                             onLongClick = { openDialogState.value = true },
                                             count = count,
-                                            onProductAdd = { count++ },
-                                            onProductMinus = { count-- }
+                                            onProductAdd = {
+                                             if (basket.id == 0){
+                                                 val updateBasketRequest = UpdateBasketRequest(
+                                                     basketId = basket.id,
+                                                     quantity = count++
+                                                 )
+                                                 basketViewModel.updateBasket(updateBasketRequest)
+
+                                             }
+                                            },
+                                            onProductMinus = {
+                                                count--
+                                            }
                                         )
                                     }
                                 }

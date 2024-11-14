@@ -5,6 +5,6 @@ data class Menu(
     val menuId: Int?,
     val menuName: String?,
     val menuPic: String?,
-    val price: Double?,
+    val menuPrice: Double?,
     val restaurantId: Int?
 )
