@@ -1,6 +1,7 @@
 package com.example.meintasty.feature.basket_screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -65,8 +66,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun BasketScreen(
-    navController: NavController,
-    basketViewModel: BasketViewModel = hiltViewModel()
+    navController: NavController, basketViewModel: BasketViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val sharedPreferences =
@@ -78,204 +78,210 @@ fun BasketScreen(
     val removeBasketState = basketViewModel.removeBasketState.collectAsState()
 
     val openDialogState = remember { mutableStateOf(false) }
-    var totalPrice by remember {
-        mutableStateOf(0.0)
-    }
 
-   totalPrice = basketState.value.data?.sumOf { basketItem ->// price değişkeni string tipinde ondan dolayı hata veriyor
-       basketItem?.price?.toDouble() ?: 0.0
-   } ?: 0.0
+    var totalPrice = basketState.value.data?.sumOf { basketItem ->
+        val quantity = basketItem?.quantity ?: 0
+        val price = basketItem?.price?.toDouble() ?: 0.0
+        quantity * price
+    } ?: 0.0
 
 
     userState?.userId.let { user_id ->
         val getBasketRequest = GetBasketRequest(restaurant_id, userId = user_id)
+        Log.d("getbasket","$user_id")
         LaunchedEffect(user_id) {
             basketViewModel.getBasket(getBasketRequest)
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        BackIcon {
-                            navController.navigateUp()
-                        }
-                        HeaderComponent(text = stringResource(id = R.string.basket))
+    Scaffold(topBar = {
+        TopAppBar(
+            title = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BackIcon {
+                        navController.navigateUp()
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colorResource(id = R.color.mein_tasty_color)
-                )
+                    HeaderComponent(text = stringResource(id = R.string.basket))
+                }
+            }, colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = colorResource(id = R.color.mein_tasty_color)
             )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                if (basketState.value.isLoading == true) {
+        )
+    }, content = { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (basketState.value.isLoading == true) {
+                Box(
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = colorResource(id = R.color.mein_tasty_color)
+                    )
+                }
+            } else {
+                val basketData = basketState.value.data
+                if (basketData.isNullOrEmpty()) {
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator(
-                            color = colorResource(id = R.color.mein_tasty_color)
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Your basket is empty",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Button(
+                                onClick = {
+                                    navController.navigateUp()
+                                },
+                                modifier = Modifier.padding(top = 16.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(id = R.color.mein_tasty_color)
+                                )
+                            ) {
+                                Text(text = "Go Back to Shopping")
+                            }
+                        }
                     }
                 } else {
                     LazyColumn(
                         modifier = Modifier.weight(1f)
                     ) {
-                        basketState.value.data?.let { basketList ->
-                            items(basketList) { basketItem ->
-                                basketItem?.let { basket ->
-                                    var count by remember { mutableStateOf(0) }
-                                    val coroutineScope = rememberCoroutineScope()
-                                    SwipeBox(
-                                        modifier = Modifier
-                                            .wrapContentSize()
-                                            .padding(8.dp),
-                                        swipeDirection = SwipeDirection.EndToStart,
-                                        endContentWidth = 60.dp,
-                                        endContent = { swipeableState, endSwipeProgress ->
-                                            SwipeIcon(
-                                                imageVector = Icons.Outlined.Delete,
-                                                contentDescription = "Delete",
-                                                tint = Color.White,
-                                                background = Color(0xFFFA1E32),
-                                                weight = 1f,
-                                                iconSize = 20.dp
-                                            ) {
-                                                Toast.makeText(
-                                                    context, "Delete", Toast.LENGTH_SHORT
-                                                ).show()
-                                                coroutineScope.launch {
-                                                    swipeableState.animateTo(0)
-                                                }
-                                                val removeBasketRequest = RemoveBasketRequest(restaurant_id)
-                                                basketViewModel.removeBasket(removeBasketRequest)
-                                                Toast.makeText(
-                                                    context, "Deleteddd", Toast.LENGTH_SHORT
-                                                ).show()
+                        items(basketData) { basketItem ->
+                            basketItem?.let { basket ->
+                                Log.d("getbasket","$basket")
+                                var count by remember { mutableStateOf(0) }
+                                val coroutineScope = rememberCoroutineScope()
+                                SwipeBox(
+                                    modifier = Modifier
+                                        .wrapContentSize()
+                                        .padding(8.dp),
+                                    swipeDirection = SwipeDirection.EndToStart,
+                                    endContentWidth = 60.dp,
+                                    endContent = { swipeableState, endSwipeProgress ->
+                                        SwipeIcon(
+                                            imageVector = Icons.Outlined.Delete,
+                                            contentDescription = "Delete",
+                                            tint = Color.White,
+                                            background = Color(0xFFFA1E32),
+                                            weight = 1f,
+                                            iconSize = 20.dp
+                                        ) {
+                                            coroutineScope.launch {
+                                                swipeableState.animateTo(0)
                                             }
+                                            val removeBasketRequest =
+                                                RemoveBasketRequest(restaurant_id)
+                                            basketViewModel.removeBasket(removeBasketRequest)
+                                            Toast.makeText(
+                                                context, "Item Deleted", Toast.LENGTH_SHORT
+                                            ).show()
                                         }
-                                    ) { _, _, _ ->
-                                        BasketCardComponent(
-                                            basket = basket,
-                                            onClick = {},
-                                            onLongClick = { openDialogState.value = true },
-                                            count = count,
-                                            onProductAdd = {
-                                             if (basket.id == 0){
-                                                 val updateBasketRequest = UpdateBasketRequest(
-                                                     basketId = basket.id,
-                                                     quantity = count++
-                                                 )
-                                                 basketViewModel.updateBasket(updateBasketRequest)
+                                    }) { _, _, _ ->
+                                    BasketCardComponent(
+                                        basket = basket,
+                                        onClick = {},
+                                        onLongClick = { openDialogState.value = true },
+                                        count = count,
+                                        onProductAdd = {
 
-                                             }
-                                            },
-                                            onProductMinus = {
-                                                count--
-                                            }
-                                        )
-                                    }
+                                                val updateBasketRequest = UpdateBasketRequest(
+                                                    basketId = basket.id, quantity =basket.quantity
+                                                )
+                                                basketViewModel.updateBasket(updateBasketRequest)
+
+                                        },
+                                        onProductMinus = {
+                                            count--
+                                        })
                                 }
                             }
-                        } ?: run {
-                            Toast.makeText(context, "Basket is Empty", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
+            }
 
-                if (openDialogState.value) {
-                    AlertDialogBasket(openDialogState = openDialogState)
-                }
+            if (openDialogState.value) {
+                AlertDialogBasket(openDialogState = openDialogState)
+            }
 
-                Column(
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                TextField(
+                    value = "Total Price: $totalPrice",
+                    onValueChange = {},
+                    textStyle = TextStyle(
+                        color = Color.Black,
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                        textAlign = TextAlign.Center
+                    ),
+                    enabled = false,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White, disabledIndicatorColor = Color.Transparent
+                    )
+                )
+
+                Button(
+                    onClick = { /*TODO*/ },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    TextField(
-                        value = " Total Price: $totalPrice",
-                        onValueChange = {},
-                        textStyle = TextStyle(
-                            color = Color.Black,
-                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                            textAlign = TextAlign.Center
-                        ),
-                        enabled = false,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.White,
-                            disabledIndicatorColor = Color.Transparent
-                        )
+                        .padding(top = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(id = R.color.mein_tasty_color),
                     )
-
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(id = R.color.mein_tasty_color),
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.confirm_cart))
-                    }
+                ) {
+                    Text(text = stringResource(id = R.string.confirm_cart))
                 }
             }
         }
-    )
+    })
 }
 
 
 @Composable
 fun AlertDialogBasket(openDialogState: MutableState<Boolean>) {
     if (openDialogState.value) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialogState.value = false
-            },
-            title = {
-                Text(
-                    text = stringResource(id = R.string.delete_alert),
-                    style = TextStyle(
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        color = Color.Black
-                    )
+        AlertDialog(onDismissRequest = {
+            openDialogState.value = false
+        }, title = {
+            Text(
+                text = stringResource(id = R.string.delete_alert), style = TextStyle(
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    color = Color.Black
                 )
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    openDialogState.value = false
+            )
+        }, confirmButton = {
+            TextButton(onClick = {
+                openDialogState.value = false
 
-                }) {
-                    Text(text = stringResource(id = R.string.delete), color = Color.Black)
-                }
+            }) {
+                Text(text = stringResource(id = R.string.delete), color = Color.Black)
+            }
 
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    openDialogState.value = false
-                }) {
-                    Text(text = stringResource(id = R.string.cancel), color = Color.Black)
-                }
-            },
-            containerColor = Color.White
+        }, dismissButton = {
+            TextButton(onClick = {
+                openDialogState.value = false
+            }) {
+                Text(text = stringResource(id = R.string.cancel), color = Color.Black)
+            }
+        }, containerColor = Color.White
         )
     }
 }

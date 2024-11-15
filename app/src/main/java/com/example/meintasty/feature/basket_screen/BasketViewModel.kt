@@ -4,18 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.add_basket_model.db_model.AddBasketDataModel
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.update_basket_model.update_basket_request.UpdateBasketRequest
 import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasket
-import com.example.meintasty.domain.usecase.AllBasketUseCase
 import com.example.meintasty.domain.usecase.GetBasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.domain.usecase.RemoveBasketUseCase
-import com.example.meintasty.domain.usecase.UpdateBasketQuantityUseCase
 import com.example.meintasty.domain.usecase.UpdateBasketUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,9 +26,7 @@ class BasketViewModel @Inject constructor(
     private val getBasketUseCase: GetBasketUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
     private val removeBasketUseCase: RemoveBasketUseCase,
-    private val updateBasketUseCase: UpdateBasketUseCase,
-    private val allBasketUseCase: AllBasketUseCase,
-    private val updateBasketQuantityUseCase: UpdateBasketQuantityUseCase
+    private val updateBasketUseCase :UpdateBasketUseCase
 ) : ViewModel() {
 
     private val _basketState = MutableStateFlow(BasketState())
@@ -46,13 +41,13 @@ class BasketViewModel @Inject constructor(
     private val _updateBasketState = MutableStateFlow(UpdateBasketState())
     val updateBasketState = _updateBasketState.asStateFlow()
 
+
     init {
         getUserModel()
     }
 
     fun getBasket(basketRequest: GetBasketRequest) {
         viewModelScope.launch {
-
             getBasketUseCase.invoke(getBasketRequest = basketRequest).collect { result ->
                 when (result) {
                     is NetworkResult.Failure -> {
@@ -62,7 +57,7 @@ class BasketViewModel @Inject constructor(
                             isLoading = true,
                             isError = result.msg
                         )
-                        Log.d("basketViewmodelError:", "${result.msg}")
+                        Log.d("basketViewmodel:Error:", "${result.msg}")
                     }
 
                     NetworkResult.Loading -> {
@@ -83,6 +78,8 @@ class BasketViewModel @Inject constructor(
                             isLoading = false,
                             isError = ""
                         )
+                        Log.d("basketViewmodel:success:", "${basketData}")
+
                     }
                 }
             }
@@ -138,38 +135,6 @@ class BasketViewModel @Inject constructor(
             }
         }
     }
-
-    fun allBasket() {
-        viewModelScope.launch {
-            allBasketUseCase.invoke()
-        }
-    }
-
- /*   fun updateBasketQuantity(addBasketDataModel: AddBasketDataModel) {
-        viewModelScope.launch {
-            try {
-                // Mevcut miktarı veritabanından al
-                val existingBasketItem = updateBasketQuantityUseCase.invoke(addBasketDataModel.menuId)
-
-                if (existingBasketItem != null) {
-                    // Mevcut miktarı al ve 1 artır
-                    val newQuantity = (existingBasketItem.quantity ?: 0) + 1
-
-                    // Yeni miktarı güncelle
-                    updateBasketQuantityUseCase.invoke(
-                        menuId = addBasketDataModel.menuId ?: 0,
-                        newQuantity = newQuantity
-                    )
-                    // Ürünleri yeniden yükle (güncel veriyi göstermek için)
-                    allBasket()
-                }
-            } catch (e: Exception) {
-                // Hata durumunu yönet
-                _basketResponse.value = BasketState(isError = e.message)
-            }
-        }
-    }*/
-
 
     fun updateBasket(updateBasketRequest: UpdateBasketRequest) {
         viewModelScope.launch {
