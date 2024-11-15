@@ -12,7 +12,6 @@ import java.io.IOException
 import javax.inject.Inject
 
 class UpdateBasketUseCase @Inject constructor(private val networkRepositoryImpl: NetworkRepositoryImpl) {
-
     operator suspend fun invoke(updateBasketRequest: UpdateBasketRequest): Flow<NetworkResult<UpdateBasketResponse>> =
         flow {
             try {
