@@ -16,7 +16,6 @@ class LoginUserUseCase @Inject constructor(private val networkRepositoryImpl: Ne
             emit(NetworkResult.Success(response))
         }catch (e:Exception){
             emit(NetworkResult.Failure(e.message.toString()))
-
         }
     }
 }
