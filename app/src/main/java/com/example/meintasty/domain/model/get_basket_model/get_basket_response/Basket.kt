@@ -7,7 +7,7 @@ data class Basket(
     val menuId: Int?,
     val menuName: String?,
     val price: String?,
-    val quantity: Int?,
+    var quantity: Int?,
     val restaurantId: Int?,
     val restaurantName: String?,
     val userId: Int?

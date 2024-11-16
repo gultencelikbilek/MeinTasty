@@ -17,6 +17,7 @@ import com.example.meintasty.domain.usecase.UpdateBasketUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +42,8 @@ class BasketViewModel @Inject constructor(
     private val _updateBasketState = MutableStateFlow(UpdateBasketState())
     val updateBasketState = _updateBasketState.asStateFlow()
 
-
+    private val _totalPriceState = MutableStateFlow(0.0)
+    val totalPriceState: StateFlow<Double> = _totalPriceState.asStateFlow()
     init {
         getUserModel()
     }
@@ -78,6 +80,8 @@ class BasketViewModel @Inject constructor(
                             isLoading = false,
                             isError = ""
                         )
+                        updateTotalPrice()
+
                         Log.d("basketViewmodel:success:", "${basketData}")
 
                     }
@@ -160,6 +164,7 @@ class BasketViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Success -> {
+
                         _updateBasketState.value = UpdateBasketState(
                             data = result.data.value,
                             isSuccess = false,
@@ -172,8 +177,47 @@ class BasketViewModel @Inject constructor(
             }
         }
     }
+    fun refreshBasket() {
+        // Sepet verilerini yeniden almak için bir request oluşturun
+        val getBasketRequestIns = GetBasketRequest()
+        val getBasketRequest = GetBasketRequest(getBasketRequestIns.restaurantId, getBasketRequestIns.userId)
+        getBasket(getBasketRequest) // Sepeti yükleme işlemi
+    }
+    fun updateQuantity(basketId: Int, newQuantity: Int) {
+        viewModelScope.launch {
+            val updateRequest = UpdateBasketRequest(basketId, newQuantity)
+            val response = updateBasketUseCase.invoke(updateRequest)
+            response.collect{
+                when(it){
+                    is NetworkResult.Failure -> {
+                        Log.d("updatebasket:viewmodel:error:", "error:update")
 
+                    }
+                    NetworkResult.Loading ->{
+                        Log.d("updatebasket:viewmodel:loading:", "loading:update")
+
+                    }
+                    is NetworkResult.Success -> {
+                        updateTotalPrice()
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun updateTotalPrice() {
+        _basketState.value.data?.let { basketItems ->
+            _totalPriceState.value = basketItems.sumOf { basketItem ->
+                val quantity = basketItem?.quantity ?: 0
+                val price = basketItem?.price?.toDouble() ?: 0.0
+                quantity* price
+            }
+        }
+    }
 }
+
+
 
 data class BasketState(
     val data: List<Basket?>? = null,
