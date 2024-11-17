@@ -68,6 +68,9 @@ import kotlinx.coroutines.launch
 fun BasketScreen(
     navController: NavController, basketViewModel: BasketViewModel = hiltViewModel()
 ) {
+
+    // basket id farklı olduğu ilk gelen basket id de artıya tıklayınca artıyor ikinci aynı menunün quantity değeri artmıyor
+
     val context = LocalContext.current
     val sharedPreferences =
         context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
@@ -80,22 +83,13 @@ fun BasketScreen(
 
     val openDialogState = remember { mutableStateOf(false) }
 
-    // Keep track of the total price and basket items
-   // var totalPrice by remember { mutableStateOf(0.0) }
 
-    // Recompute total price whenever basketState changes
     val basketData = basketState.value.data
-  /*  basketData?.let {
-        totalPrice = it.sumOf { basketItem ->
-            val quantity = basketItem?.quantity ?: 0
-            val price = basketItem?.price?.toDouble() ?: 0.0
-            quantity * price
-        }
-    }*/
+
     LaunchedEffect(Unit) {
         basketViewModel.refreshBasket() // Sepeti yenile
     }
-    // Fetch basket when userState changes
+
     userState?.userId?.let { user_id ->
         val getBasketRequest = GetBasketRequest(restaurant_id, userId = user_id)
         LaunchedEffect(user_id) {
@@ -132,7 +126,6 @@ fun BasketScreen(
                     CircularProgressIndicator(color = colorResource(id = R.color.mein_tasty_color))
                 }
             } else {
-                // If basket is empty, show empty message
                 if (basketData.isNullOrEmpty()) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(
@@ -152,7 +145,6 @@ fun BasketScreen(
                         }
                     }
                 } else {
-                    // Display basket items in a LazyColumn
                     LazyColumn(modifier = Modifier.weight(1f)) {
                         items(basketData) { basketItem ->
                             basketItem?.let { basket ->
@@ -189,12 +181,10 @@ fun BasketScreen(
                                         onLongClick = { openDialogState.value = true },
                                         count = count,
                                         onProductAdd = {
-                                            // Artış butonuna tıklandığında
                                             basket.quantity = (basket.quantity ?: 0) + 1
                                             basket.id?.let { basketViewModel.updateQuantity(it, basket.quantity ?: 0) }
                                         },
                                         onProductMinus = {
-                                            // Azalış butonuna tıklandığında
                                             if (basket.quantity!! > 0) {
                                                 basket.quantity = basket.quantity!! - 1
                                                 basket.id?.let { basketViewModel.updateQuantity(it, basket.quantity ?: 0) }
