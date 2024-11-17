@@ -15,26 +15,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.meintasty.navigation.NavGraph
 import com.example.meintasty.ui.theme.MeinTastyTheme
-import com.example.meintasty.work_manager.TokenRefreshWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //worker başlatma
-       // val tokenWorker = PeriodicWorkRequestBuilder<TokenRefreshWorker>(60,TimeUnit.MINUTES).build()
-       // WorkManager.getInstance(this).enqueue(tokenWorker)
-
 
         enableEdgeToEdge()
         setContent {

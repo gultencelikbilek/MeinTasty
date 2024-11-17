@@ -81,7 +81,6 @@ class BasketViewModel @Inject constructor(
                             isError = ""
                         )
                         updateTotalPrice()
-
                         Log.d("basketViewmodel:success:", "${basketData}")
 
                     }
@@ -140,55 +139,17 @@ class BasketViewModel @Inject constructor(
         }
     }
 
-    fun updateBasket(updateBasketRequest: UpdateBasketRequest) {
-        viewModelScope.launch {
-            updateBasketUseCase.invoke(updateBasketRequest).collect { result ->
-                when (result) {
-                    is NetworkResult.Failure -> {
-                        _updateBasketState.value = UpdateBasketState(
-                            data = null,
-                            isSuccess = false,
-                            isLoading = true,
-                            isError = result.msg
-                        )
-                        Log.d("updatebasket:viewmodel:error:", "${result.msg}")
-                    }
-
-                    NetworkResult.Loading -> {
-                        _updateBasketState.value = UpdateBasketState(
-                            data = null,
-                            isSuccess = false,
-                            isLoading = true,
-                            isError = ""
-                        )
-                    }
-
-                    is NetworkResult.Success -> {
-
-                        _updateBasketState.value = UpdateBasketState(
-                            data = result.data.value,
-                            isSuccess = false,
-                            isLoading = true,
-                            isError = ""
-                        )
-                        Log.d("updatebasket:viewmodel:success:", "${result.data.value}")
-                    }
-                }
-            }
-        }
-    }
     fun refreshBasket() {
-        // Sepet verilerini yeniden almak için bir request oluşturun
         val getBasketRequestIns = GetBasketRequest()
         val getBasketRequest = GetBasketRequest(getBasketRequestIns.restaurantId, getBasketRequestIns.userId)
-        getBasket(getBasketRequest) // Sepeti yükleme işlemi
+        getBasket(getBasketRequest)
     }
     fun updateQuantity(basketId: Int, newQuantity: Int) {
         viewModelScope.launch {
             val updateRequest = UpdateBasketRequest(basketId, newQuantity)
             val response = updateBasketUseCase.invoke(updateRequest)
-            response.collect{
-                when(it){
+            response.collect{result ->
+                when(result){
                     is NetworkResult.Failure -> {
                         Log.d("updatebasket:viewmodel:error:", "error:update")
 
