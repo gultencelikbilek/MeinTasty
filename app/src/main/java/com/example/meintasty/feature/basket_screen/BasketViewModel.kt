@@ -44,6 +44,8 @@ class BasketViewModel @Inject constructor(
 
     private val _totalPriceState = MutableStateFlow(0.0)
     val totalPriceState: StateFlow<Double> = _totalPriceState.asStateFlow()
+
+
     init {
         getUserModel()
     }
@@ -75,7 +77,7 @@ class BasketViewModel @Inject constructor(
                         val basketData = result.data.value
                         Log.d("API Response:", "$basketData")
                         _basketState.value = BasketState(
-                            data = basketData?.distinctBy { it?.menuId },
+                            data = basketData?.distinctBy { it?.id },
                             isSuccess = true,
                             isLoading = false,
                             isError = ""
@@ -88,8 +90,6 @@ class BasketViewModel @Inject constructor(
             }
         }
     }
-
-
     fun getUserModel() {
         viewModelScope.launch {
             val response = getUserDatabaseUseCase.invoke()
@@ -125,16 +125,17 @@ class BasketViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Success -> {
+                        val basketRemove = result.data
                         _removeBasketState.value = RemoveBasketState(
-                            data = result.data,
+                            data = basketRemove,
                             isSuccess = false,
                             isLoading = true,
                             isError = ""
                         )
+                        refreshBasket()
                         Log.d("removeBasket:viewmodel:success:", "${result.data}")
                     }
                 }
-
             }
         }
     }
@@ -178,8 +179,6 @@ class BasketViewModel @Inject constructor(
     }
 }
 
-
-
 data class BasketState(
     val data: List<Basket?>? = null,
     val isSuccess: Boolean? = false,
@@ -197,7 +196,6 @@ data class RemoveBasketState(
     val isLoading: Boolean? = false,
     val isError: String? = ""
 )
-
 data class UpdateBasketState(
     val data: UpdateBasket? = null,
     val isSuccess: Boolean? = false,
