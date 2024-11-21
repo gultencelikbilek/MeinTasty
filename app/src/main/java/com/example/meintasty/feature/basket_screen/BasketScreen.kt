@@ -44,8 +44,6 @@ fun BasketScreen(
     val sharedPreferences = context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
     val restaurantId = sharedPreferences.getInt(Constants.SHARED_RESTAURANT_ID, 0)
     var selectedBasketId by remember { mutableStateOf(0) }
-
-    // State definitions
     val userState = basketViewModel.userState.collectAsState().value.data
     val basketState = basketViewModel.basketState.collectAsState()
     val totalPrice by basketViewModel.totalPriceState.collectAsState()
@@ -149,7 +147,6 @@ fun BasketScreen(
                                                 selectedBasketId = basket.id!! //alertdialog için
                                                 openDialogState.value = true
                                                           },
-                                            count = count,
                                             onProductAdd = {
                                                 basket.quantity = (basket.quantity ?: 0) + 1
                                                 basket.id?.let { basketViewModel.updateQuantity(it, basket.quantity ?: 0) }

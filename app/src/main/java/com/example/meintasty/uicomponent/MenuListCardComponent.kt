@@ -73,6 +73,7 @@ fun SharedTransitionScope.MenuListCardComponent(
         label = "elevation"
     )
 
+
     val userModelState = detailRestaurantViewModel.userModelState.collectAsState().value
     val context = LocalContext.current
     val sharedPreferences =
@@ -158,67 +159,18 @@ fun SharedTransitionScope.MenuListCardComponent(
                         }
 
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.add_to_basket),
-                        modifier = Modifier.padding(4.dp),
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                            color = Color.Gray
+                   // IconButton(
+                   //     onClick = {
+                   //
+                   //     }
+                   // ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.plus),
+                            contentDescription = "",
+                            modifier = Modifier.size(24.dp).padding(6.dp)
                         )
-                    )
+                  //  }
                 }
-
-
-                /* Box(
-                     modifier = Modifier
-                         .size(20.dp)
-                         .background(colorResource(id = R.color.white), RoundedCornerShape(12.dp))
-                         .graphicsLayer {
-                             this.shadowElevation = elevation.value.toPx()
-                         }
-                         .clickable(
-                             interactionSource = mutableInteractionSource,
-                             indication = null
-                         ) {
-                             menu?.let { menu ->
-                                 Log.d("menu", "$menu")
-                                 if (userModelState.data?.userId != null) {
-                                     Log.d("menu", "${userModelState.data?.userId}")
-                                     val currentDateTime = LocalDateTime.now()
-                                     val formattedDate =
-                                         currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
-                                     val addBasketRequest = AddBasketRequest(
-                                         basketDate = formattedDate,
-                                         currencyCode = menu.currency.toString(),
-                                         menuId = menu.menuId,
-                                         price = menu.price.toString(),
-                                         quantity = 1,
-                                         restaurantId = 1,
-                                         userId = userModelState.data?.userId,
-                                     )
-
-                                     Log.d("restaurantId:", "${menu.restaurantId}")
-                                     Log.d("restaurant:", "${userModelState.data?.userId}")
-                                     Log.d("addBasketRequest:", "$addBasketRequest")
-                                     detailRestaurantViewModel.addBasket(addBasketRequest)
-                                     Toast
-                                         .makeText(context, "addedBasket", Toast.LENGTH_SHORT)
-                                         .show()
-
-                                 }
-                             }
-                         }
-                         .border(1.dp, Color.LightGray, RoundedCornerShape(25.dp)),
-                     contentAlignment = Alignment.Center
-                 ) {
-                     Icon(
-                         painter = painterResource(id = R.drawable.plus),
-                         contentDescription = stringResource(id = R.string.add),
-                         tint = Color.Black,
-                         modifier = Modifier.size(10.dp)
-
-                     )
-                 }*/
             }
 
             Column(

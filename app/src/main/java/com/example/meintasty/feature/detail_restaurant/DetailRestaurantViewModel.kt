@@ -1,6 +1,7 @@
 package com.example.meintasty.feature.detail_restaurant
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.UserAccountModel
@@ -121,6 +122,7 @@ class DetailRestaurantViewModel @Inject constructor(
             }
         }
     }
+
 }
 
 data class AddBasketState(
