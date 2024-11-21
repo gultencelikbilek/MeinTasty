@@ -49,7 +49,6 @@ fun BasketCardComponent(
     basket: Basket?,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
-    count: Int,
     onProductAdd: () -> Unit,
     onProductMinus: () -> Unit
 ) {
@@ -142,7 +141,6 @@ fun BasketCardComponent(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                         }
-                        val countItem= if(count <=0)  0 else count //0 olunca sepetten kaldır işlemi olacak
                         Text(
                             text = "${basket?.quantity}",
                             style = TextStyle(
