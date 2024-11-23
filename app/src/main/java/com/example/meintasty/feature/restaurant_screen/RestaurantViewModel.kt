@@ -3,14 +3,16 @@ package com.example.meintasty.feature.restaurant_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.meintasty.domain.model.Food
 import com.example.meintasty.domain.usecase.CategoryUseCase
 import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
 import com.example.meintasty.domain.usecase.RestaurantUseCase
 import com.example.meintasty.domain.model.UserLocationModel
 import com.example.meintasty.domain.model.category_model.category_response.Category
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
-import com.example.meintasty.domain.model.restaurant_model.restaurant_response.Restaurant
+import com.example.meintasty.domain.model.foodList
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
+import com.example.meintasty.domain.model.restaurant_model.restaurant_response.Restaurant
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +36,8 @@ class RestaurantViewModel @Inject constructor(
     private val _categoryState = MutableStateFlow(CategoryState())
     val categoryState = _categoryState.asStateFlow()
 
-    suspend fun getRestaurant(restaurantRequest: RestaurantRequest) {
+    private var nextPage = 0
+     fun getRestaurant(restaurantRequest: RestaurantRequest) {
         viewModelScope.launch {
             restaurantUseCase.invoke(restaurantRequest).collect { result ->
                 when (result) {
@@ -45,7 +48,7 @@ class RestaurantViewModel @Inject constructor(
                             isLoading = true,
                             isError = result.msg
                         )
-                        Log.d("restaurantviewmodel:", "$result")
+                        Log.d("restaurantviewmodel:error", "$result")
                     }
 
                     NetworkResult.Loading -> {
@@ -58,14 +61,22 @@ class RestaurantViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Success -> {
+                        val currentData =  foodList//_restaurantState.value.data ?: emptyList()
+                        val newRestaurants = foodList//result.data.value  ?: emptyList()
                         _restaurantState.value = RestaurantState(
-                            data = result.data.value,
+                            data = currentData + newRestaurants,
                             isSucces = true,
                             isLoading = false,
                             isError = ""
                         )
-                        Log.d("restaurantviewmodel:", result.data.value.toString())
+                        nextPage++
+
+                        Log.d("restaurantviewmodel:succes", newRestaurants.toString())
+                        Log.d("restaurantviewmodel:currentData", currentData.toString())
+                        Log.d("restaurantviewmodel:nextPage", nextPage.toString())
                     }
+
+
                 }
             }
         }
@@ -120,7 +131,8 @@ class RestaurantViewModel @Inject constructor(
 }
 
 data class RestaurantState(
-    val data: List<Restaurant>? = null,
+   // val data: List<Restaurant?>? = null,
+    val data: List<Food?>? = null,
     val isSucces: Boolean? = false,
     val isLoading: Boolean? = false,
     val isError: String? = ""
