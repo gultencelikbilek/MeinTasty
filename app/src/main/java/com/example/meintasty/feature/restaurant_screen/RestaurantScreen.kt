@@ -19,6 +19,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -36,11 +40,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -83,6 +88,7 @@ fun SharedTransitionScope.RestaurantScreen(
         Font(resId = R.font.poppins_extralight, weight = FontWeight.Normal)
     )
     val context = LocalContext.current
+    val isLoading = remember { mutableStateOf(false) }
 
 
     val sharedPreferences =
@@ -93,20 +99,66 @@ fun SharedTransitionScope.RestaurantScreen(
 
     val categoryState = restaurantViewModel.categoryState.collectAsState()
     val categoryRequest = CategoryRequest()
+    val scrollState = rememberLazyGridState()
 
-    val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)
-    Log.d("city_code", "$cityCode")
-    cityCode?.let {
-        val restaurantRequest = RestaurantRequest(it.toInt())
 
-        LaunchedEffect(Unit) {
-            restaurantViewModel.getRestaurant(restaurantRequest)
-            restaurantViewModel.getLocationInfo()
-            restaurantViewModel.getCategoryList(categoryRequest)
+    val fetchNextPage = remember {
+        derivedStateOf {
+            val totalItems =
+                scrollState.layoutInfo.totalItemsCount //listenin toplam öğe sayısını tutar
+            val lastDisplayedIndex =
+                scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            lastDisplayedIndex >= totalItems - 3
 
-            Log.d("screen", "searchscreen")
         }
     }
+    val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)?.toIntOrNull()
+    if (cityCode != null) {
+        val restaurantRequest = RestaurantRequest(cityCode, 0)
+        if (fetchNextPage.value && !isLoading.value) {
+            isLoading.value = true
+            LaunchedEffect(fetchNextPage.value) {
+                restaurantViewModel.getRestaurant(restaurantRequest)
+                isLoading.value = false
+            }
+        }
+    } else {
+        Log.e("city_code", "City code is null or invalid!")
+    }
+
+
+    /* LaunchedEffect(scrollState) {
+    snapshotFlow { scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0 } //en son öğenin dizinini tutuyor
+        .collect { lastVisibleIndex ->
+            if ( lastVisibleIndex != null) {
+                val totalItems = scrollState.layoutInfo.totalItemsCount //listenin toplam öğe sayısını tutar
+                if (totalItems - lastVisibleIndex <= 2) {
+                    val nextPage =  2//restaurantState.value.data
+
+                    //  previousItemCount = totalItems
+                    onLoadMoreItem(nextPage,restaurantViewModel) //daha fazla öğe yüklemek için çağırılır
+                }
+            }
+
+        }
+}*/
+
+    // val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)
+    // Log.d("city_code", "$cityCode")
+    // cityCode?.let {
+    //     val restaurantRequest = RestaurantRequest(
+    //         it.toInt(),
+    //         0,
+    //     )
+
+    LaunchedEffect(Unit) {
+        //        restaurantViewModel.getRestaurant(restaurantRequest)
+        restaurantViewModel.getLocationInfo()
+        restaurantViewModel.getCategoryList(categoryRequest)
+
+        Log.d("screen", "searchscreen")
+    }
+    //}
 
     Log.d("cityCode:", cityCode.toString())
     Scaffold(
@@ -249,15 +301,17 @@ fun SharedTransitionScope.RestaurantScreen(
                             .fillMaxWidth()
                     ) {
                         SearchHeaderComponent(text = stringResource(id = R.string.populer_restaurants))
-                        LazyRow(
+                        LazyHorizontalGrid(
+                            state = scrollState,
+                            rows = GridCells.Fixed(1),
                             modifier = Modifier
                                 .padding(top = 30.dp)
                                 .fillMaxWidth()
+                                .height(200.dp)
                         ) {
-                            restaurantState.value.data?.let { restaurantList ->
-                                val repeatedList =
-                                    List(10) { restaurantList }.flatten() // 10 kere categoryDetailList'i tekrarlıyoruz ve düz listeye dönüştürüyoruz
-                                items(repeatedList) { restaurant ->
+                            restaurantState.value.data?.let {restaurantList->
+                                //items(restaurantList) { restaurant ->
+                                items(restaurantList, key = { it?.id ?: 0 }) { restaurant ->
                                     Log.d("restaurantList:", restaurantList.toString())
                                     PopulerRestaurantCardComponent(
                                         animatedVisibilityScope,
@@ -302,8 +356,8 @@ fun SharedTransitionScope.RestaurantScreen(
     )
 }
 
-@Preview
-@Composable
-fun SearchScreenPrew() {
-    // SearchScreen()
-}
+
+/*fun onLoadMoreItem(nextPage: Int, restaurantViewModel: RestaurantViewModel) {
+    restaurantViewModel.getRestaurant(RestaurantRequest(categoryId = 0, cityCode = 1,pageNumber = nextPage))
+}*/
+

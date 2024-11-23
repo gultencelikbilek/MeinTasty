@@ -3,7 +3,6 @@ package com.example.meintasty.uicomponent
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,9 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -39,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.example.meintasty.R
+import com.example.meintasty.domain.model.Food
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.Restaurant
 import com.example.meintasty.navigation.Screen
 
@@ -46,7 +43,7 @@ import com.example.meintasty.navigation.Screen
 @Composable
 fun SharedTransitionScope.PopulerRestaurantCardComponent(
     animatedVisibilityScope: AnimatedVisibilityScope,
-    restaurant: Restaurant,
+    restaurant: Food?,//Restaurant?,
     navController: NavController
 ) {
 
@@ -56,7 +53,7 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
             .padding(top = 16.dp, start = 16.dp)
             .height(150.dp)
             .clickable {
-                navController.navigate(Screen.DetailRestaurantScreen.route + "?restaurantId=${restaurant.id}")
+            //    navController.navigate(Screen.DetailRestaurantScreen.route + "?restaurantId=${restaurant?.id}")
             },
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -96,7 +93,7 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
             ) {
                 Column {
                     Text(
-                        text = restaurant.restaurantName.toString(),
+                        text = restaurant?.name.toString(),//.restaurantName.toString(),
                         style = TextStyle(
                             color = Color.Black,
                             fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -104,7 +101,7 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
                         )
                     )
                     Text(
-                        text = restaurant.phoneNumber.toString(),
+                        text = restaurant?.name.toString(),//.phoneNumber.toString(),
                         style = TextStyle(
                             color = Color.Gray,
                             fontSize = MaterialTheme.typography.bodyMedium.fontSize,

@@ -25,7 +25,6 @@ import com.example.meintasty.domain.model.restaurant_model.restaurant_response.R
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.domain.model.signup_model.signup_response.SignUpResponse
 import com.example.meintasty.domain.model.update_basket_model.update_basket_request.UpdateBasketRequest
-import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasket
 import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasketResponse
 import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
@@ -33,7 +32,6 @@ import com.example.meintasty.domain.model.update_phone_model.update_phone_reques
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
 import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
 import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
-import retrofit2.http.Body
 
 interface NetworkRepository {
 
