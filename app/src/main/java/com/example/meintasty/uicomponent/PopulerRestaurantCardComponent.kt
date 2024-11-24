@@ -37,13 +37,14 @@ import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.Food
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.Restaurant
+import com.example.meintasty.domain.model.restaurant_model.restaurant_response.RestaurantList
 import com.example.meintasty.navigation.Screen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.PopulerRestaurantCardComponent(
     animatedVisibilityScope: AnimatedVisibilityScope,
-    restaurant: Food?,//Restaurant?,
+    restaurant: Restaurant?,
     navController: NavController
 ) {
 
@@ -53,7 +54,7 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
             .padding(top = 16.dp, start = 16.dp)
             .height(150.dp)
             .clickable {
-            //    navController.navigate(Screen.DetailRestaurantScreen.route + "?restaurantId=${restaurant?.id}")
+               navController.navigate(Screen.DetailRestaurantScreen.route + "?restaurantId=${restaurant?.id}")
             },
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -93,7 +94,7 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
             ) {
                 Column {
                     Text(
-                        text = restaurant?.name.toString(),//.restaurantName.toString(),
+                        text = restaurant?.restaurantName.toString(),//.restaurantName.toString(),
                         style = TextStyle(
                             color = Color.Black,
                             fontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -101,7 +102,7 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
                         )
                     )
                     Text(
-                        text = restaurant?.name.toString(),//.phoneNumber.toString(),
+                        text = restaurant?.phoneNumber.toString(),
                         style = TextStyle(
                             color = Color.Gray,
                             fontSize = MaterialTheme.typography.bodyMedium.fontSize,

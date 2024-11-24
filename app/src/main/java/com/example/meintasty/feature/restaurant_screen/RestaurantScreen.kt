@@ -45,7 +45,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -57,15 +56,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
-import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.foodList
+import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.uicomponent.CategoryCardComponent
 import com.example.meintasty.uicomponent.FoodCardComponent
 import com.example.meintasty.uicomponent.NearbyRestaurantCardComponent
@@ -108,13 +106,15 @@ fun SharedTransitionScope.RestaurantScreen(
                 scrollState.layoutInfo.totalItemsCount //listenin toplam öğe sayısını tutar
             val lastDisplayedIndex =
                 scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            lastDisplayedIndex >= totalItems - 3
+            lastDisplayedIndex >= totalItems - 2
 
         }
     }
     val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)?.toIntOrNull()
     if (cityCode != null) {
-        val restaurantRequest = RestaurantRequest(cityCode, 0)
+        val nextPage =  restaurantState.value.restaurantListInfo?.nextPage ?: 1
+        val restaurantRequest = RestaurantRequest(listOf(1), cityCode, nextPage)
+        Log.e("nextPage", "$nextPage")
         if (fetchNextPage.value && !isLoading.value) {
             isLoading.value = true
             LaunchedEffect(fetchNextPage.value) {
@@ -311,7 +311,7 @@ fun SharedTransitionScope.RestaurantScreen(
                         ) {
                             restaurantState.value.data?.let {restaurantList->
                                 //items(restaurantList) { restaurant ->
-                                items(restaurantList, key = { it?.id ?: 0 }) { restaurant ->
+                                items(restaurantList, key = { it?.id ?: 0 }) {restaurant ->
                                     Log.d("restaurantList:", restaurantList.toString())
                                     PopulerRestaurantCardComponent(
                                         animatedVisibilityScope,

@@ -53,6 +53,7 @@ fun BasketCardComponent(
     onProductMinus: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val isLoading = remember { mutableStateOf(false) }
 
 
     Card(
