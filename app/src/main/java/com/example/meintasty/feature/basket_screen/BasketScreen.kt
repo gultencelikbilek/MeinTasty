@@ -41,7 +41,8 @@ fun BasketScreen(
     basketViewModel: BasketViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
     val restaurantId = sharedPreferences.getInt(Constants.SHARED_RESTAURANT_ID, 0)
     var selectedBasketId by remember { mutableStateOf(0) }
     val userState = basketViewModel.userState.collectAsState().value.data
@@ -49,6 +50,8 @@ fun BasketScreen(
     val totalPrice by basketViewModel.totalPriceState.collectAsState()
     val openDialogState = remember { mutableStateOf(false) }
     val basketData = basketState.value.data
+    val isLoading = remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         basketViewModel.refreshBasket()
@@ -92,12 +95,18 @@ fun BasketScreen(
                     }
                 } else {
                     if (basketData.isNullOrEmpty()) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Text(text = "Your basket is empty", style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "Your basket is empty",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                                 Button(
                                     onClick = { navController.navigate(Screen.RestaurantScreen.route) },
                                     modifier = Modifier.padding(top = 16.dp),
@@ -113,8 +122,6 @@ fun BasketScreen(
                         LazyColumn(modifier = Modifier.weight(1f)) {
                             items(basketData) { basketItem ->
                                 basketItem?.let { basket ->
-                                    var count by remember { mutableStateOf(basket.quantity ?: 0) }
-                                    val coroutineScope = rememberCoroutineScope()
 
                                     SwipeBox(
                                         modifier = Modifier
@@ -134,9 +141,14 @@ fun BasketScreen(
                                                 coroutineScope.launch {
                                                     swipeableState.animateTo(0)
                                                 }
-                                                val removeBasketRequest = RemoveBasketRequest(basketId = basket.id)
+                                                val removeBasketRequest =
+                                                    RemoveBasketRequest(basketId = basket.id)
                                                 basketViewModel.removeBasket(removeBasketRequest)
-                                                Toast.makeText(context, "Item Deleted", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(
+                                                    context,
+                                                    "Item Deleted",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
                                             }
                                         }
                                     ) { _, _, _ ->
@@ -146,20 +158,39 @@ fun BasketScreen(
                                             onLongClick = {
                                                 selectedBasketId = basket.id!! //alertdialog için
                                                 openDialogState.value = true
-                                                          },
+                                            },
                                             onProductAdd = {
                                                 basket.quantity = (basket.quantity ?: 0) + 1
-                                                basket.id?.let { basketViewModel.updateQuantity(it, basket.quantity ?: 0) }
+                                                basket.id?.let {
+                                                    basketViewModel.updateQuantity(
+                                                        it,
+                                                        basket.quantity ?: 0
+                                                    )
+                                                }
                                             },
                                             onProductMinus = {
                                                 basket.quantity = basket.quantity!! - 1
                                                 if (basket.quantity!! > 0) {
-                                                    basket.id?.let { basketViewModel.updateQuantity(it, basket.quantity ?: 0) }
+                                                    basket.id?.let {
+                                                        basketViewModel.updateQuantity(
+                                                            it,
+                                                            basket.quantity ?: 0
+                                                        )
+                                                    }
                                                 } else {
+                                                    isLoading.value = true
                                                     if (basket.quantity!! == 0) {
-                                                        val removeBasketRequest = RemoveBasketRequest(basketId = basket.id)
-                                                        basketViewModel.removeBasket(removeBasketRequest)
-                                                        Toast.makeText(context, "Item Deleted", Toast.LENGTH_SHORT).show()
+                                                        val removeBasketRequest =
+                                                            RemoveBasketRequest(basketId = basket.id)
+                                                        basketViewModel.removeBasket(
+                                                            removeBasketRequest
+                                                        )
+                                                        isLoading.value = false
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Item Deleted",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
                                                     }
                                                 }
                                             }
@@ -231,14 +262,17 @@ fun AlertDialogBasket(
             title = {
                 Text(
                     text = stringResource(id = R.string.delete_alert),
-                    style = TextStyle(fontSize = MaterialTheme.typography.titleMedium.fontSize, color = Color.Black)
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        color = Color.Black
+                    )
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
 
                     val removeBasketRequest = RemoveBasketRequest(basketId = selectedId)
-                     basketViewModel.removeBasket(removeBasketRequest)
+                    basketViewModel.removeBasket(removeBasketRequest)
                     openDialogState.value = false
                     Toast.makeText(context, "Item Deleted", Toast.LENGTH_SHORT).show()
                 }) {
