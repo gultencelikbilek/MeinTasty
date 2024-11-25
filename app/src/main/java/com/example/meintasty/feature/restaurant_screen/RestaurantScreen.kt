@@ -98,7 +98,12 @@ fun SharedTransitionScope.RestaurantScreen(
     val categoryState = restaurantViewModel.categoryState.collectAsState()
     val categoryRequest = CategoryRequest()
     val scrollState = rememberLazyGridState()
+    val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)?.toIntOrNull()
 
+    LaunchedEffect(Unit) {
+        val restaurantRequest = RestaurantRequest(categoryIdList = listOf(),cityCode = cityCode, pageNumber = 1)
+        restaurantViewModel.getRestaurant(restaurantRequest)
+    }
 
     val fetchNextPage = remember {
         derivedStateOf {
@@ -106,59 +111,32 @@ fun SharedTransitionScope.RestaurantScreen(
                 scrollState.layoutInfo.totalItemsCount //listenin toplam öğe sayısını tutar
             val lastDisplayedIndex =
                 scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            lastDisplayedIndex >= totalItems - 2
+            lastDisplayedIndex >= totalItems - 1
 
         }
     }
-    val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)?.toIntOrNull()
     if (cityCode != null) {
-        val nextPage =  restaurantState.value.restaurantListInfo?.nextPage ?: 1
-        val restaurantRequest = RestaurantRequest(listOf(1), cityCode, nextPage)
-        Log.e("nextPage", "$nextPage")
-        if (fetchNextPage.value && !isLoading.value) {
-            isLoading.value = true
-            LaunchedEffect(fetchNextPage.value) {
-                restaurantViewModel.getRestaurant(restaurantRequest)
-                isLoading.value = false
+        val totalPage = restaurantState.value.restaurantListInfo?.totalPages ?: 1
+        val nextPage =  restaurantState.value.restaurantListInfo?.nextPage  ?: 1
+        if (nextPage <= totalPage){
+            val restaurantRequest = RestaurantRequest( categoryIdList = listOf(), cityCode = cityCode, pageNumber = nextPage)
+            Log.e("nextPage", "$nextPage")
+            if (fetchNextPage.value && !isLoading.value) {
+                isLoading.value = true
+                LaunchedEffect(fetchNextPage.value) {
+                    restaurantViewModel.getRestaurant(restaurantRequest)
+                    isLoading.value = false
+                }
             }
         }
     } else {
         Log.e("city_code", "City code is null or invalid!")
     }
 
-
-    /* LaunchedEffect(scrollState) {
-    snapshotFlow { scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0 } //en son öğenin dizinini tutuyor
-        .collect { lastVisibleIndex ->
-            if ( lastVisibleIndex != null) {
-                val totalItems = scrollState.layoutInfo.totalItemsCount //listenin toplam öğe sayısını tutar
-                if (totalItems - lastVisibleIndex <= 2) {
-                    val nextPage =  2//restaurantState.value.data
-
-                    //  previousItemCount = totalItems
-                    onLoadMoreItem(nextPage,restaurantViewModel) //daha fazla öğe yüklemek için çağırılır
-                }
-            }
-
-        }
-}*/
-
-    // val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)
-    // Log.d("city_code", "$cityCode")
-    // cityCode?.let {
-    //     val restaurantRequest = RestaurantRequest(
-    //         it.toInt(),
-    //         0,
-    //     )
-
     LaunchedEffect(Unit) {
-        //        restaurantViewModel.getRestaurant(restaurantRequest)
         restaurantViewModel.getLocationInfo()
         restaurantViewModel.getCategoryList(categoryRequest)
-
-        Log.d("screen", "searchscreen")
     }
-    //}
 
     Log.d("cityCode:", cityCode.toString())
     Scaffold(
