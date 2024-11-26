@@ -1,14 +1,16 @@
-package com.example.meintasty.feature.profile_screen
+package com.example.meintasty.feature.order_screen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
-import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
-import com.example.meintasty.domain.usecase.GetUserUseCase
+import com.example.meintasty.domain.model.get_order_model.get_order_request.GetOrderRequest
+import com.example.meintasty.domain.model.get_order_model.get_order_response.GetOrderResponse
+import com.example.meintasty.domain.model.get_order_model.get_order_response.OrderPage
+import com.example.meintasty.domain.usecase.GetOrderUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
+import com.example.meintasty.feature.profile_screen.UserDatabaseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,32 +18,31 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
-    private val getUserUseCase: GetUserUseCase,
+class OrderViewModel @Inject constructor(
+    private val getOrderUseCase: GetOrderUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
-) : ViewModel() {
-
-        private val _userState = MutableStateFlow(UserState())
-    val userState = _userState.asStateFlow()
+    )  :ViewModel(){
 
     private val _userDatabaseState = MutableStateFlow(UserDatabaseState())
     val userDatabaseState = _userDatabaseState.asStateFlow()
 
-    fun getUser(userRequest: UserRequest){
+    private val _getOrderState = MutableStateFlow(GetOrderState())
+    val getOrderState = _getOrderState.asStateFlow()
+    fun getOrder(getOrderRequest: GetOrderRequest){
         viewModelScope.launch {
-            getUserUseCase.invoke(userRequest).collect{result ->
+            getOrderUseCase.invoke(getOrderRequest).collect{result->
                 when(result){
                     is NetworkResult.Failure -> {
-                        _userState.value = UserState(
+                        _getOrderState.value = GetOrderState(
                             data = null,
                             isSucces = false,
                             isLoading = true,
                             isError = result.msg
                         )
-                        Log.d("usrviewmodel:","${result.msg}")
+                        Log.d("profileViewmodel:error:","${result.msg}")
                     }
                     NetworkResult.Loading -> {
-                        _userState.value = UserState(
+                        _getOrderState.value = GetOrderState(
                             data = null,
                             isSucces = false,
                             isLoading = true,
@@ -49,13 +50,15 @@ class ProfileViewModel @Inject constructor(
                         )
                     }
                     is NetworkResult.Success -> {
-                        _userState.value = UserState(
+                        _getOrderState.value = GetOrderState(
                             data = result.data,
-                            isSucces = true,
-                            isLoading = false,
-                            isError =""
+                            isSucces = false,
+                            isLoading = true,
+                            isError = ""
                         )
-                        Log.d("usrviewmodel:","${result.data}")
+                        Log.d("profileViewmodel:success:","${result.data.value}")
+                        Log.d("profileViewmodel:success:","${result.data}")
+
                     }
                 }
             }
@@ -77,10 +80,12 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
-}
 
-data class UserState(
-    val data :UserResponse? = null,
+
+}
+data class GetOrderState(
+    val data : GetOrderResponse? = null,
+    val orderPage : OrderPage? = null,
     val isSucces : Boolean? = false,
     val isLoading: Boolean? = false,
     val isError : String? = ""

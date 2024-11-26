@@ -37,8 +37,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,14 +49,14 @@ import com.example.meintasty.navigation.Screen
 fun ProfileScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    userViewModel: ProfileViewModel = hiltViewModel()
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val userState = userViewModel.userState.collectAsState().value
-    val userDatabaseState = userViewModel.userDatabaseState.collectAsState()
+    val userState = profileViewModel.userState.collectAsState().value
+    val userDatabaseState = profileViewModel.userDatabaseState.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        userViewModel.getUserDatabaseModel()
+        profileViewModel.getUserDatabaseModel()
     }
 
     val userId = userDatabaseState.value.data?.userId
@@ -68,7 +66,7 @@ fun ProfileScreen(
             if (it > 0) {
                 val userRequest = UserRequest(it)
                 Log.d("userrequest:userId3:", "$it")
-                userViewModel.getUser(userRequest = userRequest)
+                profileViewModel.getUser(userRequest = userRequest)
             }
         }
     }
@@ -94,17 +92,7 @@ fun ProfileScreen(
             )
         },
         content = { paddingValues ->
-            /*    if (userState.isLoading == true) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            color = colorResource(id = R.color.mein_tasty_color)
-                        )
-                    }
-                } else if (userState.isSucces == true) { //!!!!!!*/
+
             userState.data?.value.let { user ->
                 Column(modifier = Modifier.padding(paddingValues)) {
                     Card(
@@ -249,6 +237,9 @@ fun ProfileScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
+                                    .clickable {
+                                  //      navController.navigate(Screen.OrderScreen.route)
+                                    }
                             ) {
                                 ProfileStartIcon(
                                     onClick = {},
@@ -261,8 +252,6 @@ fun ProfileScreen(
                     }
                 }
             }
-
-            // }
         }
     )
 }

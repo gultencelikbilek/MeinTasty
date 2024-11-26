@@ -13,6 +13,8 @@ import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_r
 import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurantResponse
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
+import com.example.meintasty.domain.model.get_order_model.get_order_request.GetOrderRequest
+import com.example.meintasty.domain.model.get_order_model.get_order_response.GetOrderResponse
 import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
 import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
@@ -85,5 +87,8 @@ interface ApiService {
 
     @POST(Constants.END_POINT_UPDATE_BASKET)
     suspend fun updateBasket(@Body updateBasket: UpdateBasketRequest) : UpdateBasketResponse
+
+    @POST(Constants.END_POINT_GET_ORDER)
+    suspend fun getOrder(@Body getOrderRequest: GetOrderRequest) : GetOrderResponse
 
 }

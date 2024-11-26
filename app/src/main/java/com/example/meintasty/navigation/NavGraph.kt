@@ -20,6 +20,7 @@ import com.example.meintasty.feature.category_detail_screen.CategoryDetailScreen
 import com.example.meintasty.feature.choose_login_register.ChooseLoginRegisterScreen
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
 import com.example.meintasty.feature.favorite_restaurant.FavoriteRestaurantScreen
+import com.example.meintasty.feature.order_screen.OrderScreen
 import com.example.meintasty.feature.password_screen.PasswordScreen
 import com.example.meintasty.feature.profile_screen.ProfileScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
@@ -132,6 +133,9 @@ fun NavGraph() {
             }
             composable(Screen.FavoriteRestaurant.route){
                 FavoriteRestaurantScreen(navController)
+            }
+            composable(Screen.OrderScreen.route){
+                OrderScreen(navController = navController)
             }
         }
     }

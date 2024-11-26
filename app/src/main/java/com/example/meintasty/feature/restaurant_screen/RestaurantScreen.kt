@@ -334,8 +334,3 @@ fun SharedTransitionScope.RestaurantScreen(
     )
 }
 
-
-/*fun onLoadMoreItem(nextPage: Int, restaurantViewModel: RestaurantViewModel) {
-    restaurantViewModel.getRestaurant(RestaurantRequest(categoryId = 0, cityCode = 1,pageNumber = nextPage))
-}*/
-

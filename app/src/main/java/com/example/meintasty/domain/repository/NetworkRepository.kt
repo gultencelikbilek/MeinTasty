@@ -12,6 +12,8 @@ import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_r
 import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurantResponse
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.GetBasketResponse
+import com.example.meintasty.domain.model.get_order_model.get_order_request.GetOrderRequest
+import com.example.meintasty.domain.model.get_order_model.get_order_response.GetOrderResponse
 import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
 import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
@@ -32,6 +34,7 @@ import com.example.meintasty.domain.model.update_phone_model.update_phone_reques
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
 import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
 import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
+import retrofit2.http.Body
 
 interface NetworkRepository {
 
@@ -45,11 +48,13 @@ interface NetworkRepository {
     suspend fun getUser(userRequest: UserRequest): UserResponse
     suspend fun updatePhone(updatePhoneRequest: UpdatePhoneRequest): UpdatePhoneResponse
     suspend fun updateEmail(emailUpdateRequest: EmailUpdateRequest): EmailUpdateResponse
-    suspend fun updatePassword(updatePasswordRequest: UpdatePasswordRequest) : UpdatePasswordResponse
-    suspend fun addBasket(addBasketRequest: AddBasketRequest) : AddBasketResponse
+    suspend fun updatePassword(updatePasswordRequest: UpdatePasswordRequest): UpdatePasswordResponse
+    suspend fun addBasket(addBasketRequest: AddBasketRequest): AddBasketResponse
     suspend fun getBasket(getBasketRequest: GetBasketRequest): GetBasketResponse
-    suspend fun removeBasket(removeBasketRequest: RemoveBasketRequest) : RemoveBasketResponse
+    suspend fun removeBasket(removeBasketRequest: RemoveBasketRequest): RemoveBasketResponse
     suspend fun getFavoritesRestaurant(favoriteRestaurantRequest: FavoritesRestaurantRequest): FavoriteRestaurantResponse
-    suspend fun updateBasket(updateBasket: UpdateBasketRequest) : UpdateBasketResponse
+    suspend fun updateBasket(updateBasket: UpdateBasketRequest): UpdateBasketResponse
+    suspend fun getOrder(@Body getOrderRequest: GetOrderRequest): GetOrderResponse
+
 
 }
