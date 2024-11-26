@@ -18,6 +18,7 @@ object Constants {
     const val END_POINT_REMOVE_BASKET = "Basket/removeBasket"
     const val END_POINT_FAVORITE_RESTAURANT = "Home/getFavoriteRestaurants"
     const val END_POINT_UPDATE_BASKET = "Basket/updateBasket"
+    const val END_POINT_GET_ORDER = "Order/getOrders"
 
     const val SHARED_PREF = "city_code"
     const val SHARED_TOKEN = "token_code"
