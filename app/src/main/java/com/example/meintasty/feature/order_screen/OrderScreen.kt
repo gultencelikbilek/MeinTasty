@@ -64,20 +64,31 @@ fun OrderScreen(
     }
 
 
-
     LaunchedEffect(Unit) {
+        val getOrderRequest = GetOrderRequest( restaurantId =restaurantId , pageNumber = 1)
+        orderViewModel.getOrder(getOrderRequest)
         orderViewModel.getUserDatabaseModel()
     }
 
 
-    LaunchedEffect(userId) {
+
         userId?.let {
             if (it > 0) {
-                val getOrderRequest = GetOrderRequest( restaurantId =restaurantId , pageNumber = 1)
-                orderViewModel.getOrder(getOrderRequest)
+                val totalPage = getOrderState.value.orderPage?.totalPages ?: 1
+                val nextPage = getOrderState.value.data?.value?.nextPage ?: 1
+                if (nextPage <= totalPage){
+                    val getOrderRequest = GetOrderRequest( restaurantId =restaurantId , pageNumber = nextPage)
+                    if (fetchNextPage.value && !isLoading.value){
+                        isLoading.value = true
+                        LaunchedEffect(fetchNextPage.value) {
+                            orderViewModel.getOrder(getOrderRequest)
+                            isLoading.value = false
+                        }
+                    }
+                }
             }
         }
-    }
+
 
     Scaffold(
         topBar = {
@@ -107,13 +118,11 @@ fun OrderScreen(
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
-                getOrderState.value.data?.let {orderList ->
-                   // val orderListNotNull = orderList.value?.filterNotNull() ?: emptyList()
-                // items(){
-                    //    Log.d("order","$it")
-                  //      Text(text = it.name.toString())
-                       // OrderCardComponent(modifier,it)
-                //    }
+                getOrderState.value.data?.value?.orders.let  {orderList ->
+                    val orderListNotNull = orderList?.filterNotNull() ?: emptyList()
+                 items(orderListNotNull){
+                       OrderCardComponent(modifier,it)
+                    }
                 }
             }
         }

@@ -200,7 +200,6 @@ fun ProfileScreen(
                                 )
                             }
                             DividierProfile()
-
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -223,7 +222,7 @@ fun ProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                                     .clickable {
-                                        navController.navigate(Screen.FavoriteRestaurant.route)
+                                      //  navController.navigate(Screen.FavoriteRestaurant.route)
                                     }
                             ) {
                                 ProfileStartIcon(
@@ -238,7 +237,7 @@ fun ProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                                     .clickable {
-                                  //      navController.navigate(Screen.OrderScreen.route)
+                                        navController.navigate(Screen.OrderScreen.route)
                                     }
                             ) {
                                 ProfileStartIcon(

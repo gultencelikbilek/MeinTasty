@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,114 +54,115 @@ fun BasketCardComponent(
     onProductAdd: () -> Unit,
     onProductMinus: () -> Unit
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    val isLoading = remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
 
-
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            ),
-        elevation = CardDefaults.cardElevation(1.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )
+            .background(Color.White)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .clickable(onClick = onClick)
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick
+                ),
+            elevation = CardDefaults.cardElevation(1.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
         ) {
-            Box(modifier = Modifier.wrapContentSize()) {
-                Image(
-                    painter = painterResource(id = R.drawable.food_one),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Column(
-                modifier = Modifier.padding(start = 2.dp, top = 8.dp)
-            ) {
-                Text(
-                    text = basket?.menuName.toString(),
-                    style = TextStyle(
-                        color = Color.DarkGray,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
-                    )
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = basket?.restaurantName.toString(),
-                    style = TextStyle(
-                        color = Color.DarkGray,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
-                    )
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp));
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "${basket?.price}",
-                    style = TextStyle(
-                        color = Color.DarkGray,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
-                    ),
-                    modifier = Modifier.padding(vertical = 25.dp)
-                )
-
-                Spacer(modifier = Modifier.width(10.dp))
-
                 Box(
                     modifier = Modifier
-                        .background(Color.White)
-                        .border(1.dp, Color.LightGray, shape = RoundedCornerShape(50.dp))
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) {
-                            expanded = !expanded
-                        }
-                        .animateContentSize()
-                        .wrapContentHeight()
-                        .fillMaxWidth(if (expanded) 0.8f else 0.4f)
+                        .size(80.dp)
+                        .padding(8.dp)
+                        .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.padding(8.dp)
+                    Image(
+                        painter = painterResource(id = R.drawable.food_one),
+                        contentDescription = "Food Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.matchParentSize()
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = basket?.menuName.orEmpty(),
+                        style = MaterialTheme.typography.titleMedium.copy(color = Color.Black),
+                        maxLines = 1
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = basket?.restaurantName.orEmpty(),
+                        style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray),
+                        maxLines = 1
+                    )
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Text(
+                        text = "${basket?.price ?: "0"} ₺",
+                        style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(Color.White)
+                            .border(1.dp, Color.LightGray, shape = RoundedCornerShape(50.dp))
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
+                                expanded = !expanded
+                            }
+                            .animateContentSize()
+                            .height(30.dp)
+                            .wrapContentWidth()
+                            .padding(horizontal = if (expanded) 16.dp else 32.dp)
                     ) {
-                        if (expanded) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.minus),
-                                contentDescription = "Decrease",
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable { onProductMinus() }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.padding(4.dp)
+                        ) {
+                            if (expanded) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.minus),
+                                    contentDescription = "Decrease",
+                                    modifier = Modifier
+                                        .size(16.dp)
+                                        .clickable { onProductMinus() }
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                            }
+                            Text(
+                                text = "${basket?.quantity ?: 0}",
+                                style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
                             )
-                            Spacer(modifier = Modifier.width(4.dp))
-                        }
-                        Text(
-                            text = "${basket?.quantity}",
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                                color = Color.Black
-                            )
-                        )
-                        if (expanded) {
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Icon(
-                                painter = painterResource(id = R.drawable.plus),
-                                contentDescription = "Increase",
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable {
-                                        onProductAdd()
-                                    }
-                            )
+                            if (expanded) {
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Icon(
+                                    painter = painterResource(id = R.drawable.plus),
+                                    contentDescription = "Increase",
+                                    modifier = Modifier
+                                        .size(16.dp)
+                                        .clickable { onProductAdd() }
+                                )
+                            }
                         }
                     }
                 }
@@ -168,32 +171,3 @@ fun BasketCardComponent(
     }
 }
 
-@Preview
-@Composable
-fun BasketPrew() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        elevation = CardDefaults.cardElevation(1.dp),
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.plus),
-            contentDescription = "",
-            modifier = Modifier.size(20.dp)
-        )
-        Text(
-            text = "0",
-            style = TextStyle(
-                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                color = Color.Black
-            )
-        )
-        Icon(
-            painter = painterResource(id = R.drawable.minus),
-            contentDescription = "",
-            modifier = Modifier.size(20.dp)
-        )
-
-    }
-}

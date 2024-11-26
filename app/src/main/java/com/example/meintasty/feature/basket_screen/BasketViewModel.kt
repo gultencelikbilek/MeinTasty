@@ -19,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,6 +49,11 @@ class BasketViewModel @Inject constructor(
 
     init {
         getUserModel()
+        viewModelScope.launch {
+            _basketState.collect{
+                updateTotalPrice()
+            }
+        }
     }
 
     fun getBasket(basketRequest: GetBasketRequest) {
@@ -172,7 +178,7 @@ class BasketViewModel @Inject constructor(
         _basketState.value.data?.let { basketItems ->
             _totalPriceState.value = basketItems.sumOf { basketItem ->
                 val quantity = basketItem?.quantity ?: 0
-                val price = basketItem?.price?.toDouble() ?: 0.0
+                val price = basketItem?.price?.toDoubleOrNull() ?: 0.0
                 quantity* price
             }
         }
