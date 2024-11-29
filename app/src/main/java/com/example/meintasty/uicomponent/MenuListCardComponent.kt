@@ -157,19 +157,12 @@ fun SharedTransitionScope.MenuListCardComponent(
                                 }
                             }
                         }
-
                 ) {
-                   // IconButton(
-                   //     onClick = {
-                   //
-                   //     }
-                   // ) {
                         Icon(
                             painter = painterResource(id = R.drawable.plus),
                             contentDescription = "",
                             modifier = Modifier.size(24.dp).padding(6.dp)
                         )
-                  //  }
                 }
             }
 

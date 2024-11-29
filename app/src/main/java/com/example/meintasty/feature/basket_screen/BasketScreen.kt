@@ -154,7 +154,9 @@ fun BasketScreen(
                                     ) { _, _, _ ->
                                         BasketCardComponent(
                                             basket = basket,
-                                            onClick = {},
+                                            onClick = {
+
+                                            },
                                             onLongClick = {
                                                 selectedBasketId = basket.id!! //alertdialog için
                                                 openDialogState.value = true

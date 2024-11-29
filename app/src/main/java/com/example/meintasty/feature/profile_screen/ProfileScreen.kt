@@ -153,7 +153,7 @@ fun ProfileScreen(
                                     .padding(vertical = 10.dp)
                             ) {
                                 ProfileStartIcon(
-                                    modifier,
+                                    modifier = modifier,
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.phone)
                                 )
@@ -161,18 +161,22 @@ fun ProfileScreen(
                                 Spacer(modifier = Modifier.weight(1f))
                                 EditIconComponent(
                                     onClick = {
-                                        if (user?.phoneNumber.toString() == null) {
-                                            Toast.makeText(context, "Null", Toast.LENGTH_SHORT)
-                                                .show()
-
+                                        if (user?.phoneNumber.isNullOrEmpty()) {
+                                            Toast.makeText(
+                                                context,
+                                                "Phone number is null",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         } else {
-                                            Screen.UpdateScreen.route + "?userId=$userId&email=${user?.email}&phone=${user?.phoneNumber}&updateType=phone"
-
+                                            navController.navigate(
+                                                route = "update_screen?userId=$userId&email=${user?.email}&phone=${user?.phoneNumber}&updateType=phone"
+                                            )
                                         }
                                     },
-                                    modifier
+                                    modifier = modifier
                                 )
                             }
+
                             DividierProfile()
                             Row(
                                 modifier = Modifier
@@ -222,7 +226,7 @@ fun ProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                                     .clickable {
-                                      //  navController.navigate(Screen.FavoriteRestaurant.route)
+                                        //  navController.navigate(Screen.FavoriteRestaurant.route)
                                     }
                             ) {
                                 ProfileStartIcon(

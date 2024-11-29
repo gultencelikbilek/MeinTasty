@@ -11,6 +11,7 @@ import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
 import com.example.meintasty.domain.usecase.AddBasketUseCase
+import com.example.meintasty.domain.usecase.GetBasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -116,13 +117,13 @@ class DetailRestaurantViewModel @Inject constructor(
                             isLoading = true,
                             isError = ""
                         )
+
                         Log.d("addBasketState:succes", "${it.data.value}")
                     }
                 }
             }
         }
     }
-
 }
 
 data class AddBasketState(
