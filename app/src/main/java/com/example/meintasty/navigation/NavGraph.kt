@@ -93,7 +93,7 @@ fun NavGraph() {
                 ProfileScreen(navController = navController)
             }
             composable(
-                route = Screen.UpdateScreen.route + "&userId={userId}&email={email}&phone={phone}&updateType={updateType}",
+                route = "update_screen?userId={userId}&email={email}&phone={phone}&updateType={updateType}",
                 arguments = listOf(
                     navArgument(name = "userId") {
                         type = NavType.IntType
@@ -107,17 +107,17 @@ fun NavGraph() {
                     navArgument(name = "updateType") {
                         type = NavType.StringType
                     }
-                ),
-
-                ) { navBackStack ->
+                )
+            ) { navBackStack ->
                 UpdateScreen(
                     userId = navBackStack.arguments?.getInt("userId"),
-                    email = navBackStack.arguments?.getString("phone"),
-                    phoneNum = navBackStack.arguments?.getString("email"),
+                    email = navBackStack.arguments?.getString("email"),
+                    phoneNum = navBackStack.arguments?.getString("phone"),
                     updateType = navBackStack.arguments?.getString("updateType"),
-                    navController
+                    navController = navController
                 )
             }
+
             composable(
                 route = Screen.PasswordScreen.route + "&userId={userId}",
                 arguments = listOf(

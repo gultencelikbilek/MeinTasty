@@ -1,7 +1,6 @@
 package com.example.meintasty.feature.order_screen
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -121,7 +119,7 @@ fun OrderScreen(
                 getOrderState.value.data?.value?.orders.let  {orderList ->
                     val orderListNotNull = orderList?.filterNotNull() ?: emptyList()
                  items(orderListNotNull){
-                       OrderCardComponent(modifier,it)
+                       OrderCardComponent(modifier,it,orderViewModel)
                     }
                 }
             }
