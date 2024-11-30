@@ -155,7 +155,6 @@ fun BasketScreen(
                                         BasketCardComponent(
                                             basket = basket,
                                             onClick = {
-
                                             },
                                             onLongClick = {
                                                 selectedBasketId = basket.id!! //alertdialog için
@@ -235,7 +234,9 @@ fun BasketScreen(
                     )
 
                     Button(
-                        onClick = { /* TODO: Handle Confirm Cart */ },
+                        onClick = {
+                            navController.navigate(Screen.PaymentScreen.route)
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),

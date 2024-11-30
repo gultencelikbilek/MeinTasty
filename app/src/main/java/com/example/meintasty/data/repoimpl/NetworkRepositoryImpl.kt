@@ -20,6 +20,8 @@ import com.example.meintasty.domain.model.get_user_model.user_request.UserReques
 import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
 import com.example.meintasty.domain.model.login_model.login_response.LoginResponseModel
+import com.example.meintasty.domain.model.payment_model.payment_request_model.PaymentRequest
+import com.example.meintasty.domain.model.payment_model.payment_response_model.PaymentResponse
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
@@ -109,5 +111,9 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun getOrder(getOrderRequest: GetOrderRequest): GetOrderResponse {
         return apiService.getOrder(getOrderRequest)
+    }
+
+    override suspend fun addOrder(paymentRequest: PaymentRequest): PaymentResponse {
+        return apiService.addOrder(paymentRequest)
     }
 }
