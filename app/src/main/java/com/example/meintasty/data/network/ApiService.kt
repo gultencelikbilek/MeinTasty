@@ -20,6 +20,8 @@ import com.example.meintasty.domain.model.get_user_model.user_response.UserRespo
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.login_model.login_response.LoginResponseModel
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
+import com.example.meintasty.domain.model.payment_model.payment_request_model.PaymentRequest
+import com.example.meintasty.domain.model.payment_model.payment_response_model.PaymentResponse
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
@@ -86,9 +88,12 @@ interface ApiService {
     suspend fun getFavoritesRestaurant(@Body favoriteRestaurantRequest: FavoritesRestaurantRequest): FavoriteRestaurantResponse
 
     @POST(Constants.END_POINT_UPDATE_BASKET)
-    suspend fun updateBasket(@Body updateBasket: UpdateBasketRequest) : UpdateBasketResponse
+    suspend fun updateBasket(@Body updateBasket: UpdateBasketRequest): UpdateBasketResponse
 
     @POST(Constants.END_POINT_GET_ORDER)
-    suspend fun getOrder(@Body getOrderRequest: GetOrderRequest) : GetOrderResponse
+    suspend fun getOrder(@Body getOrderRequest: GetOrderRequest): GetOrderResponse
+
+    @POST(Constants.END_POINT_ADD_ORDER)
+    suspend fun addOrder(@Body paymentRequest: PaymentRequest): PaymentResponse
 
 }
