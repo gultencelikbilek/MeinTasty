@@ -19,7 +19,6 @@ import com.example.meintasty.feature.basket_screen.BasketScreen
 import com.example.meintasty.feature.category_detail_screen.CategoryDetailScreen
 import com.example.meintasty.feature.choose_login_register.ChooseLoginRegisterScreen
 import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
-import com.example.meintasty.feature.favorite_restaurant.FavoriteRestaurantScreen
 import com.example.meintasty.feature.order_screen.OrderScreen
 import com.example.meintasty.feature.password_screen.PasswordScreen
 import com.example.meintasty.feature.payment_screen.PaymentScreen
@@ -93,6 +92,7 @@ fun NavGraph() {
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)
             }
+
             composable(
                 route = "update_screen?userId={userId}&email={email}&phone={phone}&updateType={updateType}",
                 arguments = listOf(
@@ -132,13 +132,10 @@ fun NavGraph() {
                     navController = navController
                 )
             }
-            composable(Screen.FavoriteRestaurant.route){
-                FavoriteRestaurantScreen(navController)
-            }
-            composable(Screen.OrderScreen.route){
+            composable(Screen.OrderScreen.route) {
                 OrderScreen(navController = navController)
             }
-            composable(Screen.PaymentScreen.route){
+            composable(Screen.PaymentScreen.route) {
                 PaymentScreen(navController)
             }
         }

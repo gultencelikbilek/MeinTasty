@@ -47,14 +47,15 @@
     <string name="delete_alert">Are you sure you want to delete it?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string name="favorite_restaurant">Favorite Screen</string>
+    <string name="favorite_restaurant">Favorite Restaurant</string>
     <string name="confirm_cart">Confirm Cart</string>
     <string name="total_price">Total Price</string>
     <string name="add_to_basket">Add to Basket</string>
-    <string name="order_screen">Order</string>
+    <string name="order_screen">My Past Orders</string>
     <string name="repeat_order">Repeat Order</string>
     <string name="payment">Payment</string>
     <string name="ordertip">Order Tip</string>
     <string name="payment_options">Payment Options</string>
     <string name="payment_method">Payment Method</string>
+    <string name="number_null">Phone number is null</string>
 </resources>

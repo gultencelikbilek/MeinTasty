@@ -62,6 +62,7 @@ import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
+import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_request.FavoritesRestaurantRequest
 import com.example.meintasty.domain.model.foodList
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.uicomponent.CategoryCardComponent
@@ -85,9 +86,10 @@ fun SharedTransitionScope.RestaurantScreen(
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_extralight, weight = FontWeight.Normal)
     )
+
     val context = LocalContext.current
     val isLoading = remember { mutableStateOf(false) }
-
+    val favoriteRestaurantState = restaurantViewModel.favoriteRestaurantState.collectAsState()
 
     val sharedPreferences =
         context.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
@@ -103,6 +105,7 @@ fun SharedTransitionScope.RestaurantScreen(
     LaunchedEffect(Unit) {
         val restaurantRequest = RestaurantRequest(categoryIdList = listOf(),cityCode = cityCode, pageNumber = 1)
         restaurantViewModel.getRestaurant(restaurantRequest)
+        restaurantViewModel.getFavoriteRestaurant(FavoritesRestaurantRequest())
     }
 
     val fetchNextPage = remember {
@@ -111,7 +114,7 @@ fun SharedTransitionScope.RestaurantScreen(
                 scrollState.layoutInfo.totalItemsCount //listenin toplam öğe sayısını tutar
             val lastDisplayedIndex =
                 scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            lastDisplayedIndex >= totalItems - 1
+            lastDisplayedIndex >= totalItems - 11
 
         }
     }
@@ -237,18 +240,26 @@ fun SharedTransitionScope.RestaurantScreen(
                             .height(300.dp)
                             .padding(top = 6.dp)
                     ) {
-                        SearchHeaderComponent(text = stringResource(id = R.string.compains))
+                        SearchHeaderComponent(text = stringResource(id = R.string.favorite_restaurant))
 
-                        val pagerState = rememberPagerState { foodList.size }
+                        val favoriteRestaurantList =    favoriteRestaurantState.value.data.let {
+                             it?.filterNotNull() ?: emptyList()
+                        }
+                        Log.d("favoriteRestaurantList:","${favoriteRestaurantList}")
+                        val pagerState = rememberPagerState {
+                            favoriteRestaurantList.size
+                        }
 
                         HorizontalPager(
                             state = pagerState,
-                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            contentPadding = PaddingValues(end = 40.dp), // Sayfalar arası boşluk
+                            pageSpacing = (-10).dp, // Kartların birbirine yaklaşması için negatif boşluk
                             modifier = Modifier
                                 .padding(top = 48.dp)
                         ) { page ->
-                            FoodCardComponent(food = foodList[page])
+                            FoodCardComponent(animatedVisibilityScope,favoriteRestaurant = favoriteRestaurantList[page],navController)
                         }
+
                     }
 
 

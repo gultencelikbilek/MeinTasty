@@ -91,7 +91,7 @@ fun OrderCardComponent(
                         )
                         Spacer(modifier = Modifier.width(50.dp))
                         Text(
-                            text = order.price.toString(),
+                            text = order.price.toString()+" EUR",
                             style = MaterialTheme.typography.titleMedium.copy(color = Color.Black),
                             maxLines = 1
                         )
@@ -119,6 +119,7 @@ fun OrderCardComponent(
                     Log.d("addbasket:success","$addBasketRequest")
 
                 },
+                shape = RoundedCornerShape(10.dp),
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),

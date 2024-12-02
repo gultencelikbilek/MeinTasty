@@ -147,6 +147,9 @@ fun ProfileScreen(
                                     })
                             }
                             DividierProfile()
+                            val regex = """(\d)(\d{3})(\d{3})(\d{2})(\d{2})""".toRegex()
+                            val number = user?.phoneNumber.toString()
+                            val output = regex.replace(number, "$2 $3-$4-$5")
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -157,14 +160,14 @@ fun ProfileScreen(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.phone)
                                 )
-                                BasicText(modifier, user?.phoneNumber.toString())
+                                BasicText(modifier, output)
                                 Spacer(modifier = Modifier.weight(1f))
                                 EditIconComponent(
                                     onClick = {
                                         if (user?.phoneNumber.isNullOrEmpty()) {
                                             Toast.makeText(
                                                 context,
-                                                "Phone number is null",
+                                               R.string.number_null,
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                         } else {
@@ -213,7 +216,7 @@ fun ProfileScreen(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.navigation)
                                 )
-                                BasicText(modifier, user?.userAdddress.toString())
+                                BasicText(modifier, user?.userAdddress?.addressText.toString())
                                 Spacer(modifier = Modifier.weight(1f))
                                 EditIconComponent(
                                     onClick = {
@@ -226,7 +229,6 @@ fun ProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                                     .clickable {
-                                        //  navController.navigate(Screen.FavoriteRestaurant.route)
                                     }
                             ) {
                                 ProfileStartIcon(
