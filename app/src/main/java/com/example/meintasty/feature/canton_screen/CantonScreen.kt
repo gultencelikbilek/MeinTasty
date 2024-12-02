@@ -51,45 +51,13 @@ fun CantonScreen(
             ) {
                 foodList.let {listFood ->
                     items(listFood) {
-                        FoodCardComponent(it)
+                      //  FoodCardComponent(it)
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
             }
-            //  Spacer(modifier = Modifier.width(50.dp))
-            //  MenuButtonComponent(onClick = {})
-            //  Spacer(modifier = Modifier.height(10.dp))
-            //  HotTodayComponent()
-            //  BreakfastCardComponent()
         }
     }
-
-  /*  Scaffold(
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier.padding(paddingValues),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                BeatMeCardComponent(cantonViewModel,navController)
-                Spacer(modifier = Modifier.height(10.dp))
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    foodList.let {listFood ->
-                        items(listFood) {
-                            FoodCardComponent(it)
-                            Spacer(modifier = Modifier.width(8.dp))
-                        }
-                    }
-                }
-                //  Spacer(modifier = Modifier.width(50.dp))
-                //  MenuButtonComponent(onClick = {})
-                //  Spacer(modifier = Modifier.height(10.dp))
-                //  HotTodayComponent()
-                //  BreakfastCardComponent()
-            }
-        }
-    )*/
 }
 
 @Preview

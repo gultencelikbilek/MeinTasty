@@ -61,14 +61,11 @@ fun OrderScreen(
         }
     }
 
-
     LaunchedEffect(Unit) {
         val getOrderRequest = GetOrderRequest( restaurantId =restaurantId , pageNumber = 1)
         orderViewModel.getOrder(getOrderRequest)
         orderViewModel.getUserDatabaseModel()
     }
-
-
 
         userId?.let {
             if (it > 0) {
@@ -86,7 +83,6 @@ fun OrderScreen(
                 }
             }
         }
-
 
     Scaffold(
         topBar = {

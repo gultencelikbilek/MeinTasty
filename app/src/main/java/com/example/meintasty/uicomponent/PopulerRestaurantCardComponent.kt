@@ -23,6 +23,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +51,6 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
     restaurant: Restaurant?,
     navController: NavController
 ) {
-
     Card(
         modifier = Modifier
             .width(250.dp)
@@ -101,8 +104,11 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
                             fontWeight = FontWeight.Bold
                         )
                     )
+                    val regex = """(\d{2})(\d{3})(\d{3})(\d{2})(\d{2})""".toRegex()
+                    val number = restaurant?.phoneNumber.toString()
+                    val output = regex.replace(number, "+$1 $2 $3-$4-$5")
                     Text(
-                        text = restaurant?.phoneNumber.toString(),
+                        text = output,
                         style = TextStyle(
                             color = Color.Gray,
                             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
@@ -111,46 +117,6 @@ fun SharedTransitionScope.PopulerRestaurantCardComponent(
                     )
                 }
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun Prew(modifier: Modifier = Modifier) {
-    Column(
-        modifier = Modifier
-            .background(Color.White)
-            .fillMaxWidth()
-            .fillMaxHeight()
-    ) {
-        Box(
-            modifier = Modifier
-                .background(Color.Black)
-                .align(Alignment.CenterHorizontally)
-        ) {
-            IconButton(
-                onClick = { },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(24.dp)
-                    .padding(8.dp)
-                    .zIndex(1f) // IconButton'un diğer bileşenlerin üstünde yer almasını sağlar
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.heart),
-                    contentDescription = "Like",
-                    tint = Color.Red
-                )
-            }
-            Image(
-                painter = painterResource(id = R.drawable.food_one),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.wrapContentSize()
-
-            )
-
         }
     }
 }

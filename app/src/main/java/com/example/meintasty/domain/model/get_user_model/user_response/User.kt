@@ -1,14 +1,14 @@
 package com.example.meintasty.domain.model.get_user_model.user_response
 
 data class User(
-    val birthDate: Any?,
+    val birthDate: String?,
     val email: String?,
     val fullName: String?,
-    val gender: Any?,
+    val gender: String?,
     val id: Int?,
-    val isEmailVerified: Any?,
-    val isPhoneVerified: Any?,
+    val isEmailVerified: Boolean?,
+    val isPhoneVerified: Boolean?,
     val phoneNumber: String?,
     val profilePicture: String?,
-    val userAdddress: Any?
+    val userAdddress: UserAdddress?
 )

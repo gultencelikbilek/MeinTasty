@@ -20,7 +20,7 @@ import com.example.meintasty.R
 
 @Composable
 fun EditIconComponent(
-    onClick: () -> Unit,
+    onClick:() -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current

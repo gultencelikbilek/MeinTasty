@@ -112,7 +112,7 @@ fun BasketCardComponent(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(end = 4.dp)
                 ) {
                     Text(
                         text = "${basket?.price ?: "0"} ₺",
@@ -132,37 +132,33 @@ fun BasketCardComponent(
                             .animateContentSize()
                             .height(30.dp)
                             .wrapContentWidth()
-                            .padding(horizontal = if (expanded) 16.dp else 32.dp)
+                            //.padding(horizontal = if (expanded) 16.dp else 32.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.padding(4.dp)
                         ) {
-                            if (expanded) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.minus),
-                                    contentDescription = "Decrease",
-                                    modifier = Modifier
-                                        .size(16.dp)
-                                        .clickable { onProductMinus() }
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                            }
+                            Icon(
+                                painter = painterResource(id = R.drawable.minus),
+                                contentDescription = "Decrease",
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .clickable { onProductMinus() }
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "${basket?.quantity ?: 0}",
                                 style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
                             )
-                            if (expanded) {
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Icon(
-                                    painter = painterResource(id = R.drawable.plus),
-                                    contentDescription = "Increase",
-                                    modifier = Modifier
-                                        .size(16.dp)
-                                        .clickable { onProductAdd() }
-                                )
-                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(
+                                painter = painterResource(id = R.drawable.plus),
+                                contentDescription = "Increase",
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .clickable { onProductAdd() }
+                            )
                         }
                     }
                 }

@@ -116,24 +116,6 @@ dependencies {
     //swipe
     implementation(libs.compose.swipebox.multiplatform)
 
-    //work manager
-    // (Java only)
-    implementation(libs.androidx.work.runtime)
-
-    // Kotlin + coroutines
-    implementation(libs.androidx.work.runtime.ktx)
-
-    // optional - RxJava2 support
-    implementation(libs.androidx.work.rxjava2)
-
-    // optional - GCMNetworkManager support
-    implementation(libs.androidx.work.gcm)
-
-    // optional - Test helpers
-    androidTestImplementation(libs.androidx.work.testing)
-
-    // optional - Multiprocess support
-    implementation(libs.androidx.work.multiprocess)
 
 
 }
