@@ -103,7 +103,8 @@ fun SharedTransitionScope.RestaurantScreen(
     val cityCode = sharedPreferences.getString(Constants.SHARED_PREF, null)?.toIntOrNull()
 
     LaunchedEffect(Unit) {
-        val restaurantRequest = RestaurantRequest(categoryIdList = listOf(),cityCode = cityCode, pageNumber = 1)
+        val restaurantRequest =
+            RestaurantRequest(categoryIdList = listOf(), cityCode = cityCode, pageNumber = 1)
         restaurantViewModel.getRestaurant(restaurantRequest)
         restaurantViewModel.getFavoriteRestaurant(FavoritesRestaurantRequest())
     }
@@ -120,9 +121,13 @@ fun SharedTransitionScope.RestaurantScreen(
     }
     if (cityCode != null) {
         val totalPage = restaurantState.value.restaurantListInfo?.totalPages ?: 1
-        val nextPage =  restaurantState.value.restaurantListInfo?.nextPage  ?: 1
-        if (nextPage <= totalPage){
-            val restaurantRequest = RestaurantRequest( categoryIdList = listOf(), cityCode = cityCode, pageNumber = nextPage)
+        val nextPage = restaurantState.value.restaurantListInfo?.nextPage ?: 1
+        if (nextPage <= totalPage) {
+            val restaurantRequest = RestaurantRequest(
+                categoryIdList = listOf(),
+                cityCode = cityCode,
+                pageNumber = nextPage
+            )
             Log.e("nextPage", "$nextPage")
             if (fetchNextPage.value && !isLoading.value) {
                 isLoading.value = true
@@ -242,10 +247,10 @@ fun SharedTransitionScope.RestaurantScreen(
                     ) {
                         SearchHeaderComponent(text = stringResource(id = R.string.favorite_restaurant))
 
-                        val favoriteRestaurantList =    favoriteRestaurantState.value.data.let {
-                             it?.filterNotNull() ?: emptyList()
+                        val favoriteRestaurantList = favoriteRestaurantState.value.data.let {
+                            it?.filterNotNull() ?: emptyList()
                         }
-                        Log.d("favoriteRestaurantList:","${favoriteRestaurantList}")
+                        Log.d("favoriteRestaurantList:", "${favoriteRestaurantList}")
                         val pagerState = rememberPagerState {
                             favoriteRestaurantList.size
                         }
@@ -257,11 +262,13 @@ fun SharedTransitionScope.RestaurantScreen(
                             modifier = Modifier
                                 .padding(top = 48.dp)
                         ) { page ->
-                            FoodCardComponent(animatedVisibilityScope,favoriteRestaurant = favoriteRestaurantList[page],navController)
+                            FoodCardComponent(
+                                animatedVisibilityScope,
+                                favoriteRestaurant = favoriteRestaurantList[page],
+                                navController
+                            )
                         }
-
                     }
-
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Box(
@@ -298,9 +305,8 @@ fun SharedTransitionScope.RestaurantScreen(
                                 .fillMaxWidth()
                                 .height(200.dp)
                         ) {
-                            restaurantState.value.data?.let {restaurantList->
-                                //items(restaurantList) { restaurant ->
-                                items(restaurantList, key = { it?.id ?: 0 }) {restaurant ->
+                            restaurantState.value.data?.let { restaurantList ->
+                                items(restaurantList) { restaurant ->
                                     Log.d("restaurantList:", restaurantList.toString())
                                     PopulerRestaurantCardComponent(
                                         animatedVisibilityScope,

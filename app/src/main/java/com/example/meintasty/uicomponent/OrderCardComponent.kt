@@ -107,13 +107,11 @@ fun OrderCardComponent(
                  //Burdan ekleme yapınca hata veriyor swagerrda öyle
                 onClick = {
                           val addBasketRequest = AddBasketRequest(
-                              basketDate = order.orderDate,
                               currencyCode = order.currencyCode,
                               menuId = order.id,
                               price = order.price,
                               quantity = 1,
                               restaurantId = order.restaurantId,
-                              userId = order.userId
                           )
                     orderViewModel.addBasket(addBasketRequest)
                     Log.d("addbasket:success","$addBasketRequest")

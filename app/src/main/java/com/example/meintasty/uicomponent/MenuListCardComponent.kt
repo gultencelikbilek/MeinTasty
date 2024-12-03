@@ -9,11 +9,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,18 +20,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -59,7 +49,7 @@ fun SharedTransitionScope.MenuListCardComponent(
 ) {
 
     val addBasketState = detailRestaurantViewModel.addBasketState.collectAsState().value
-
+    val deatilState = detailRestaurantViewModel.detailRestState.collectAsState().value
     val mutableInteractionSource = remember {
         MutableInteractionSource()
     }
@@ -138,16 +128,14 @@ fun SharedTransitionScope.MenuListCardComponent(
                                     val formattedDate =
                                         currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
                                     val addBasketRequest = AddBasketRequest(
-                                        basketDate = formattedDate,
                                         currencyCode = menu.currency.toString(),
-                                        menuId = menu.menuId,
+                                        menuId = menu.categoryId,
                                         price = menu.menuPrice.toString(),
                                         quantity = 1,
-                                        restaurantId = 1,
-                                        userId = userModelState.data?.userId,
+                                        restaurantId =deatilState.data?.restaurantId,
                                     )
 
-                                    Log.d("restaurantId:", "${menu.restaurantId}")
+                                    Log.d("restaurantId:", "${deatilState.data?.restaurantId}")
                                     Log.d("restaurant:", "${userModelState.data?.userId}")
                                     Log.d("addBasketRequest:", "$addBasketRequest")
                                     detailRestaurantViewModel.addBasket(addBasketRequest)
@@ -161,7 +149,9 @@ fun SharedTransitionScope.MenuListCardComponent(
                         Icon(
                             painter = painterResource(id = R.drawable.plus),
                             contentDescription = "",
-                            modifier = Modifier.size(24.dp).padding(6.dp)
+                            modifier = Modifier
+                                .size(24.dp)
+                                .padding(6.dp)
                         )
                 }
             }

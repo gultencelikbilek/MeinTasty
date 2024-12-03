@@ -1,7 +1,6 @@
 package com.example.meintasty.feature.detail_restaurant
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.UserAccountModel
@@ -11,7 +10,6 @@ import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
 import com.example.meintasty.domain.usecase.AddBasketUseCase
-import com.example.meintasty.domain.usecase.GetBasketUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
