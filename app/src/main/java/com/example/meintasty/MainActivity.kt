@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         setContent {
             var showSplashScreen by remember {
@@ -40,11 +39,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
             val navContoller = rememberNavController()
-                MeinTastyTheme {
-                    Log.v("Logg:loginNav","")
-                    NavGraph()
-                }
-
+            MeinTastyTheme {
+                Log.v("Logg:loginNav", "")
+                NavGraph()
+            }
         }
     }
 }

@@ -178,8 +178,9 @@ class BasketViewModel @Inject constructor(
         _basketState.value.data?.let { basketItems ->
             _totalPriceState.value = basketItems.sumOf { basketItem ->
                 val quantity = basketItem?.quantity ?: 0
-                val price = basketItem?.price?.toDoubleOrNull() ?: 0.0
-                quantity* price
+                val price = basketItem?.price?.replace(",",".")?.trim()?.toDoubleOrNull() ?: 0.0
+            //   price?.trim()?.toDoubleOrNull() ?: 0.0
+                quantity * price
             }
         }
     }
