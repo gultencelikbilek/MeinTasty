@@ -19,8 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -39,8 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
@@ -100,7 +96,8 @@ fun BasketCardComponent(
                     Text(
                         text = basket?.menuName.orEmpty(),
                         style = MaterialTheme.typography.titleMedium.copy(color = Color.Black),
-                        maxLines = 1
+                      //  maxLines = 2,
+                        modifier = Modifier.wrapContentWidth()
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
@@ -139,13 +136,24 @@ fun BasketCardComponent(
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.padding(4.dp)
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.minus),
-                                contentDescription = "Decrease",
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable { onProductMinus() }
-                            )
+                            if (basket?.quantity!! > 1){
+                                Icon(
+                                    painter = painterResource(id = R.drawable.minus),
+                                    contentDescription = "Decrease",
+                                    modifier = Modifier
+                                        .size(16.dp)
+                                        .clickable { onProductMinus() }
+                                )
+                            }else if (basket?.quantity == 1){
+                                Icon(
+                                    painter = painterResource(id = R.drawable.delete),
+                                    contentDescription = "Decrease",
+                                    modifier = Modifier
+                                        .size(16.dp)
+                                        .clickable { onProductMinus() }
+                                )
+                            }
+
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "${basket?.quantity ?: 0}",

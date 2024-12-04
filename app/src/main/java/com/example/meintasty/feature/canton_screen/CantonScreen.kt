@@ -45,17 +45,8 @@ fun CantonScreen(
             verticalArrangement = Arrangement.Bottom
         ) {
             BeatMeCardComponent(cantonViewModel,navController)
-            Spacer(modifier = Modifier.height(10.dp))
-            LazyRow(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                foodList.let {listFood ->
-                    items(listFood) {
-                      //  FoodCardComponent(it)
-                        Spacer(modifier = Modifier.width(8.dp))
-                    }
-                }
-            }
+
+
         }
     }
 }
