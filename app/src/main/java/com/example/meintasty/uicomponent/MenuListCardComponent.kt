@@ -129,7 +129,7 @@ fun SharedTransitionScope.MenuListCardComponent(
                                         currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
                                     val addBasketRequest = AddBasketRequest(
                                         currencyCode = menu.currency.toString(),
-                                        menuId = menu.categoryId,
+                                        menuId = menu.menuId,
                                         price = menu.menuPrice.toString(),
                                         quantity = 1,
                                         restaurantId =deatilState.data?.restaurantId,

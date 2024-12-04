@@ -19,7 +19,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,6 +44,10 @@ class BasketViewModel @Inject constructor(
 
     private val _totalPriceState = MutableStateFlow(0.0)
     val totalPriceState: StateFlow<Double> = _totalPriceState.asStateFlow()
+
+
+    private val _updateMenuTotalPriceState = MutableStateFlow(0.0)
+    val updateMenuTotalPriceState: StateFlow<Double> = _updateMenuTotalPriceState.asStateFlow()
 
 
     init {
@@ -89,6 +92,7 @@ class BasketViewModel @Inject constructor(
                             isError = ""
                         )
                         updateTotalPrice()
+                       // updateMenuTotalPrice()
                         Log.d("basketViewmodel:success:", "${basketData}")
 
                     }
@@ -174,12 +178,23 @@ class BasketViewModel @Inject constructor(
         }
     }
 
+   /*private fun updateMenuTotalPrice(){
+        viewModelScope.launch {
+            _basketState.value.data.let {basketItems ->
+                _updateMenuTotalPriceState.value = basketItems.sumOf { basketItem ->
+                    val quantity = basketItem?.quantity ?: 0
+                    val price = basketItem?.price?.replace(",",".")?.trim()?.toDoubleOrNull() ?: 0.0
+                    quantity * price
+                }
+            }
+        }
+    }*/
+
     private fun updateTotalPrice() {
         _basketState.value.data?.let { basketItems ->
             _totalPriceState.value = basketItems.sumOf { basketItem ->
                 val quantity = basketItem?.quantity ?: 0
                 val price = basketItem?.price?.replace(",",".")?.trim()?.toDoubleOrNull() ?: 0.0
-            //   price?.trim()?.toDoubleOrNull() ?: 0.0
                 quantity * price
             }
         }
