@@ -194,7 +194,8 @@ fun BasketScreen(
                                                         ).show()
                                                     }
                                                 }
-                                            }
+                                            },
+                                            basketViewModel
                                         )
                                     }
                                 }

@@ -27,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
-
+import com.example.meintasty.feature.basket_screen.BasketViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BasketCardComponent(
@@ -48,9 +49,17 @@ fun BasketCardComponent(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onProductAdd: () -> Unit,
-    onProductMinus: () -> Unit
+    onProductMinus: () -> Unit,
+    basketViewModel: BasketViewModel
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
+
+    // Her ürün için toplam fiyatı hesapla
+    val productTotalPrice = remember(basket?.id, basket?.quantity, basket?.price) {
+        val quantity = basket?.quantity ?: 0
+        val price = basket?.price?.replace(",", ".")?.trim()?.toDoubleOrNull() ?: 0.0
+        quantity * price
+    }
 
     Box(
         modifier = Modifier
@@ -96,7 +105,6 @@ fun BasketCardComponent(
                     Text(
                         text = basket?.menuName.orEmpty(),
                         style = MaterialTheme.typography.titleMedium.copy(color = Color.Black),
-                      //  maxLines = 2,
                         modifier = Modifier.wrapContentWidth()
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -112,7 +120,7 @@ fun BasketCardComponent(
                     modifier = Modifier.padding(end = 4.dp)
                 ) {
                     Text(
-                        text = "${basket?.price ?: "0"} ₺",
+                        text = "${basket?.price}",
                         style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -129,14 +137,13 @@ fun BasketCardComponent(
                             .animateContentSize()
                             .height(30.dp)
                             .wrapContentWidth()
-                            //.padding(horizontal = if (expanded) 16.dp else 32.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center,
+                            horizontalArrangement = Arrangement.Cengit statusgter,
                             modifier = Modifier.padding(4.dp)
                         ) {
-                            if (basket?.quantity!! > 1){
+                            if (basket?.quantity!! > 1) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.minus),
                                     contentDescription = "Decrease",
@@ -144,7 +151,7 @@ fun BasketCardComponent(
                                         .size(16.dp)
                                         .clickable { onProductMinus() }
                                 )
-                            }else if (basket?.quantity == 1){
+                            } else if (basket?.quantity == 1) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.delete),
                                     contentDescription = "Decrease",
@@ -174,4 +181,5 @@ fun BasketCardComponent(
         }
     }
 }
+
 

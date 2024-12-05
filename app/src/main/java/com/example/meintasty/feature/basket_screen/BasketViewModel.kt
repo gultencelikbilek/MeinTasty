@@ -27,7 +27,7 @@ class BasketViewModel @Inject constructor(
     private val getBasketUseCase: GetBasketUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
     private val removeBasketUseCase: RemoveBasketUseCase,
-    private val updateBasketUseCase :UpdateBasketUseCase
+    private val updateBasketUseCase: UpdateBasketUseCase
 ) : ViewModel() {
 
     private val _basketState = MutableStateFlow(BasketState())
@@ -47,13 +47,13 @@ class BasketViewModel @Inject constructor(
 
 
     private val _updateMenuTotalPriceState = MutableStateFlow(0.0)
-    val updateMenuTotalPriceState: StateFlow<Double> = _updateMenuTotalPriceState.asStateFlow()
+    val updateMenuTotalPriceState:  StateFlow<Double> = _updateMenuTotalPriceState.asStateFlow()
 
 
     init {
         getUserModel()
         viewModelScope.launch {
-            _basketState.collect{
+            _basketState.collect {
                 updateTotalPrice()
             }
         }
@@ -92,7 +92,6 @@ class BasketViewModel @Inject constructor(
                             isError = ""
                         )
                         updateTotalPrice()
-                       // updateMenuTotalPrice()
                         Log.d("basketViewmodel:success:", "${basketData}")
 
                     }
@@ -100,6 +99,7 @@ class BasketViewModel @Inject constructor(
             }
         }
     }
+
     fun getUserModel() {
         viewModelScope.launch {
             val response = getUserDatabaseUseCase.invoke()
@@ -152,23 +152,27 @@ class BasketViewModel @Inject constructor(
 
     fun refreshBasket() {
         val getBasketRequestIns = GetBasketRequest()
-        val getBasketRequest = GetBasketRequest(getBasketRequestIns.restaurantId, getBasketRequestIns.userId)
+        val getBasketRequest =
+            GetBasketRequest(getBasketRequestIns.restaurantId, getBasketRequestIns.userId)
         getBasket(getBasketRequest)
     }
+
     fun updateQuantity(basketId: Int, newQuantity: Int) {
         viewModelScope.launch {
             val updateRequest = UpdateBasketRequest(basketId, newQuantity)
             val response = updateBasketUseCase.invoke(updateRequest)
-            response.collect{result ->
-                when(result){
+            response.collect { result ->
+                when (result) {
                     is NetworkResult.Failure -> {
                         Log.d("updatebasket:viewmodel:error:", "error:update")
 
                     }
-                    NetworkResult.Loading ->{
+
+                    NetworkResult.Loading -> {
                         Log.d("updatebasket:viewmodel:loading:", "loading:update")
 
                     }
+
                     is NetworkResult.Success -> {
                         updateTotalPrice()
                     }
@@ -178,23 +182,11 @@ class BasketViewModel @Inject constructor(
         }
     }
 
-   /*private fun updateMenuTotalPrice(){
-        viewModelScope.launch {
-            _basketState.value.data.let {basketItems ->
-                _updateMenuTotalPriceState.value = basketItems.sumOf { basketItem ->
-                    val quantity = basketItem?.quantity ?: 0
-                    val price = basketItem?.price?.replace(",",".")?.trim()?.toDoubleOrNull() ?: 0.0
-                    quantity * price
-                }
-            }
-        }
-    }*/
-
     private fun updateTotalPrice() {
         _basketState.value.data?.let { basketItems ->
             _totalPriceState.value = basketItems.sumOf { basketItem ->
                 val quantity = basketItem?.quantity ?: 0
-                val price = basketItem?.price?.replace(",",".")?.trim()?.toDoubleOrNull() ?: 0.0
+                val price = basketItem?.price?.replace(",", ".")?.trim()?.toDoubleOrNull() ?: 0.0
                 quantity * price
             }
         }
@@ -218,6 +210,7 @@ data class RemoveBasketState(
     val isLoading: Boolean? = false,
     val isError: String? = ""
 )
+
 data class UpdateBasketState(
     val data: UpdateBasket? = null,
     val isSuccess: Boolean? = false,
