@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
@@ -32,6 +33,7 @@ import com.example.meintasty.uicomponent.SignInButtonComponent
 import com.example.meintasty.uicomponent.SignUpButtonComponent
 import com.example.meintasty.uicomponent.SkipComponent
 import com.example.meintasty.navigation.Screen
+import com.example.meintasty.uicomponent.ForgotPasswordComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,41 +53,53 @@ fun ChooseLoginRegisterScreen(
                     containerColor = Color(0xffdc3545)
                 )
             )
-
         },
         content = { paddingValues ->
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
+                    .padding(paddingValues)
             ) {
-                Box(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(350.dp)
-                        .background(colorResource(id = R.color.mein_tasty_color))
+                        .fillMaxSize()
+                        .padding(top = 0.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.meintast_logo),
-                        contentDescription = "",
+                    Box(
                         modifier = Modifier
-                            .size(200.dp)
-                            .align(Alignment.Center)
+                            .fillMaxWidth()
+                            .height(350.dp)
+                            .background(colorResource(id = R.color.mein_tasty_color))
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.meintast_logo),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(200.dp)
+                                .align(Alignment.Center)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(26.dp))
+                    SignUpButtonComponent(
+                        onClick = {
+                            navController.navigate(Screen.SignUpScreen.route)
+                        },
+                        text = stringResource(id = R.string.sign_up)
                     )
+                    DividerComponent()
+                    SignInButtonComponent(onClick = {
+                        navController.navigate(Screen.LoginScreen.route)
+                    }, text = stringResource(id = R.string.sign_in))
                 }
-                Spacer(modifier = Modifier.height(26.dp))
-                SignUpButtonComponent(onClick = {
-                    navController.navigate(Screen.SignUpScreen.route)
-                },
-                    text = stringResource(id = R.string.sign_up)
+                ForgotPasswordComponent(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.BottomCenter),
+                    stringResource(id = R.string.restaurant_login),
+                    navController
                 )
-                DividerComponent()
-                SignInButtonComponent(onClick = {
-                    navController.navigate(Screen.LoginScreen.route)
-                }, text = stringResource(id = R.string.sign_in))
-
             }
         }
     )

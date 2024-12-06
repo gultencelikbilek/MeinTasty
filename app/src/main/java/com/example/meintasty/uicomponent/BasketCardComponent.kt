@@ -120,7 +120,7 @@ fun BasketCardComponent(
                     modifier = Modifier.padding(end = 4.dp)
                 ) {
                     Text(
-                        text = "${basket?.price}",
+                        text = "${productTotalPrice}",
                         style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -140,7 +140,7 @@ fun BasketCardComponent(
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Cengit statusgter,
+                            horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.padding(4.dp)
                         ) {
                             if (basket?.quantity!! > 1) {
