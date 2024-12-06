@@ -23,6 +23,7 @@ import com.example.meintasty.feature.order_screen.OrderScreen
 import com.example.meintasty.feature.password_screen.PasswordScreen
 import com.example.meintasty.feature.payment_screen.PaymentScreen
 import com.example.meintasty.feature.profile_screen.ProfileScreen
+import com.example.meintasty.feature.restaurant_login_screen.RestaurantLoginScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
 import com.example.meintasty.feature.update_screen.UpdateScreen
 
@@ -137,6 +138,9 @@ fun NavGraph() {
             }
             composable(Screen.PaymentScreen.route) {
                 PaymentScreen(navController)
+            }
+            composable(Screen.RestaurantLoginScreen.route){
+                RestaurantLoginScreen(navController)
             }
         }
     }

@@ -3,8 +3,8 @@ package com.example.meintasty.uicomponent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -70,10 +69,10 @@ fun ScreenImage() {
 fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
 
     OutlinedTextField(
-         value = emailText,
-         onValueChange = { newEmail ->
-             onEmailChange(newEmail)
-         },
+        value = emailText,
+        onValueChange = { newEmail ->
+            onEmailChange(newEmail)
+        },
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -118,10 +117,10 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        value = passwordText ,//passwordText,
-       onValueChange = {password->
-           onPasswordChange(password)
-                       },
+        value = passwordText,//passwordText,
+        onValueChange = { password ->
+            onPasswordChange(password)
+        },
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -217,11 +216,19 @@ fun SignUpComponent(navController: NavController) {
 }
 
 @Composable
-fun ForgotPasswordComponent() {
+fun ForgotPasswordComponent(
+    modifier: Modifier = Modifier,
+    text: String,
+    navController: NavController
+) {
     Text(
-        text = stringResource(id = R.string.forgot_password),
+        modifier = modifier.clickable {
+            navController.navigate(Screen.RestaurantLoginScreen.route)
+        },
+        text = text,
         style = TextStyle(
-            textDecoration = TextDecoration.Underline
+            textDecoration = TextDecoration.Underline,
+            fontSize = MaterialTheme.typography.bodySmall.fontSize
         ),
         textAlign = TextAlign.End
     )

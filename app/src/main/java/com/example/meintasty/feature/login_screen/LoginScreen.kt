@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -94,7 +95,7 @@ fun LoginScreen(
             TopAppBar(
                 title = { /*TODO*/ },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xffdc3545)
+                    containerColor = colorResource(id = R.color.mein_tasty_color)
                 )
             )
         },
@@ -162,7 +163,10 @@ fun LoginScreen(
                             ) {
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Spacer(modifier = Modifier.width(200.dp))
-                                ForgotPasswordComponent()
+                                ForgotPasswordComponent(
+                                    text = stringResource(id = R.string.forgot_password),
+                                    navController = navController
+                                )
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                             LoginButtonComponent(
