@@ -11,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.meintasty.feature.login_screen.LoginScreen
+import com.example.meintasty.feature.user_login_screen.LoginScreen
 import com.example.meintasty.feature.signup_screen.SignUpScreen
 import com.example.meintasty.feature.splash_screen.MeinTastySplashScreen
 import com.example.meintasty.feature.canton_screen.CantonScreen
@@ -22,8 +22,9 @@ import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
 import com.example.meintasty.feature.order_screen.OrderScreen
 import com.example.meintasty.feature.password_screen.PasswordScreen
 import com.example.meintasty.feature.payment_screen.PaymentScreen
-import com.example.meintasty.feature.profile_screen.ProfileScreen
+import com.example.meintasty.feature.user_profile_screen.ProfileScreen
 import com.example.meintasty.feature.restaurant_login_screen.RestaurantLoginScreen
+import com.example.meintasty.feature.restaurant_profile_screen.RestaurantProfileScreen
 import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
 import com.example.meintasty.feature.update_screen.UpdateScreen
 
@@ -141,6 +142,9 @@ fun NavGraph() {
             }
             composable(Screen.RestaurantLoginScreen.route){
                 RestaurantLoginScreen(navController)
+            }
+            composable(Screen.RestaurantProfileScreen.route){
+                RestaurantProfileScreen(navController)
             }
         }
     }

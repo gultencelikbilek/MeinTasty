@@ -1,12 +1,9 @@
-package com.example.meintasty.feature.login_screen
+package com.example.meintasty.feature.user_login_screen
 
-import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.usecase.InsertUserUseCase
+import com.example.meintasty.domain.usecase.InsertTokenUseCase
 import com.example.meintasty.domain.usecase.LoginUserUseCase
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.login_model.login_response.LoginUser
@@ -21,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
-    private val insertUserUseCase: InsertUserUseCase
+    private val insertTokenUseCase: InsertTokenUseCase
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -60,12 +57,13 @@ class LoginViewModel @Inject constructor(
                                     val userAccountModel = UserAccountModel(
                                         id = 0,
                                         userId = response.value.userId,
+                                        restaurantId = 0,
                                         fullName = response.value.fullName,
                                         roleList = response.value.roleList,
                                         token = response.value.token
                                     )
                                     Log.d("LoginViewModel", " ${response.value.token}")
-                                    insertUserUseCase.invoke(userAccountModel)
+                                    insertTokenUseCase.invoke(userAccountModel)
                                     Log.d("LoginViewModel", "insertUser called with: ${response.value.token}")
                             }
                         }

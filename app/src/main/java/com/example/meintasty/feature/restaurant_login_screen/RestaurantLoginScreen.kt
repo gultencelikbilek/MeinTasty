@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.restaurant_login_screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,9 +30,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
+import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.EmailLoginComponent
 import com.example.meintasty.uicomponent.LoginButtonComponent
@@ -39,7 +42,10 @@ import com.example.meintasty.uicomponent.PasswordLoginComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RestaurantLoginScreen(navController: NavController) {
+fun RestaurantLoginScreen(
+    navController: NavController,
+    restaurantLoginViewModel: RestaurantLoginViewModel = hiltViewModel()
+    ) {
 
     var restaurantEmail by remember {
         mutableStateOf("")
@@ -48,6 +54,7 @@ fun RestaurantLoginScreen(navController: NavController) {
     var restaurantPassword by remember {
         mutableStateOf("")
     }
+    val restaurantLoginState = restaurantLoginViewModel.restaurantLoginState.collectAsState()
     val context = LocalContext.current
     Scaffold(
         topBar = {
@@ -110,16 +117,18 @@ fun RestaurantLoginScreen(navController: NavController) {
                         LoginButtonComponent(
                             onLogin = {
                                 navController.navigate(Screen.CantonScreen.route)
-                               /* if (restaurantPassword.isNotEmpty() && restaurantEmail.isNotEmpty()) {
-                                    val request = LoginUserRequest(restaurantEmail, restaurantPassword)
-//viewmodel login
+                                if (restaurantPassword.isNotEmpty() && restaurantEmail.isNotEmpty()) {
+                                    val request = RestaurantLoginRequest(restaurantEmail, restaurantPassword)
+                                    restaurantLoginViewModel.restaurantLogin(request)
+                                    Log.d("userinsertrequest","$request")
+                                    navController.navigate(Screen.RestaurantProfileScreen.route)
                                 } else {
                                     Toast.makeText(
                                         context,
                                         "Missing information",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                }*/
+                                }
                             }
                         )
 

@@ -7,11 +7,10 @@ import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.usecase.SignUpUseCase
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
 import com.example.meintasty.domain.model.signup_model.signup_response.SignUp
-import com.example.meintasty.domain.usecase.InsertUserUseCase
+import com.example.meintasty.domain.usecase.InsertTokenUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
-    private val insertUserUseCase: InsertUserUseCase
+    private val insertTokenUseCase: InsertTokenUseCase
 ) : ViewModel() {
 
     private val _signUpState = MutableStateFlow(SignUpState())
@@ -63,7 +62,7 @@ class SignUpViewModel @Inject constructor(
                                     roleList = response.value.roleList,
                                     token = response.value.token
                                 )
-                                insertUserUseCase.invoke(userAccountModel)
+                                insertTokenUseCase.invoke(userAccountModel)
                                 Log.d("useraccountModel:","$userAccountModel")
 
                         }

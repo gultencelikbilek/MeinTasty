@@ -24,6 +24,8 @@ import com.example.meintasty.domain.model.remove_basket_model.remove_basket_requ
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
+import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
+import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_response.RestaurantLoginResponse
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.RestaurantModelResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
@@ -56,9 +58,9 @@ interface NetworkRepository {
     suspend fun removeBasket(removeBasketRequest: RemoveBasketRequest): RemoveBasketResponse
     suspend fun getFavoritesRestaurant(favoriteRestaurantRequest: FavoritesRestaurantRequest): FavoriteRestaurantResponse
     suspend fun updateBasket(updateBasket: UpdateBasketRequest): UpdateBasketResponse
-    suspend fun getOrder(@Body getOrderRequest: GetOrderRequest): GetOrderResponse
-    suspend fun addOrder(@Body paymentRequest: PaymentRequest): PaymentResponse
-
+    suspend fun getOrder(getOrderRequest: GetOrderRequest): GetOrderResponse
+    suspend fun addOrder(paymentRequest: PaymentRequest): PaymentResponse
+    suspend fun restaurantLogin(restaurantLoginRequest: RestaurantLoginRequest): RestaurantLoginResponse
 
 
 }
