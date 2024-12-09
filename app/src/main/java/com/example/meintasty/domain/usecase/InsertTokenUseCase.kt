@@ -5,7 +5,7 @@ import com.example.meintasty.data.repoimpl.LoginDaoRepositoryImpl
 import com.example.meintasty.domain.model.UserAccountModel
 import javax.inject.Inject
 
-class InsertUserUseCase @Inject constructor(private val loginDaoRepositoryImpl: LoginDaoRepositoryImpl) {
+class InsertTokenUseCase @Inject constructor(private val loginDaoRepositoryImpl: LoginDaoRepositoryImpl) {
 
     operator suspend fun  invoke(userAccountModel: UserAccountModel) {
         try {

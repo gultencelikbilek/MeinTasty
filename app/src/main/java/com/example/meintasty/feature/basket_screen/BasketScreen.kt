@@ -161,21 +161,21 @@ fun BasketScreen(
                                                 openDialogState.value = true
                                             },
                                             onProductAdd = {
-                                                basket.quantity = (basket.quantity ?: 0) + 1
+                                              //  basket.quantity = (basket.quantity ?: 0) + 1
                                                 basket.id?.let {
                                                     basketViewModel.updateQuantity(
                                                         it,
-                                                        basket.quantity ?: 0
+                                                        1
                                                     )
                                                 }
                                             },
                                             onProductMinus = {
-                                                basket.quantity = basket.quantity!! - 1
+                                               // basket.quantity = basket.quantity!! - 1
                                                 if (basket.quantity!! > 0) {
                                                     basket.id?.let {
                                                         basketViewModel.updateQuantity(
                                                             it,
-                                                            basket.quantity ?: 0
+                                                           -1
                                                         )
                                                     }
                                                 } else {

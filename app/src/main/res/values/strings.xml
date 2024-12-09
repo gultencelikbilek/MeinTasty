@@ -59,4 +59,5 @@
     <string name="payment_method">Payment Method</string>
     <string name="number_null">Phone number is null</string>
     <string name="restaurant_login">Restaurant Login</string>
+    <string name="restaurant_profile">Restaurant Profile</string>
 </resources>

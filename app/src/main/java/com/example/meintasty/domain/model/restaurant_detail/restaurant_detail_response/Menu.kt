@@ -2,7 +2,7 @@ package com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_r
 
 data class Menu(
     val categoryId: Int?,
-    val menuId : Int?,
+    val id : Int?,
     val categoryName: String?,
     val currency: String?,
     val menuContent: String?,

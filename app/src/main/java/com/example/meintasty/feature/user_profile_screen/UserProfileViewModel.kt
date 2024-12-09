@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.profile_screen
+package com.example.meintasty.feature.user_profile_screen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -16,10 +16,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+class UserProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
-) : ViewModel() {
+    ) : ViewModel() {
 
         private val _userState = MutableStateFlow(UserState())
     val userState = _userState.asStateFlow()
@@ -79,6 +79,7 @@ class ProfileViewModel @Inject constructor(
     }
 }
 
+
 data class UserState(
     val data :UserResponse? = null,
     val isSucces : Boolean? = false,
@@ -88,3 +89,5 @@ data class UserState(
 data class UserDatabaseState(
     val data: UserAccountModel? = null
 )
+
+

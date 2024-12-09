@@ -25,6 +25,8 @@ import com.example.meintasty.domain.model.payment_model.payment_response_model.P
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
+import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
+import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_response.RestaurantLoginResponse
 import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.restaurant_model.restaurant_response.RestaurantModelResponse
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
@@ -42,8 +44,11 @@ import retrofit2.http.POST
 
 interface ApiService {
 
-    @POST(Constants.END_POINT_LOGIN)
+    @POST(Constants.END_POINT_USER_LOGIN)
     suspend fun loginUser(@Body loginUserRequest: LoginUserRequest): LoginResponseModel
+
+    @POST(Constants.END_POINT_RESTAURANT_LOGIN)
+    suspend fun restaurantLogin(@Body restaurantLoginRequest: RestaurantLoginRequest): RestaurantLoginResponse
 
     @POST(Constants.END_POINT_SIGNUP)
     suspend fun signUp(@Body signupRequest: SignupRequest): SignUpResponse

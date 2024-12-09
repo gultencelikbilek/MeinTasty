@@ -14,7 +14,7 @@ import com.example.meintasty.domain.usecase.GetOrderUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import com.example.meintasty.feature.detail_restaurant.AddBasketState
-import com.example.meintasty.feature.profile_screen.UserDatabaseState
+import com.example.meintasty.feature.user_profile_screen.UserDatabaseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

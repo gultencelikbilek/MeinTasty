@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.profile_screen
+package com.example.meintasty.feature.user_profile_screen
 
 import android.util.Log
 import android.widget.Toast
@@ -49,7 +49,7 @@ import com.example.meintasty.navigation.Screen
 fun ProfileScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    profileViewModel: ProfileViewModel = hiltViewModel()
+    profileViewModel: UserProfileViewModel = hiltViewModel()
 ) {
     val userState = profileViewModel.userState.collectAsState().value
     val userDatabaseState = profileViewModel.userDatabaseState.collectAsState()
@@ -60,13 +60,14 @@ fun ProfileScreen(
     }
 
     val userId = userDatabaseState.value.data?.userId
-
     LaunchedEffect(userId) {
-        userId?.let {
-            if (it > 0) {
-                val userRequest = UserRequest(it)
-                Log.d("userrequest:userId3:", "$it")
-                profileViewModel.getUser(userRequest = userRequest)
+        if (userDatabaseState.value.data != null) {
+            userId?.let {
+                if (it > 0) {
+                    val userRequest = UserRequest(it)
+                    Log.d("userrequest:userId3:", "$it")
+                    profileViewModel.getUser(userRequest = userRequest)
+                }
             }
         }
     }
@@ -92,7 +93,6 @@ fun ProfileScreen(
             )
         },
         content = { paddingValues ->
-
             userState.data?.value.let { user ->
                 Column(modifier = Modifier.padding(paddingValues)) {
                     Card(
