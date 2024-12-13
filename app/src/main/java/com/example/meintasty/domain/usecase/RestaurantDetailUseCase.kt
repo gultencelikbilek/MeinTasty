@@ -1,5 +1,6 @@
 package com.example.meintasty.domain.usecase
 
+import android.util.Log
 import com.example.meintasty.data.repoimpl.NetworkRepositoryImpl
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
@@ -15,8 +16,10 @@ class RestaurantDetailUseCase @Inject constructor(private val networkRepositoryI
     operator   suspend fun invoke(detailRestaurantRequest: DetailRestaurantRequest): Flow<NetworkResult<RestaurantDetailResponse>> =
         flow {
             try {
+                emit(NetworkResult.Loading)
                 val response = networkRepositoryImpl.getDetailRestaurant(detailRestaurantRequest)
                 emit(NetworkResult.Success(response))
+                Log.d("RestaurantDetailUseCase:succes:", "${response.value}")
             } catch (e: HttpException) {
                 emit(NetworkResult.Failure(e.message.toString()))
             } catch (e: IOException) {

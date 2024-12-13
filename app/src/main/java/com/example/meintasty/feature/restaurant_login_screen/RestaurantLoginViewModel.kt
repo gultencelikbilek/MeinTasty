@@ -3,14 +3,12 @@ package com.example.meintasty.feature.restaurant_login_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.login_model.login_response.LoginUser
+import com.example.meintasty.domain.model.RestaurantAccountModel
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_response.RestaurantLoginModel
-import com.example.meintasty.domain.usecase.InsertTokenUseCase
+import com.example.meintasty.domain.usecase.InsertRestaurantTokenUseCase
 import com.example.meintasty.domain.usecase.RestaurantLoginUseCase
 import com.example.meintasty.feature.NetworkResult
-import com.example.meintasty.feature.user_login_screen.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RestaurantLoginViewModel @Inject constructor(
     private val restaurantLoginUseCase: RestaurantLoginUseCase,
-    private val insertTokenUseCase: InsertTokenUseCase
+    private val insertRestaurantTokenUseCase: InsertRestaurantTokenUseCase
 ) : ViewModel(){
 
 
@@ -51,34 +49,34 @@ class RestaurantLoginViewModel @Inject constructor(
                     is NetworkResult.Success -> {
                         _restaurantLoginState.value = RestaurantLoginState(
                             data = result.data.value,
-                            isSucces = false,
-                            isLoading = true,
+                            isSucces = true,
+                            isLoading = false,
                             isError = ""
                         )
-                        result.data.value?.let {response ->
-                            if (response.token != null){
-                                val userAccountModel = UserAccountModel(
-                                    id = 0,
-                                    userId = 0,
-                                    restaurantId = response.restaurantId,
-                                    fullName = response.fullName,
-                                    roleList = response.roleList,
-                                    token = response.token
-                                )
-                                insertTokenUseCase.invoke(userAccountModel)
-                                Log.d("restaurantLoginViewModel:success:","${userAccountModel}")
+                        Log.d("restaurantLoginViewModel:success:","${result.data.value}")
 
+                        result.data.let {response ->
+                            Log.d("ResponseCheck", "Token: ${response.value?.token}, FullName: ${response.value?.fullName}")
+                            if (response.value?.token != null){
+                                val restaurantAccountModel = RestaurantAccountModel(
+                                    id = 0,
+                                    restaurantId = response.value.restaurantId,
+                                    fullName = response.value.fullName,
+                                    roleList = response.value.roleList,
+                                    token = response.value.token,
+                                    isRestaurant = true
+                                )
+                                Log.d("RestaurantLoginViewModel", " ${response.value.token}")
+                                insertRestaurantTokenUseCase.invoke(restaurantAccountModel)
+                                Log.d("RestaurantLoginViewModel", "insertRestaurant called with: ${restaurantAccountModel.token}")
                             }
                         }
                         Log.d("restaurantLoginViewModel:success:","${result.data.value}")
-
                     }
                 }
-
             }
         }
     }
-
 }
 
 data class RestaurantLoginState(

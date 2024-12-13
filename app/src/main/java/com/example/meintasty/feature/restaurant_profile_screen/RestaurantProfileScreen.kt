@@ -51,14 +51,17 @@ fun RestaurantProfileScreen(
 ) {
 
     val detailProfileState = restaurantProfileViewModel.detailRestProfState.collectAsState()
-    val restaurantDetailState = restaurantProfileViewModel.detailRestProfState.collectAsState()
+    val restaurantDetailState = restaurantProfileViewModel.restaurantDatabaseState.collectAsState()
+
+
     val resturantId = restaurantDetailState.value.data?.restaurantId
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(resturantId) {
         restaurantProfileViewModel.getRestaurantDatabase()
         resturantId?.let {
             restaurantProfileViewModel.getDetailRestaurant(DetailRestaurantRequest(it))
+            Log.d("restaurantId","$resturantId")
         }
     }
 
@@ -86,7 +89,7 @@ fun RestaurantProfileScreen(
         },
         content = { paddingValues ->
             detailProfileState.value.data?.let { restaurant ->
-
+                Log.d("restauran","$restaurant")
                 Column(modifier = Modifier.padding(paddingValues)) {
                     Card(
                         modifier = Modifier
@@ -122,7 +125,7 @@ fun RestaurantProfileScreen(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.gmail)
                                 )
-                                BasicText(modifier, restaurant?.email.toString())
+                                BasicText(modifier, restaurant.email.toString())
                                 Spacer(modifier = Modifier.weight(1f))
 
                                 EditIconComponent(

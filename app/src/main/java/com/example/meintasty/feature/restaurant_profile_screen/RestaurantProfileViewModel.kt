@@ -3,9 +3,11 @@ package com.example.meintasty.feature.restaurant_profile_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.meintasty.domain.model.RestaurantAccountModel
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
+import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.feature.NetworkResult
@@ -19,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RestaurantProfileViewModel @Inject constructor(
-    private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
+    private val getRestaurantTokenUseCase: GetRestaurantTokenUseCase,
     private val restaurantDetailUseCase: RestaurantDetailUseCase,
 ) : ViewModel() {
     private val _restaurantDatabaseState = MutableStateFlow(RestaurantDatabaseState())
@@ -40,17 +42,7 @@ class RestaurantProfileViewModel @Inject constructor(
                                 isLoading = false,
                                 isError = result.msg
                             )
-                            Log.d("networkState:error:", result.msg)
-                        }
-
-                        is NetworkResult.Success -> {
-                            _detailRestProfState.value = RestaurantDetailState(
-                                data = result.data.value,
-                                isSuccess = true,
-                                isLoading = false,
-                                isError = ""
-                            )
-                            Log.d("networkState:succes:", result.data.value.toString())
+                            Log.d("restaurantProfileViewmodel:error:", result.msg)
                         }
 
                         NetworkResult.Loading -> {
@@ -61,6 +53,19 @@ class RestaurantProfileViewModel @Inject constructor(
                                 isError = null
                             )
                         }
+
+                        is NetworkResult.Success -> {
+                            _detailRestProfState.value = RestaurantDetailState(
+                                data = result.data.value,
+                                isSuccess = true,
+                                isLoading = false,
+                                isError = ""
+                            )
+                            Log.d(
+                                "restaurantProfileViewmodel:succes:",
+                                result.data.value.toString()
+                            )
+                        }
                     }
                 }
         }
@@ -68,7 +73,7 @@ class RestaurantProfileViewModel @Inject constructor(
 
     fun getRestaurantDatabase() {
         viewModelScope.launch {
-            val response = getUserDatabaseUseCase.invoke()
+            val response = getRestaurantTokenUseCase.invoke()
             if (response != null) {
                 Log.d("userdatabase:", "$response")
                 response.restaurantId?.let {
@@ -78,6 +83,8 @@ class RestaurantProfileViewModel @Inject constructor(
                         _restaurantDatabaseState.value = RestaurantDatabaseState(
                             data = response
                         )
+                        Log.d("userrequest:userId2::", "$response")
+
                     }
                 }
             } else {
@@ -89,7 +96,7 @@ class RestaurantProfileViewModel @Inject constructor(
 
 
 data class RestaurantDatabaseState(
-    val data: UserAccountModel? = null
+    val data: RestaurantAccountModel? = null
 )
 
 data class RestaurantDetailState(

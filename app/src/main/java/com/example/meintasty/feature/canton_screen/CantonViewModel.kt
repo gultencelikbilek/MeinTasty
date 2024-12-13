@@ -3,50 +3,80 @@ package com.example.meintasty.feature.canton_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.data.repoimpl.CantonRepositoryImpl
+import com.example.meintasty.domain.model.RestaurantAccountModel
+import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.usecase.CantonUseCase
-import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
 import com.example.meintasty.domain.usecase.InsertCantonUseCase
 import com.example.meintasty.domain.model.canton_model.response_model.Canton
 import com.example.meintasty.domain.model.canton_model.request_model.CantonRequestModel
 import com.example.meintasty.domain.model.canton_model.response_model.City
 import com.example.meintasty.domain.model.UserLocationModel
+import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
+import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class CantonViewModel @Inject constructor(
     private val cantonUseCase: CantonUseCase,
     private val insertCantonUseCase: InsertCantonUseCase,
-    private val repositoryImpl: CantonRepositoryImpl,
+    private val getRestaurantTokenUseCase: GetRestaurantTokenUseCase,
+    private val getUserDatabaseUseCase: GetUserDatabaseUseCase
     ) : ViewModel() {
 
-    private val _canton = MutableStateFlow<List<Canton>>(emptyList())
-    val canton: StateFlow<List<Canton>> = _canton
+    private val _canton =MutableStateFlow(CantonState())
+    val canton= _canton.asStateFlow()
 
     private val _cities = MutableStateFlow<List<City>>(emptyList())
     val cities: StateFlow<List<City>> = _cities
+    private val _splashShow = MutableStateFlow(UserTokenCantonState())
+    val splashShow = _splashShow.asStateFlow()
+    private val _splashRestShow = MutableStateFlow(RestaurantTokenCantonState())
+    val splashRestShow = _splashRestShow.asStateFlow()
+
+    init {
+        runBlocking {
+            getToken()
+            getRestaurantToken()
+        }
+
+    }
 
     suspend fun getCanton(requestModel: CantonRequestModel) {
         viewModelScope.launch {
-            try {
-                val response = repositoryImpl.getCanton(requestModel)
-                Log.d("response:",response.value.toString())
-
-                if (response!!.success) {
-                    _canton.value = response.value
-                    Log.d("CantonViewModel:", response.success.toString())
-                } else {
-                    Log.e("CantonViewModel", "Error: ${response.errorMessage}")
-                    Log.d("CantonViewModel:", response.success.toString())
+            cantonUseCase.invoke(requestModel).collect{result->
+                when(result){
+                    is NetworkResult.Failure -> {
+                        _canton.value = CantonState(
+                            data = null,
+                            isSucces = false,
+                            isLoading = true,
+                            isError = result.msg
+                        )
+                    }
+                    NetworkResult.Loading -> {
+                        _canton.value = CantonState(
+                            data = null,
+                            isSucces = false,
+                            isLoading = true,
+                            isError = ""
+                        )
+                    }
+                    is NetworkResult.Success -> {
+                        _canton.value = CantonState(
+                            data = result.data.value,
+                            isSucces = false,
+                            isLoading = true,
+                            isError = ""
+                        )
+                    }
                 }
-            } catch (e: Exception) {
-                Log.d("CantonViewModel:", e.message.toString())
             }
         }
     }
@@ -54,7 +84,6 @@ class CantonViewModel @Inject constructor(
     fun updateCities(selectedCanton: Canton) {
         viewModelScope.launch {
             _cities.value = selectedCanton.cities
-          //  val response =
             Log.d("selectedCanton.cities:","${selectedCanton.cities}")
         }
     }
@@ -63,19 +92,63 @@ class CantonViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 insertCantonUseCase.invoke(userLocationModel)
-               // repositoryImpl.insertCanton(userLocationModel)
-             //   _addCantonState.value = CantonState(data = userLocationModel)
             } catch (e: Exception) {
-                // Hata durumunda işlemi yönetebilirsiniz
                 Log.e("CantonViewModelLocation", "Error saving canton cities: ${e.message}")
             }
         }
     }
+    private suspend fun getToken() {
+        val userAccount = getUserDatabaseUseCase.invoke()
+        if (userAccount != null) {
+            Log.d("splash:navigate:notnull", userAccount.token.toString())
+            _splashShow.value = UserTokenCantonState(
+                data = userAccount,
+                isNavigateLoginScreen = false,
+                error = ""
+            )
+        } else {
+            Log.d("splash:navigate:else:", "userAccount is null")
+            _splashShow.value = UserTokenCantonState(
+                data = null,
+                isNavigateLoginScreen = true,
+                error = "User account is not found"
+            )
+        }
+    }
 
+    private suspend fun getRestaurantToken(){
+        val restaurantAccountModel = getRestaurantTokenUseCase.invoke()
+        if (restaurantAccountModel != null){
+            Log.d("splash:navigate:notnull", restaurantAccountModel.token.toString())
+            _splashRestShow.value = RestaurantTokenCantonState(
+                data = restaurantAccountModel,
+                isNavigateLoginScreen = false,
+                error = ""
+            )
+        }else{
+            Log.d("splash:navigate:else:", "restaurantAccountModel is null")
+            _splashRestShow.value = RestaurantTokenCantonState(
+                data = null,
+                isNavigateLoginScreen = true,
+                error = "User account is not found"
+            )
+        }
+    }
 }
 
+data class UserTokenCantonState(
+    val data: UserAccountModel? = null,
+    val isNavigateLoginScreen: Boolean? = null,
+    val error: String? = ""
+)
+data class RestaurantTokenCantonState(
+    val data: RestaurantAccountModel? = null,
+    val isNavigateLoginScreen: Boolean? = null,
+    val error: String? = ""
+)
+
 data class CantonState(
-    val data : Canton? = null,
+    val data : List<Canton?>? = null,
     val isSucces : Boolean? = false,
     val isLoading : Boolean? = false,
     val isError : String? = ""

@@ -3,10 +3,12 @@ package com.example.meintasty.feature.splash_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.meintasty.domain.model.RestaurantAccountModel
 import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.UserLocationModel
+import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,17 +20,23 @@ import javax.inject.Inject
 @HiltViewModel
 class MeinTastyViewModel @Inject constructor(
     private val getLocaitonInfoUseCase: GetLocaitonInfoUseCase,
-    private val getUserDatabaseUseCase: GetUserDatabaseUseCase
+    private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
+    private val getRestaurantTokenUseCase: GetRestaurantTokenUseCase
 ) : ViewModel() {
 
-    private val _splashShow = MutableStateFlow(TokenState())
+    private val _splashShow = MutableStateFlow(UserTokenState())
     val splashShow = _splashShow.asStateFlow()
-    private val _locaState = MutableStateFlow(LocationState(data = null, isNavigateLoginScreen = false))
+    private val _splashRestShow = MutableStateFlow(RestaurantTokenState())
+    val splashRestShow = _splashRestShow.asStateFlow()
+
+    private val _locaState =
+        MutableStateFlow(LocationState(data = null, isNavigateLoginScreen = false))
     val locaState: StateFlow<LocationState> get() = _locaState
 
     init {
         runBlocking {
             getToken()
+            getRestaurantToken()
             getLocation()
         }
     }
@@ -45,7 +53,7 @@ class MeinTastyViewModel @Inject constructor(
                     data = loca,
                     isNavigateLoginScreen = true
                 )
-                Log.d("locaInfo:","$loca")
+                Log.d("locaInfo:", "$loca")
             } else {
                 Log.d("splashLoc:", "locationInfo is null")
                 _locaState.value = LocationState(
@@ -60,14 +68,33 @@ class MeinTastyViewModel @Inject constructor(
         val userAccount = getUserDatabaseUseCase.invoke()
         if (userAccount != null) {
             Log.d("splash:navigate:notnull", userAccount.token.toString())
-            _splashShow.value = TokenState(
+            _splashShow.value = UserTokenState(
                 data = userAccount,
                 isNavigateLoginScreen = false,
                 error = ""
             )
         } else {
             Log.d("splash:navigate:else:", "userAccount is null")
-            _splashShow.value = TokenState(
+            _splashShow.value = UserTokenState(
+                data = null,
+                isNavigateLoginScreen = true,
+                error = "User account is not found"
+            )
+        }
+    }
+
+    private suspend fun getRestaurantToken(){
+        val restaurantAccountModel = getRestaurantTokenUseCase.invoke()
+        if (restaurantAccountModel != null){
+            Log.d("splash:navigate:notnull", restaurantAccountModel.token.toString())
+            _splashRestShow.value = RestaurantTokenState(
+                data = restaurantAccountModel,
+                isNavigateLoginScreen = false,
+                error = ""
+            )
+        }else{
+            Log.d("splash:navigate:else:", "restaurantAccountModel is null")
+            _splashRestShow.value = RestaurantTokenState(
                 data = null,
                 isNavigateLoginScreen = true,
                 error = "User account is not found"
@@ -76,8 +103,13 @@ class MeinTastyViewModel @Inject constructor(
     }
 }
 
-    data class TokenState(
+data class UserTokenState(
     val data: UserAccountModel? = null,
+    val isNavigateLoginScreen: Boolean? = null,
+    val error: String? = ""
+)
+data class RestaurantTokenState(
+    val data: RestaurantAccountModel? = null,
     val isNavigateLoginScreen: Boolean? = null,
     val error: String? = ""
 )

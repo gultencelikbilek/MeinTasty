@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.restaurant_login_screen
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
 import com.example.meintasty.navigation.Screen
@@ -54,8 +56,29 @@ fun RestaurantLoginScreen(
     var restaurantPassword by remember {
         mutableStateOf("")
     }
-    val restaurantLoginState = restaurantLoginViewModel.restaurantLoginState.collectAsState()
+    val restaurantLoginState = restaurantLoginViewModel.restaurantLoginState.collectAsState().value
     val context = LocalContext.current
+    val sharedPrefrences =
+        context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
+
+
+    LaunchedEffect(restaurantLoginState.data) {
+        Log.d("LaunchedEffect", "Data: ${restaurantLoginState.data}")
+        restaurantLoginState.data?.let {
+            if (it.token != null) {
+                Log.d("loginRestaurant", "$it")
+                val editor = sharedPrefrences.edit()
+                editor.putString(Constants.SHARED_TOKEN, it.token)
+                editor.apply()
+
+                navController.navigate(Screen.CantonScreen.route)
+            } else {
+                Toast.makeText(context, "Restaurant not found", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -116,12 +139,10 @@ fun RestaurantLoginScreen(
                         Spacer(modifier = Modifier.height(12.dp))
                         LoginButtonComponent(
                             onLogin = {
-                                navController.navigate(Screen.CantonScreen.route)
                                 if (restaurantPassword.isNotEmpty() && restaurantEmail.isNotEmpty()) {
                                     val request = RestaurantLoginRequest(restaurantEmail, restaurantPassword)
                                     restaurantLoginViewModel.restaurantLogin(request)
                                     Log.d("userinsertrequest","$request")
-                                    navController.navigate(Screen.RestaurantProfileScreen.route)
                                 } else {
                                     Toast.makeText(
                                         context,
