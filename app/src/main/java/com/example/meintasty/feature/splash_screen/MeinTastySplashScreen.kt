@@ -49,62 +49,96 @@ fun MeinTastySplashScreen(
     val sharedPrefrences =
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
     val splashShowState = meinTastyViewModel.splashShow.collectAsState().value
+    val splashRestState = meinTastyViewModel.splashRestShow.collectAsState().value
     val locInfo = meinTastyViewModel.locaState.collectAsState().value
 
-    LaunchedEffect(splashShowState) {
-        if (splashShowState.data != null) {
-            Log.d("splashshowstate:data:", "${splashShowState.data}")
-            splashShowState?.data?.let { token ->
-                Log.v("splashShowState:", splashShowState.toString())
-                Log.d("tokenNotnull:", "${token}")
-                val editor = sharedPrefrences.edit()
-              //  editor.putString(Constants.SHARED_TOKEN, token.token.toString())
-                editor.apply()
+    LaunchedEffect(splashShowState, splashRestState) {
+        when {
+            splashShowState.data?.isUser == true -> {
+                splashShowState.data?.let { token ->
+                    Log.d("splashShowState:data", "${splashShowState.data}")
+                    Log.d("tokenNotNull", "$token")
+
+                    val editor = sharedPrefrences.edit()
+                    // Token kaydını gerçekleştir
+                     editor.putString(Constants.SHARED_TOKEN, token.token.toString())
+                    editor.apply()
+
+                    // Kullanıcı için yönlendirme yapılabilir
+                    navController.navigate(Screen.ProfileScreen.route)
+                } ?: run {
+                    Log.d("splash:else", "User data is null")
+                    navController.navigate(Screen.ChooseLoginRegisterScreen.route)
+                }
             }
-        } else {
-            Log.d("splash:else", "")
-            navController.navigate(Screen.ChooseLoginRegisterScreen.route)
+            splashRestState.data?.isRestaurant == true -> {
+                splashRestState.data?.let { token ->
+                    Log.d("splashRestState:data", "${splashRestState.data}")
+                    Log.d("tokenNotNull", "$token")
+
+                    val editor = sharedPrefrences.edit()
+                    // Token kaydını gerçekleştir
+                     editor.putString(Constants.SHARED_TOKEN, token.token.toString())
+                    editor.apply()
+
+                    // Restoran için yönlendirme yapılabilir
+                    navController.navigate(Screen.RestaurantProfileScreen.route)
+                } ?: run {
+                    Log.d("splash:else", "Restaurant data is null")
+                    navController.navigate(Screen.ChooseLoginRegisterScreen.route)
+                }
+            }
+            else -> {
+                // Eğer ne `isUser` ne de `isRestaurant` durumuna girmezse
+                Log.d("splash:else", "No valid user or restaurant state found")
+                navController.navigate(Screen.ChooseLoginRegisterScreen.route)
+            }
         }
     }
+
+
+
+
 
     LaunchedEffect(locInfo) {
-        if (locInfo.data != null && locInfo.isNavigateLoginScreen ==true) {
-            navController.navigate(Screen.RestaurantScreen.route)
-        } else if (locInfo.data == null && locInfo.isNavigateLoginScreen != true) {
-            Log.v("splashShowStateLoc:", "Waiting for valid data")
-        } else if (locInfo.isNavigateLoginScreen == true) {
-            // Bu durumda hem data boş, hem de isNavigateLoginScreen yanlış bir şekilde true ise
-            Log.v("splashShowStateLoc:", "else condition triggered")
-            navController.navigate(Screen.CantonScreen.route)
-        }
+    if (locInfo.data != null && locInfo.isNavigateLoginScreen == true) {
+        navController.navigate(Screen.RestaurantScreen.route)
+    } else if (locInfo.data == null && locInfo.isNavigateLoginScreen != true) {
+        Log.v("splashShowStateLoc:", "Waiting for valid data")
+    } else if (locInfo.isNavigateLoginScreen == true) {
+        // Bu durumda hem data boş, hem de isNavigateLoginScreen yanlış bir şekilde true ise
+        Log.v("splashShowStateLoc:", "else condition triggered")
+        navController.navigate(Screen.CantonScreen.route)
     }
+}
 
-    Scaffold(
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .background(colorResource(id = R.color.mein_tasty_color)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.mein_tasty),
-                    style = TextStyle(
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        color = Color.White,
-                        fontFamily = customFontFamily
-                    )
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.meintast_logo),
-                    contentDescription = "",
-                    modifier = Modifier.size(100.dp)
-                )
-            }
-        }
-    )
+Scaffold(
+content = {
+    paddingValues ->
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .background(colorResource(id = R.color.mein_tasty_color)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(id = R.string.mein_tasty),
+            style = TextStyle(
+                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                color = Color.White,
+                fontFamily = customFontFamily
+            )
+        )
+        Image(
+            painter = painterResource(id = R.drawable.meintast_logo),
+            contentDescription = "",
+            modifier = Modifier.size(100.dp)
+        )
+    }
+}
+)
 }
 
 @Preview

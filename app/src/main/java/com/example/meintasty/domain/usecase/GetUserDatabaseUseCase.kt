@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetUserDatabaseUseCase @Inject constructor(private val loginDaoRepositoryImpl: LoginDaoRepositoryImpl) {
 
     operator suspend fun invoke(): UserAccountModel {
-        return loginDaoRepositoryImpl.getToken()
+        return loginDaoRepositoryImpl.getUserToken()
     }
 }

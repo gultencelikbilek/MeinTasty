@@ -77,7 +77,7 @@ fun LoginScreen(
         loginState.data?.let {
             if (it.token != null) {
                 Log.d("loginUser", "$it")
-                Log.d("tokenLogin:", "${it.token}")
+                Log.d("tokenLogin:", it.token)
 
                 val editor = sharedPrefrences.edit()
                 editor.putString(Constants.SHARED_TOKEN, it.token)

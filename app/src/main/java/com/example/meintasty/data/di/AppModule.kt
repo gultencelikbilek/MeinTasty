@@ -27,7 +27,7 @@ object AppModule {
 
     @Provides
     @Singleton
-     fun provideSharedPreferences(@ApplicationContext context: Context) =
+    fun provideSharedPreferences(@ApplicationContext context: Context) =
         context.getSharedPreferences(Constants.SHARED_TOKEN, Context.MODE_PRIVATE)
 
     @Provides
@@ -82,7 +82,9 @@ object AppModule {
             context = context,
             LoginDatabase::class.java,
             "login_db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
 }

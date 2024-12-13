@@ -3,7 +3,7 @@ package com.example.meintasty.feature.user_login_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.usecase.InsertTokenUseCase
+import com.example.meintasty.domain.usecase.InsertUserTokenUseCase
 import com.example.meintasty.domain.usecase.LoginUserUseCase
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.login_model.login_response.LoginUser
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
-    private val insertTokenUseCase: InsertTokenUseCase
+    private val insertUserTokenUseCase: InsertUserTokenUseCase
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -57,13 +57,13 @@ class LoginViewModel @Inject constructor(
                                     val userAccountModel = UserAccountModel(
                                         id = 0,
                                         userId = response.value.userId,
-                                        restaurantId = 0,
                                         fullName = response.value.fullName,
                                         roleList = response.value.roleList,
-                                        token = response.value.token
+                                        token = response.value.token,
+                                        isUser = true
                                     )
                                     Log.d("LoginViewModel", " ${response.value.token}")
-                                    insertTokenUseCase.invoke(userAccountModel)
+                                    insertUserTokenUseCase.invoke(userAccountModel)
                                     Log.d("LoginViewModel", "insertUser called with: ${response.value.token}")
                             }
                         }

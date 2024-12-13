@@ -1,6 +1,7 @@
 package com.example.meintasty.data.repoimpl
 
 import com.example.meintasty.data.db.LoginDatabase
+import com.example.meintasty.domain.model.RestaurantAccountModel
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.UserLocationModel
 import com.example.meintasty.domain.repository.LoginDaoRepository
@@ -10,12 +11,20 @@ class LoginDaoRepositoryImpl @Inject constructor(
     private val loginDatabase: LoginDatabase
 ) : LoginDaoRepository {
 
-    override suspend fun insertToken(userAccountModel: UserAccountModel) {
-        loginDatabase.loginDao().insertToken(userAccountModel)
+    override suspend fun insertUserToken(userAccountModel: UserAccountModel) {
+        loginDatabase.loginDao().insertUserToken(userAccountModel)
     }
 
-    override suspend fun getToken(): UserAccountModel {
-        return loginDatabase.loginDao().getToken()
+    override suspend fun getUserToken(): UserAccountModel {
+        return loginDatabase.loginDao().getUserToken()
+    }
+
+    override suspend fun insertRestaurantToken(restaurantAccountModel: RestaurantAccountModel) {
+        return loginDatabase.loginDao().insertRestaurantToken(restaurantAccountModel)
+    }
+
+    override suspend fun getRestaurantToken(): RestaurantAccountModel {
+        return loginDatabase.loginDao().getRestaurantToken()
     }
 
     override suspend fun insertCanton(userLocationModel: UserLocationModel) {

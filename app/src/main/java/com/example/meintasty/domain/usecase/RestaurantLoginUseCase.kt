@@ -17,6 +17,7 @@ class RestaurantLoginUseCase @Inject constructor(private val networkRepositoryIm
         try {
             emit(NetworkResult.Loading)
             val response = networkRepositoryImpl.restaurantLogin(restaurantLoginRequest)
+            emit(NetworkResult.Success(response))
             Log.d("restaurantLoginUseCase:", "$response")
         } catch (e: HttpException) {
             emit(NetworkResult.Failure(e.message.toString()))

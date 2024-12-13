@@ -48,13 +48,36 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
     var selectedCityCode by remember {
         mutableStateOf("")
     }
+
+    var triggerState by remember { mutableStateOf(false) } // Buton tetikleme durumu
+
     val cantonList by cantonViewModel.canton.collectAsState()
     val citiesList by cantonViewModel.cities.collectAsState()
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
+
+    val splashShowState = cantonViewModel.splashShow.collectAsState().value
+    val splashRestState = cantonViewModel.splashRestShow.collectAsState().value
+    LaunchedEffect(triggerState) {
+        if (triggerState == true){
+            when {
+                splashShowState.data?.isUser == true -> {
+                    navController.navigate(Screen.RestaurantScreen.route)
+                }
+                splashRestState.data?.isRestaurant == true -> {
+                    navController.navigate(Screen.RestaurantProfileScreen.route)
+                }
+                else -> {
+                    Log.d("Navigation", "No valid splash state found")
+                }
+            }
+        }
+    }
 
     LaunchedEffect(cantonSelect) {
-        val selectedCanton = cantonViewModel.canton.value.find { it.cantonName == cantonSelect }
+        val selectedCanton =
+            cantonViewModel.canton.value.data?.find { it?.cantonName == cantonSelect }
         selectedCanton?.let {
             cantonViewModel.updateCities(it) // Seçilen Canton nesnesini ViewModel'e gönderiyoruz
         }
@@ -97,7 +120,7 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
             ) {
 
                 CantonTextFieldComponent(
-                    cantonList,
+                    cantonList.data,
                     cantonSelect,
                     onCantonChange = { newCanton ->
                         cantonSelect = newCanton
@@ -120,9 +143,8 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
 
                         val editor = sharedPreferences.edit()
                         editor.putString(Constants.SHARED_PREF, selectedCityCode)
-                        editor.apply() // Değişiklikleri kaydet
-
-                        navController.navigate(Screen.RestaurantScreen.route)
+                        editor.apply()
+                        triggerState = true
                     } else {
                         Log.d("Navigation:", "Missing Information")
                     }

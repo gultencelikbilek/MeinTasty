@@ -4,12 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class UserAccountModel(
+data class RestaurantAccountModel(
     @PrimaryKey(autoGenerate = true)
     val id : Int? = 0,
-    val userId : Int?=0,
+    val restaurantId : Int? = 0,
     val fullName: String? ="",
     val roleList : List<String?>? = emptyList(),
     val token: String? ="",
-    val isUser : Boolean? = false
+    val isRestaurant : Boolean? = false
 )

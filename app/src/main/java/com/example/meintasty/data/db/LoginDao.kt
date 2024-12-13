@@ -4,16 +4,23 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.meintasty.domain.model.RestaurantAccountModel
 import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.UserLocationModel
 
 @Dao
 interface LoginDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertToken(userAccountModel: UserAccountModel)
+    suspend fun insertUserToken(userAccountModel: UserAccountModel)
 
     @Query("SELECT * FROM useraccountmodel")
-    suspend fun getToken(): UserAccountModel
+    suspend fun getUserToken(): UserAccountModel
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRestaurantToken(restaurantAccountModel: RestaurantAccountModel)
+
+    @Query("SELECT * FROM restaurantaccountmodel")
+    suspend fun getRestaurantToken() : RestaurantAccountModel
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCanton(userLocationModel: UserLocationModel)
