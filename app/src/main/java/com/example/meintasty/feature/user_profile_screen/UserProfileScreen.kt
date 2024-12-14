@@ -144,7 +144,9 @@ fun ProfileScreen(
                                                 Screen.UpdateScreen.route + "?userId=$userId&email=${user?.email}&phone=${user?.phoneNumber}&updateType=email"
                                             )
                                         }
-                                    })
+                                    },
+                                    painterResource(id = R.drawable.pen),
+                                )
                             }
                             DividierProfile()
                             val regex = """(\d)(\d{3})(\d{3})(\d{2})(\d{2})""".toRegex()
@@ -176,6 +178,7 @@ fun ProfileScreen(
                                             )
                                         }
                                     },
+                                    painterResource(id = R.drawable.pen),
                                     modifier = modifier
                                 )
                             }
@@ -203,7 +206,8 @@ fun ProfileScreen(
                                         } else {
                                             navController.navigate(Screen.PasswordScreen.route + "&userId=$userId")
                                         }
-                                    }
+                                    },
+                                    painterResource(id = R.drawable.pen)
                                 )
                             }
                             DividierProfile()
@@ -220,7 +224,8 @@ fun ProfileScreen(
                                 Spacer(modifier = Modifier.weight(1f))
                                 EditIconComponent(
                                     onClick = {
-                                    }
+                                    },
+                                    painterResource(id = R.drawable.pen),
                                 )
                             }
                             DividierProfile()
