@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,10 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.navigation.Screen
-import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.BasicText
 import com.example.meintasty.uicomponent.DividierProfile
 import com.example.meintasty.uicomponent.EditIconComponent
@@ -51,10 +48,9 @@ fun RestaurantProfileScreen(
 ) {
 
     val detailProfileState = restaurantProfileViewModel.detailRestProfState.collectAsState()
-    val restaurantDetailState = restaurantProfileViewModel.restaurantDatabaseState.collectAsState()
+    val restaurantIdState = restaurantProfileViewModel.restaurantDatabaseState.collectAsState()
 
-
-    val resturantId = restaurantDetailState.value.data?.restaurantId
+    val resturantId = restaurantIdState.value.data?.restaurantId
     val context = LocalContext.current
 
     LaunchedEffect(resturantId) {
@@ -65,8 +61,6 @@ fun RestaurantProfileScreen(
         }
     }
 
-
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -76,9 +70,6 @@ fun RestaurantProfileScreen(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        /* BackIcon {
-                             navController.navigate(Screen.RestaurantScreen.route)
-                         }*/
                         HeaderComponent(text = stringResource(id = R.string.restaurant_profile))
                     }
                 },
@@ -115,6 +106,7 @@ fun RestaurantProfileScreen(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 LabelUserText(restaurant.restaurantName.toString())
                             }
+
                             DividierProfile()
                             Row(
                                 modifier = Modifier
@@ -127,7 +119,6 @@ fun RestaurantProfileScreen(
                                 )
                                 BasicText(modifier, restaurant.email.toString())
                                 Spacer(modifier = Modifier.weight(1f))
-
                                 EditIconComponent(
                                     onClick = {
                                         if (restaurant?.email == null) {
@@ -137,11 +128,130 @@ fun RestaurantProfileScreen(
                                         } else {
                                             Toast.makeText(context, "go", Toast.LENGTH_SHORT)
                                                 .show()
-                                            /* navController.navigate(
-                                                 Screen.UpdateScreen.route + "?userId=$userId&email=${user?.email}&phone=${user?.phoneNumber}&updateType=email"
-                                             )*/
                                         }
-                                    })
+                                    },
+                                    painterResource(id = R.drawable.pen)
+                                )
+                            }
+
+                            DividierProfile()
+                            val regex = """(\d)(\d{3})(\d{3})(\d{2})(\d{2})""".toRegex()
+                            val number = restaurant?.phoneNumber.toString()
+                            val output = regex.replace(number, "$2 $3-$4-$5")
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    modifier = modifier,
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.phone)
+                                )
+                                BasicText(modifier, output)
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(
+                                    onClick = {
+                                        if (restaurant?.phoneNumber.isNullOrEmpty()) {
+                                            Toast.makeText(
+                                                context,
+                                                R.string.number_null,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                           //navcontroller
+                                        }
+                                    },
+                                    painterResource(id = R.drawable.pen),
+                                    modifier = modifier
+                                )
+                            }
+
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    modifier = modifier,
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.calendar)
+                                )
+                                BasicText(modifier, "${restaurant.workDayTo.toString()} - ${restaurant.workDayFrom.toString()}")
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(
+                                    onClick = {
+
+                                    },
+                                    painterResource(id = R.drawable.pen),
+                                    modifier = modifier
+                                )
+                            }
+
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    modifier = modifier,
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.clock)
+                                )
+                                BasicText(modifier, "${restaurant.workHourTo.toString()} - ${restaurant.workHourFrom.toString()}")
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(
+                                    onClick = {
+
+                                    },
+                                    painterResource(id = R.drawable.pen),
+                                    modifier = modifier
+                                )
+                            }
+
+                            DividierProfile()
+                            Column {
+                                restaurant.addressList?.forEach {adress->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 10.dp)
+                                    ) {
+                                        ProfileStartIcon(
+                                            onClick = {},
+                                            painter = painterResource(id = R.drawable.navigation)
+                                        )
+                                        BasicText(modifier, adress?.addressText.toString())
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        EditIconComponent(
+                                            onClick = {
+                                            },
+                                            painterResource(id = R.drawable.pen)
+                                        )
+                                    }
+                                }
+                            }
+
+                            DividierProfile()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                ProfileStartIcon(
+                                    onClick = {},
+                                    painter = painterResource(id = R.drawable.restaurant_menu)
+                                )
+                                BasicText(modifier, "Restaurant Menu")
+                                Spacer(modifier = Modifier.weight(1f))
+                                EditIconComponent(
+                                    onClick = {
+                                              navController.navigate(Screen.RestaurantMenuDetailScreen.route+"$resturantId")
+                                    },
+                                    painterResource(id = R.drawable.right_arrow)
+                                )
                             }
                         }
                     }

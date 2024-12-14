@@ -65,7 +65,7 @@ fun MeinTastySplashScreen(
                     editor.apply()
 
                     // Kullanıcı için yönlendirme yapılabilir
-                    navController.navigate(Screen.ProfileScreen.route)
+                    navController.navigate(Screen.RestaurantScreen.route)
                 } ?: run {
                     Log.d("splash:else", "User data is null")
                     navController.navigate(Screen.ChooseLoginRegisterScreen.route)
