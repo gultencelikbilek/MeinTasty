@@ -41,7 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
-import com.example.meintasty.feature.basket_screen.BasketViewModel
+import com.example.meintasty.feature.user_feature.basket_screen.BasketViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BasketCardComponent(

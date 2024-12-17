@@ -46,7 +46,7 @@ fun EditIconComponent(
                 id = R.string.back
             ),
             tint = colorResource(id = R.color.mein_tasty_color),
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp).align(Alignment.Center)
         )
     }
 }

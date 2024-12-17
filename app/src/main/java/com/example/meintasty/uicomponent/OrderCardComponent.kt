@@ -34,7 +34,7 @@ import com.example.meintasty.R
 import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasket
 import com.example.meintasty.domain.model.get_order_model.get_order_response.Order
-import com.example.meintasty.feature.order_screen.OrderViewModel
+import com.example.meintasty.feature.user_feature.order_screen.OrderViewModel
 
 @Composable
 fun OrderCardComponent(
