@@ -156,8 +156,12 @@ fun NavGraph() {
                     navController =navController ,
                 )
             }
-            composable(Screen.RestaurantCreateMenuScreen.route){
-                RestaurantCreateMenuScreen(navController = navController)
+            composable(
+                route = Screen.RestaurantCreateMenuScreen.route
+            ){
+                RestaurantCreateMenuScreen(
+                    navController = navController,
+                )
             }
         }
     }

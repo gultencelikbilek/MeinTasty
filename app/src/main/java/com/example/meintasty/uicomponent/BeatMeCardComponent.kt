@@ -60,14 +60,16 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
     val splashShowState = cantonViewModel.splashShow.collectAsState().value
     val splashRestState = cantonViewModel.splashRestShow.collectAsState().value
     LaunchedEffect(triggerState) {
-        if (triggerState == true){
+        if (triggerState == true) {
             when {
                 splashShowState.data?.isUser == true -> {
                     navController.navigate(Screen.RestaurantScreen.route)
                 }
+
                 splashRestState.data?.isRestaurant == true -> {
                     navController.navigate(Screen.RestaurantProfileScreen.route)
                 }
+
                 else -> {
                     Log.d("Navigation", "No valid splash state found")
                 }
@@ -120,18 +122,18 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
             ) {
 
                 CantonTextFieldComponent(
-                    cantonList.data,
-                    cantonSelect,
+                    cantonList = cantonList.data,
+                    cantonSelect = cantonSelect,
                     onCantonChange = { newCanton ->
                         cantonSelect = newCanton
                     }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 CitiesTextFieldComponent(
-                    citiesList,
-                    citiesSelect,
-                    onCitiesChange = {
-                        citiesSelect = it
+                    citiesList = citiesList,
+                    citiesSelect = citiesSelect,
+                    onCitiesChange = { newCity ->
+                        citiesSelect = newCity
                     }
                 )
                 Spacer(modifier = Modifier.height(8.dp))

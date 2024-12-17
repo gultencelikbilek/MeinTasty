@@ -18,50 +18,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.canton_model.response_model.Canton
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CantonTextFieldComponent(
-    cantonList: List<Canton?>?, // ViewModel'den gelen kanton listesi
+    cantonList: List<Canton?>?,
     cantonSelect: String,
     onCantonChange: (String) -> Unit
 ) {
-    var isDropDownExpanded by remember { mutableStateOf(false) }
-    var selectedCanton by remember { mutableStateOf(cantonSelect) }
-
-
-    ExposedDropdownMenuBox(
-        expanded = isDropDownExpanded,
-        onExpandedChange = { isDropDownExpanded = !isDropDownExpanded }
-    ) {
-
-        OutlinedTextField(
-            value = selectedCanton,
-            onValueChange = { onCantonChange(it) },
-            label = { Text(text = stringResource(id = R.string.select_canton)) },
-            modifier = Modifier
-                .menuAnchor()
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(20.dp),
-            readOnly = true,
-
-        )
-        ExposedDropdownMenu(
-            expanded = isDropDownExpanded,
-            onDismissRequest = { isDropDownExpanded = false }
-        ) {
-            cantonList?.forEach {canton ->
-                DropdownMenuItem(
-                    text = { Text(text = canton!!.cantonName) },
-                    onClick = {
-                        selectedCanton = canton!!.cantonName
-                        onCantonChange(canton.cantonName)
-                        isDropDownExpanded = false
-                    }
-                )
-            }
-        }
-    }
+    DropdownTextFieldComponent(
+        label = stringResource(id = R.string.select_canton),
+        list = cantonList,
+        selectedItem = cantonSelect,
+        onItemSelected = onCantonChange,
+        labelSelector = { it!!.cantonName }
+    )
 }
-

@@ -6,13 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Scaffold
@@ -29,20 +26,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
-import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.BackIcon
-import com.example.meintasty.uicomponent.EmailComponent
+import com.example.meintasty.uicomponent.CustomSignUpTextFieldComponent
 import com.example.meintasty.uicomponent.HeaderComponent
-import com.example.meintasty.uicomponent.PhoneComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -136,11 +131,12 @@ fun UpdateScreen(
                                 fontSize = MaterialTheme.typography.titleMedium.fontSize
                             )
                         )
-                        PhoneComponent(
-                            phone = phoneUpdate,
-                            onPhoneChange = {
-                                phoneUpdate = it
-                            }
+                        CustomSignUpTextFieldComponent(
+                            value = phoneUpdate,
+                            onValueChange = { if (it.length <= 11) phoneUpdate = it },
+                            labelText = stringResource(id = R.string.phone),
+                            leadingIconRes = R.drawable.phone,
+                            keyboardType = KeyboardType.Phone
                         )
                     }
 
@@ -153,11 +149,12 @@ fun UpdateScreen(
                                 fontSize = MaterialTheme.typography.titleMedium.fontSize
                             )
                         )
-                        EmailComponent(
-                            email = emailUpdate,
-                            onMailChange = {
-                                emailUpdate = it
-                            }
+                        CustomSignUpTextFieldComponent(
+                            value = emailUpdate,
+                            onValueChange = { emailUpdate = it },
+                            labelText = stringResource(id = R.string.email),
+                            leadingIconRes = R.drawable.gmail,
+                            keyboardType = KeyboardType.Email
                         )
                     }
 

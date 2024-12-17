@@ -37,6 +37,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,12 +47,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
-import com.example.meintasty.uicomponent.EmailComponent
-import com.example.meintasty.uicomponent.NameSurnameComponent
-import com.example.meintasty.uicomponent.PasswordSignUpComponent
-import com.example.meintasty.uicomponent.PhoneComponent
 import com.example.meintasty.uicomponent.SignUpButtonComponent
 import com.example.meintasty.navigation.Screen
+import com.example.meintasty.uicomponent.CustomSignUpTextFieldComponent
 
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,7 +112,6 @@ fun SignUpScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xffdc3545)
                 )
-
             )
         },
 
@@ -165,32 +163,36 @@ fun SignUpScreen(
                                 containerColor = Color.White
                             )
                         ) {
-                            NameSurnameComponent(
-                                name_surname = fullName,
-                                onNameSurnameChange = {
-                                    fullName = it
-                                }
+                            CustomSignUpTextFieldComponent(
+                                value = fullName,
+                                onValueChange = { fullName = it },
+                                labelText = stringResource(id = R.string.name_surname),
+                                leadingIconRes = R.drawable.user
                             )
-                            EmailComponent(
-                                email = email,
-                                onMailChange = {
-                                    email = it
-                                }
+
+                            CustomSignUpTextFieldComponent(
+                                value = email,
+                                onValueChange = { email = it },
+                                labelText = stringResource(id = R.string.email),
+                                leadingIconRes = R.drawable.gmail,
+                                keyboardType = KeyboardType.Email
                             )
-                            PhoneComponent(
-                                phone = phone,
-                                onPhoneChange = {
-                                    phone = it
-                                }
+                            CustomSignUpTextFieldComponent(
+                                value = phone,
+                                onValueChange = { if (it.length <= 11) phone = it },
+                                labelText = stringResource(id = R.string.phone),
+                                leadingIconRes = R.drawable.phone,
+                                keyboardType = KeyboardType.Phone
                             )
-                            PasswordSignUpComponent(
-                                modifier = modifier,
-                                password = password,
-                                onPaswordChange = {
-                                    password = it
-                                },
-                                text = stringResource(id = R.string.password)
+                            CustomSignUpTextFieldComponent(
+                                value = password,
+                                onValueChange = { password = it },
+                                labelText = stringResource(id = R.string.password),
+                                leadingIconRes = R.drawable.lock,
+                                isPasswordField = true,
+                                imeAction = ImeAction.Done
                             )
+
                             Spacer(modifier = Modifier.height(12.dp))
                             SignUpButtonComponent(
                                 onClick = {
@@ -208,8 +210,6 @@ fun SignUpScreen(
                                         signUpViewModel.signUp(signUpRequest)
                                         Log.d("signuprequest:", "${signUpRequest}")
                                         Log.d("signuprequest:", "${signuState.value}")
-
-
                                     } else {
                                         Toast.makeText(
                                             context,
@@ -217,7 +217,6 @@ fun SignUpScreen(
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
-
                                 },
                                 stringResource(id = R.string.sign_up)
                             )
@@ -228,6 +227,7 @@ fun SignUpScreen(
         }
     )
 }
+
 @Preview
 @Composable
 fun SignUpPrew(modifier: Modifier = Modifier) {
