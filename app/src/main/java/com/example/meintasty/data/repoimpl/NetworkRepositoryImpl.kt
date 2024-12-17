@@ -8,8 +8,9 @@ import com.example.meintasty.domain.model.canton_model.request_model.CantonReque
 import com.example.meintasty.domain.model.canton_model.response_model.CantonResponseModel
 import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest
 import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetailResponse
-import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.create_menu_model.create_menu_request.CreateMenuRequest
+import com.example.meintasty.domain.model.create_menu_model.create_menu_response.CreateMenuResponse
 import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_request.FavoritesRestaurantRequest
 import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurantResponse
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
@@ -38,6 +39,7 @@ import com.example.meintasty.domain.model.update_email_model.update_email_reques
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
+import com.example.meintasty.domain.model.user_models.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
 import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
 import com.example.meintasty.domain.repository.NetworkRepository
@@ -121,5 +123,9 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun restaurantLogin(restaurantLoginRequest: RestaurantLoginRequest): RestaurantLoginResponse {
         return apiService.restaurantLogin(restaurantLoginRequest)
+    }
+
+    override suspend fun createMenu(createMenuRequest: CreateMenuRequest): CreateMenuResponse {
+        return apiService.createMenu(createMenuRequest)
     }
 }

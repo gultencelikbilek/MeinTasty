@@ -35,7 +35,7 @@ import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
-import com.example.meintasty.feature.detail_restaurant.DetailRestaurantViewModel
+import com.example.meintasty.feature.user_feature.detail_restaurant.DetailRestaurantViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

@@ -60,4 +60,10 @@
     <string name="number_null">Phone number is null</string>
     <string name="restaurant_login">Restaurant Login</string>
     <string name="restaurant_profile">Restaurant Profile</string>
+    <string name="retaurant_menu_list">Restaurant Menu</string>
+    <string name="create_menu">Create Menu</string>
+    <string name="menu_name">Menu name</string>
+    <string name="menu_price">Menu price</string>
+    <string name="menu_content">Menu content</string>
+    <string name="currency">Currency</string>
 </resources>

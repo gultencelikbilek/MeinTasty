@@ -1,8 +1,8 @@
 package com.example.meintasty.domain.usecase
 
 import com.example.meintasty.data.repoimpl.NetworkRepositoryImpl
-import com.example.meintasty.domain.model.category_model.category_request.CategoryRequest
 import com.example.meintasty.domain.model.category_model.category_response.CategoryResponse
+import com.example.meintasty.domain.model.user_models.category_model.category_request.CategoryRequest
 import com.example.meintasty.feature.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

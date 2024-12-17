@@ -11,23 +11,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.meintasty.feature.user_login_screen.LoginScreen
-import com.example.meintasty.feature.signup_screen.SignUpScreen
-import com.example.meintasty.feature.splash_screen.MeinTastySplashScreen
-import com.example.meintasty.feature.canton_screen.CantonScreen
-import com.example.meintasty.feature.basket_screen.BasketScreen
-import com.example.meintasty.feature.category_detail_screen.CategoryDetailScreen
-import com.example.meintasty.feature.choose_login_register.ChooseLoginRegisterScreen
-import com.example.meintasty.feature.detail_restaurant.DetailRestaurantScreen
-import com.example.meintasty.feature.order_screen.OrderScreen
-import com.example.meintasty.feature.password_screen.PasswordScreen
-import com.example.meintasty.feature.payment_screen.PaymentScreen
-import com.example.meintasty.feature.user_profile_screen.ProfileScreen
-import com.example.meintasty.feature.restaurant_login_screen.RestaurantLoginScreen
-import com.example.meintasty.feature.restaurant_menu_list.RestaurantMenuListScreen
-import com.example.meintasty.feature.restaurant_profile_screen.RestaurantProfileScreen
-import com.example.meintasty.feature.restaurant_screen.RestaurantScreen
-import com.example.meintasty.feature.update_screen.UpdateScreen
+import com.example.meintasty.feature.user_feature.user_login_screen.LoginScreen
+import com.example.meintasty.feature.user_feature.signup_screen.SignUpScreen
+import com.example.meintasty.feature.common_screen_feature.splash_screen.MeinTastySplashScreen
+import com.example.meintasty.feature.common_screen_feature.canton_screen.CantonScreen
+import com.example.meintasty.feature.user_feature.basket_screen.BasketScreen
+import com.example.meintasty.feature.user_feature.category_detail_screen.CategoryDetailScreen
+import com.example.meintasty.feature.common_screen_feature.choose_login_register.ChooseLoginRegisterScreen
+import com.example.meintasty.feature.restaurant_feature.restaurant_create_menu.RestaurantCreateMenuScreen
+import com.example.meintasty.feature.user_feature.detail_restaurant.DetailRestaurantScreen
+import com.example.meintasty.feature.user_feature.order_screen.OrderScreen
+import com.example.meintasty.feature.user_feature.password_screen.PasswordScreen
+import com.example.meintasty.feature.user_feature.payment_screen.PaymentScreen
+import com.example.meintasty.feature.user_feature.user_profile_screen.ProfileScreen
+import com.example.meintasty.feature.restaurant_feature.restaurant_login_screen.RestaurantLoginScreen
+import com.example.meintasty.feature.restaurant_feature.restaurant_menu_list.RestaurantMenuListScreen
+import com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen.RestaurantProfileScreen
+import com.example.meintasty.feature.user_feature.restaurant_screen.RestaurantScreen
+import com.example.meintasty.feature.user_feature.update_screen.UpdateScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -147,8 +148,16 @@ fun NavGraph() {
             composable(Screen.RestaurantProfileScreen.route){
                 RestaurantProfileScreen(navController)
             }
-            composable(Screen.RestaurantMenuDetailScreen.route){
-                RestaurantMenuListScreen(animatedVisibilityScope = this, navController =navController )
+            composable(
+                route = Screen.RestaurantMenuDetailScreen.route,
+            ){
+                RestaurantMenuListScreen(
+                    animatedVisibilityScope = this,
+                    navController =navController ,
+                )
+            }
+            composable(Screen.RestaurantCreateMenuScreen.route){
+                RestaurantCreateMenuScreen(navController = navController)
             }
         }
     }
