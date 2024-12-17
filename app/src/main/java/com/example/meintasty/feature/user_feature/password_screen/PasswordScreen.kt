@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -31,16 +30,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
 import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
 import com.example.meintasty.uicomponent.BackIcon
+import com.example.meintasty.uicomponent.CustomSignUpTextFieldComponent
 import com.example.meintasty.uicomponent.HeaderComponent
-import com.example.meintasty.uicomponent.PasswordSignUpComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,35 +85,24 @@ fun PasswordScreen(
                     .padding(16.dp)
             ) {
                 Text(
-                    modifier = Modifier.padding(top = 16.dp).padding(start = 8.dp),
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .padding(start = 8.dp),
                     text = stringResource(id = R.string.change_password),
                     style = TextStyle(
                         color = Color.Black,
                         fontSize = MaterialTheme.typography.titleMedium.fontSize
                     )
                 )
-              /*  PasswordSignUpComponent(
-                    modifier = modifier,
-                    password = updatePassword,
-                    onPaswordChange = {
-                        updatePassword = it
-                    },
-                    text = stringResource(id = R.string.old_password)
-                )*/
-                PasswordSignUpComponent(
-                    password = updatePassword,
-                    onPaswordChange = {
-                        updatePassword = it
-                    },
-                    text = stringResource(id = R.string.new_password)
+
+                CustomSignUpTextFieldComponent(
+                    value = updatePassword,
+                    onValueChange = { updatePassword = it },
+                    labelText = stringResource(id = R.string.password),
+                    leadingIconRes = R.drawable.lock,
+                    isPasswordField = true,
+                    imeAction = ImeAction.Done
                 )
-              /*  PasswordSignUpComponent(
-                    password = updatePassword,
-                    onPaswordChange = {
-                        updatePassword = it
-                    },
-                    text = stringResource(id = R.string.corfirm_password)
-                )*/
 
                 Button(
                     onClick = {

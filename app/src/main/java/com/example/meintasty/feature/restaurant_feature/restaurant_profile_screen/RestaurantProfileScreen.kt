@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.BasicText
@@ -48,16 +50,23 @@ fun RestaurantProfileScreen(
     restaurantProfileViewModel: RestaurantProfileViewModel = hiltViewModel()
 ) {
 
-    val detailProfileState = restaurantProfileViewModel.detailRestProfState.collectAsState()
+    val detailRestaurantProfileState = restaurantProfileViewModel.detailRestaurantProfileState.collectAsState()
     val restaurantIdState = restaurantProfileViewModel.restaurantDatabaseState.collectAsState()
+    val context = LocalContext.current
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
 
     val restaurantId = restaurantIdState.value.data?.restaurantId
-    val context = LocalContext.current
 
     LaunchedEffect(restaurantId) {
         restaurantProfileViewModel.getRestaurantDatabase()
         restaurantId?.let {
             restaurantProfileViewModel.getDetailRestaurant(DetailRestaurantRequest(it))
+
+            val editorRestaurantId = sharedPreferences.edit()
+            editorRestaurantId.putInt(Constants.SHARED_RESTAURANT_ID, it)
+            editorRestaurantId.apply()
+
             Log.d("restaurantId","$restaurantId")
         }
     }
@@ -80,7 +89,7 @@ fun RestaurantProfileScreen(
             )
         },
         content = { paddingValues ->
-            detailProfileState.value.data?.let { restaurant ->
+            detailRestaurantProfileState.value.data?.let { restaurant ->
                 Log.d("restauran","$restaurant")
                 Column(modifier = Modifier.padding(paddingValues)) {
                     Card(

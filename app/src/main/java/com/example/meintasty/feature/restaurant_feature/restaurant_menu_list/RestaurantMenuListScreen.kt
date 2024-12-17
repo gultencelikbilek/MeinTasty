@@ -65,11 +65,11 @@ fun SharedTransitionScope.RestaurantMenuListScreen(
     navController: NavController,
     restaurantViewModel: RestaurantProfileViewModel = hiltViewModel()
 ) {
-    val detailMenuRestState = restaurantViewModel.detailRestProfState.collectAsState()
+    val detailMenuRestState = restaurantViewModel.detailRestaurantProfileState.collectAsState()
     val restaurantIdState = restaurantViewModel.restaurantDatabaseState.collectAsState()
     val restaurantIdValue = restaurantIdState.value.data?.restaurantId
 
-    val detailRestState = restaurantViewModel.detailRestProfState.collectAsState().value
+    val detailRestState = restaurantViewModel.detailRestaurantProfileState.collectAsState().value
     val selectedCategoryId = remember { mutableStateOf<Int?>(null) }
     val gridState = rememberLazyGridState()
 

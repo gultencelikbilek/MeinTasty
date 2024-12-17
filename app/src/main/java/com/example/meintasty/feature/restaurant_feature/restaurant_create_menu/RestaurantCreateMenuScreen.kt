@@ -1,5 +1,7 @@
 package com.example.meintasty.feature.restaurant_feature.restaurant_create_menu
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,13 +22,16 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -38,10 +43,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
+import com.example.meintasty.domain.model.category_detail_model.category_detail_response.Category
+import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.uicomponent.BackIcon
+import com.example.meintasty.uicomponent.CantonTextFieldComponent
+import com.example.meintasty.uicomponent.CategorySelectDropDownMenu
 import com.example.meintasty.uicomponent.CustomOutlinedTextField
 import com.example.meintasty.uicomponent.HeaderComponent
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantCreateMenuScreen(
@@ -50,17 +59,23 @@ fun RestaurantCreateMenuScreen(
 ) {
 
     val createMenuState = restaurantCreateMenuViewModel.createMenuState.collectAsState()
-    var menuName = remember {
-        mutableStateOf("")
-    }
-    var menuPrice = remember {
-        mutableStateOf("")
-    }
-    var menuContent = remember {
-        mutableStateOf("")
-    }
-    var currency = remember {
-        mutableStateOf("CHF")
+    val restaurantDetailState = restaurantCreateMenuViewModel.restaurantDetailState.collectAsState()
+
+    val context = LocalContext.current
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
+    val restaurantId = sharedPreferences.getInt(Constants.SHARED_RESTAURANT_ID, 0)
+
+    var menuName = remember { mutableStateOf("") }
+    var menuPrice = remember { mutableStateOf("") }
+    var menuContent = remember { mutableStateOf("") }
+    var currency = remember { mutableStateOf("CHF") }
+    var categorySelect by remember { mutableStateOf("") }
+
+    LaunchedEffect(restaurantId) {
+        restaurantId?.let {
+            restaurantCreateMenuViewModel.getDetailRestaurant(DetailRestaurantRequest(it))
+        }
     }
 
     Scaffold(
@@ -86,8 +101,8 @@ fun RestaurantCreateMenuScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-
-                ) {
+            ) {
+                // Text Fields for Menu
                 CustomOutlinedTextField(
                     value = menuName.value,
                     onValueChange = { menuName.value = it },
@@ -116,7 +131,18 @@ fun RestaurantCreateMenuScreen(
                     placeholder = stringResource(id = R.string.currency),
                     imeAction = ImeAction.Done,
                 )
-                //category için  dropdown eklenecek
+
+                restaurantDetailState.value.data?.menuList?.let { menuList ->
+                    val categoryGroupList = menuList.filterNotNull().distinctBy { it.categoryId }
+                    CategorySelectDropDownMenu(
+                        categoryList = categoryGroupList,
+                        categorySelect = categorySelect,
+                        onCategoryChange = {
+                            categorySelect = it
+                        }
+                    )
+                }
+
                 Spacer(modifier = Modifier.weight(1f))
 
                 Button(
@@ -127,18 +153,10 @@ fun RestaurantCreateMenuScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.mein_tasty_color)
                     )
-                    ) {
+                ) {
                     Text(text = "CREATE MENU")
-
                 }
             }
         }
     )
-}
-
-@Preview
-@Composable
-fun MenuCreatePrew(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    RestaurantCreateMenuScreen(navController = navController)
 }

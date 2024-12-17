@@ -4,15 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.RestaurantAccountModel
-import com.example.meintasty.domain.model.UserAccountModel
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
 import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
-import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
 import com.example.meintasty.feature.NetworkResult
-import com.example.meintasty.feature.user_feature.detail_restaurant.DetailRestaurantState
-import com.example.meintasty.feature.user_feature.user_profile_screen.UserDatabaseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +23,8 @@ class RestaurantProfileViewModel @Inject constructor(
     private val _restaurantDatabaseState = MutableStateFlow(RestaurantDatabaseState())
     val restaurantDatabaseState = _restaurantDatabaseState.asStateFlow()
 
-    private val _detailRestProfState = MutableStateFlow(RestaurantDetailState())
-    val detailRestProfState = _detailRestProfState.asStateFlow()
+    private val _detailRestaurantProfileState = MutableStateFlow(RestaurantDetailState())
+    val detailRestaurantProfileState = _detailRestaurantProfileState.asStateFlow()
 
     fun getDetailRestaurant(detailRestaurantRequest: DetailRestaurantRequest) {
         viewModelScope.launch {
@@ -36,7 +32,7 @@ class RestaurantProfileViewModel @Inject constructor(
                 .collect { result ->
                     when (result) {
                         is NetworkResult.Failure -> {
-                            _detailRestProfState.value = RestaurantDetailState(
+                            _detailRestaurantProfileState.value = RestaurantDetailState(
                                 data = null,
                                 isSuccess = false,
                                 isLoading = false,
@@ -46,7 +42,7 @@ class RestaurantProfileViewModel @Inject constructor(
                         }
 
                         NetworkResult.Loading -> {
-                            _detailRestProfState.value = RestaurantDetailState(
+                            _detailRestaurantProfileState.value = RestaurantDetailState(
                                 data = null,
                                 isSuccess = true,
                                 isLoading = false,
@@ -55,7 +51,7 @@ class RestaurantProfileViewModel @Inject constructor(
                         }
 
                         is NetworkResult.Success -> {
-                            _detailRestProfState.value = RestaurantDetailState(
+                            _detailRestaurantProfileState.value = RestaurantDetailState(
                                 data = result.data.value,
                                 isSuccess = true,
                                 isLoading = false,

@@ -19,49 +19,17 @@ import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.canton_model.response_model.City
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CitiesTextFieldComponent(
     citiesList: List<City>,
-    citiesSelect : String,
-    onCitiesChange :(String) -> Unit
+    citiesSelect: String,
+    onCitiesChange: (String) -> Unit
 ) {
-    var isDropDownExpanded by remember { mutableStateOf(false) }
-    var selectedCities by remember { mutableStateOf(citiesSelect) }
-
-
-    ExposedDropdownMenuBox(
-        expanded = isDropDownExpanded,
-        onExpandedChange = { isDropDownExpanded = !isDropDownExpanded } // tıklamayla açma/kapama
-    ) {
-
-        OutlinedTextField(
-            value = selectedCities,
-            onValueChange = { onCitiesChange(it) },
-            label = { Text(text = stringResource(id = R.string.select_cities)) },
-            modifier = Modifier
-                .menuAnchor()
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(20.dp),
-            readOnly = true
-
-        )
-        ExposedDropdownMenu(
-            expanded = isDropDownExpanded,
-            onDismissRequest = { isDropDownExpanded = false }
-        ) {
-            citiesList.forEach {city ->
-                DropdownMenuItem(
-                    text = { Text(text = city.cityName) },
-                    onClick = {
-
-                        selectedCities = city.cityName
-                        onCitiesChange(city.cityName)
-                        isDropDownExpanded = false
-                    }
-                )
-            }
-        }
-    }
+    DropdownTextFieldComponent(
+        label = stringResource(id = R.string.select_cities),
+        list = citiesList,
+        selectedItem = citiesSelect,
+        onItemSelected = onCitiesChange,
+        labelSelector = { it.cityName }
+    )
 }
