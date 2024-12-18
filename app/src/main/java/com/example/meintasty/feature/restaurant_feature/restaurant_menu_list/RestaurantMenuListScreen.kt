@@ -1,5 +1,6 @@
 package com.example.meintasty.feature.restaurant_feature.restaurant_menu_list
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -42,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
+import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen.RestaurantProfileViewModel
 import com.example.meintasty.navigation.Screen
@@ -65,18 +68,19 @@ fun SharedTransitionScope.RestaurantMenuListScreen(
     navController: NavController,
     restaurantViewModel: RestaurantProfileViewModel = hiltViewModel()
 ) {
-    val detailMenuRestState = restaurantViewModel.detailRestaurantProfileState.collectAsState()
-    val restaurantIdState = restaurantViewModel.restaurantDatabaseState.collectAsState()
-    val restaurantIdValue = restaurantIdState.value.data?.restaurantId
-
+    val context = LocalContext.current
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
+    val restaurantId = sharedPreferences.getInt(Constants.SHARED_RESTAURANT_ID, 0)
     val detailRestState = restaurantViewModel.detailRestaurantProfileState.collectAsState().value
     val selectedCategoryId = remember { mutableStateOf<Int?>(null) }
     val gridState = rememberLazyGridState()
 
-    LaunchedEffect(restaurantIdValue) {
+    LaunchedEffect(restaurantId) {
         restaurantViewModel.getRestaurantDatabase()
-        restaurantIdValue?.let {
+        restaurantId?.let {
             restaurantViewModel.getDetailRestaurant(DetailRestaurantRequest(it))
+            Log.d("restaurantId","$restaurantId")
         }
     }
 
@@ -183,7 +187,6 @@ fun SharedTransitionScope.RestaurantMenuListScreen(
                                 RestaurantMenuListCardComponent(
                                     animatedVisibilityScope = animatedVisibilityScope,
                                     menu = it,
-                                    restaurantMenuListViewModel = restaurantViewModel,
                                     navController = navController
                                 )
                             }
