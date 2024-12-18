@@ -66,4 +66,5 @@
     <string name="menu_price">Menu price</string>
     <string name="menu_content">Menu content</string>
     <string name="currency">Currency</string>
+    <string name="update_menu">Update Screen</string>
 </resources>

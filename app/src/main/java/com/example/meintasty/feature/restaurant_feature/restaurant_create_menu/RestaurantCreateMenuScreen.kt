@@ -1,7 +1,7 @@
 package com.example.meintasty.feature.restaurant_feature.restaurant_create_menu
 
 import android.content.Context
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,16 +9,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -30,24 +25,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.category_detail_model.category_detail_response.Category
+import com.example.meintasty.domain.model.create_menu_model.create_menu_request.CreateMenuRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.uicomponent.BackIcon
-import com.example.meintasty.uicomponent.CantonTextFieldComponent
 import com.example.meintasty.uicomponent.CategorySelectDropDownMenu
 import com.example.meintasty.uicomponent.CustomOutlinedTextField
 import com.example.meintasty.uicomponent.HeaderComponent
@@ -59,7 +49,7 @@ fun RestaurantCreateMenuScreen(
 ) {
 
     val createMenuState = restaurantCreateMenuViewModel.createMenuState.collectAsState()
-    val restaurantDetailState = restaurantCreateMenuViewModel.restaurantDetailState.collectAsState()
+    val restaurantcreateMenuState = restaurantCreateMenuViewModel.restaurantcreateMenuState.collectAsState()
 
     val context = LocalContext.current
     val sharedPreferences =
@@ -132,7 +122,7 @@ fun RestaurantCreateMenuScreen(
                     imeAction = ImeAction.Done,
                 )
 
-                restaurantDetailState.value.data?.menuList?.let { menuList ->
+                restaurantcreateMenuState.value.data?.menuList?.let { menuList ->
                     val categoryGroupList = menuList.filterNotNull().distinctBy { it.categoryId }
                     CategorySelectDropDownMenu(
                         categoryList = categoryGroupList,
@@ -146,7 +136,29 @@ fun RestaurantCreateMenuScreen(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Button(
-                    onClick = { },
+                    onClick = {
+                        if (menuName != null && menuContent != null && menuPrice != null && categorySelect != null) {
+                            val categoryId = restaurantcreateMenuState.value.data?.menuList
+                                ?.filterNotNull()
+                                ?.find { it.categoryName == categorySelect } // Seçilen kategoriyi bul
+                                ?.categoryId // O kategorinin ID'sini al
+
+                            if (categoryId != null){
+                                val createMenuRequest = CreateMenuRequest(
+                                    categoryId = categoryId,
+                                    currency = currency.value,
+                                    menuContent = menuContent.value,
+                                    menuName = menuName.value,
+                                    menuPic = null,
+                                    menuPrice = menuPrice.value
+                                    )
+                                restaurantCreateMenuViewModel.createMenu(createMenuRequest)
+                                Toast.makeText(context,"SUCCESS",Toast.LENGTH_SHORT).show()
+                            }
+                          }else {
+                              Toast.makeText(context,"Is not categoryId",Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),

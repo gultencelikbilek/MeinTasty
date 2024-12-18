@@ -13,7 +13,7 @@ fun CategorySelectDropDownMenu(
     onCategoryChange: (String) -> Unit
 ) {
     DropdownTextFieldComponent(
-        label = "Category Name",
+        label = categorySelect,
         list = categoryList,
         selectedItem =categorySelect,
         onItemSelected = onCategoryChange,

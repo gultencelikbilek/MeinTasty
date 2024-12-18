@@ -25,6 +25,7 @@ import com.example.meintasty.domain.model.payment_model.payment_request_model.Pa
 import com.example.meintasty.domain.model.payment_model.payment_response_model.PaymentResponse
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
+import com.example.meintasty.domain.model.remove_menu_model.remove_menu_request.RemoveMenuRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_response.RestaurantLoginResponse
@@ -36,6 +37,8 @@ import com.example.meintasty.domain.model.update_basket_model.update_basket_requ
 import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasketResponse
 import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
 import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
+import com.example.meintasty.domain.model.update_menu_model.update_menu_request.UpdateMenuRequest
+import com.example.meintasty.domain.model.update_menu_model.update_menu_response.UpdateMenuResponse
 import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
 import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
 import com.example.meintasty.domain.model.user_models.category_model.category_request.CategoryRequest
@@ -102,7 +105,14 @@ interface ApiService {
 
     @POST(Constants.END_POINT_ADD_ORDER)
     suspend fun addOrder(@Body paymentRequest: PaymentRequest): PaymentResponse
+
     @POST(Constants.END_POINT_CREATE_MENU)
     suspend fun createMenu(@Body createMenuRequest: CreateMenuRequest) : CreateMenuResponse
+
+    @POST(Constants.END_POINT_UPDATE_MENU)
+    suspend fun updateMenu(@Body updateMenuRequest: UpdateMenuRequest) : UpdateMenuResponse
+
+   /* @POST(Constants.END_POINT_REMOVE_MENU)
+    suspend fun removeMenu(@Body removeMenuRequest: RemoveMenuRequest) : RemoveMenuResponse*/
 
 }

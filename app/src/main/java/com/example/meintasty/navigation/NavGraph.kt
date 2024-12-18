@@ -27,6 +27,7 @@ import com.example.meintasty.feature.user_feature.user_profile_screen.ProfileScr
 import com.example.meintasty.feature.restaurant_feature.restaurant_login_screen.RestaurantLoginScreen
 import com.example.meintasty.feature.restaurant_feature.restaurant_menu_list.RestaurantMenuListScreen
 import com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen.RestaurantProfileScreen
+import com.example.meintasty.feature.restaurant_feature.update_remove_menu_screen.UpdateRemoveMenuScreen
 import com.example.meintasty.feature.user_feature.restaurant_screen.RestaurantScreen
 import com.example.meintasty.feature.user_feature.update_screen.UpdateScreen
 
@@ -142,26 +143,61 @@ fun NavGraph() {
             composable(Screen.PaymentScreen.route) {
                 PaymentScreen(navController)
             }
-            composable(Screen.RestaurantLoginScreen.route){
+            composable(Screen.RestaurantLoginScreen.route) {
                 RestaurantLoginScreen(navController)
             }
-            composable(Screen.RestaurantProfileScreen.route){
+            composable(Screen.RestaurantProfileScreen.route) {
                 RestaurantProfileScreen(navController)
             }
             composable(
                 route = Screen.RestaurantMenuDetailScreen.route,
-            ){
+            ) {
                 RestaurantMenuListScreen(
                     animatedVisibilityScope = this,
-                    navController =navController ,
+                    navController = navController,
                 )
             }
             composable(
                 route = Screen.RestaurantCreateMenuScreen.route
-            ){
+            ) {
                 RestaurantCreateMenuScreen(
                     navController = navController,
                 )
+            }
+            composable(route = Screen.UpdateRemoveMenuScreen.route +
+                    "?id={id}&categoryId={categoryId}&menuName={menuName}&menuContent={menuContent}&menuPrice={menuPrice}&currency={currency}",
+                arguments = listOf(
+                    navArgument("id"){
+                        type = NavType.IntType
+                    },
+                    navArgument("categoryId"){
+                        type = NavType.IntType
+                    },
+                    navArgument("menuName"){
+                        type = NavType.StringType
+                    },
+                    navArgument("menuContent"){
+                        type = NavType.StringType
+                    },
+                    navArgument("menuPrice"){
+                        type = NavType.StringType
+                    },
+                    navArgument("currency"){
+                        type = NavType.StringType
+                    },
+                )
+            ) {navBackStackEntry ->
+                navBackStackEntry.arguments?.let {
+                    UpdateRemoveMenuScreen(
+                        navController = navController,
+                        id = it.getInt("id"),
+                        categoryId = it.getInt("categoryId"),
+                        menuName = it.getString("menuName"),
+                        menuContent = it.getString("menuContent"),
+                        menuPrice = it.getString("menuPrice"),
+                        currency = it.getString("currency")
+                        )
+                }
             }
         }
     }

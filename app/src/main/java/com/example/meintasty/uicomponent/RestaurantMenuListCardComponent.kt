@@ -43,23 +43,21 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import com.example.meintasty.R
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
 import com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen.RestaurantProfileViewModel
+import com.example.meintasty.navigation.Screen
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SharedTransitionScope.RestaurantMenuListCardComponent(
     animatedVisibilityScope: AnimatedVisibilityScope,
     menu: Menu?,
-    restaurantMenuListViewModel: RestaurantProfileViewModel,
     navController: NavController
 ) {
 
-    val mutableInteractionSource = remember {
-        MutableInteractionSource()
-    }
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_light, weight = FontWeight.Bold)
     )
@@ -67,7 +65,11 @@ fun SharedTransitionScope.RestaurantMenuListCardComponent(
         modifier = Modifier
             .width(85.dp)
             .height(170.dp)
-            .padding(4.dp),
+            .padding(4.dp)
+            .clickable {
+                navController.navigate(Screen.UpdateRemoveMenuScreen.route +
+                        "?id=${menu?.id}&categoryId=${menu?.categoryId}&menuName=${menu?.menuName}&menuContent=${menu?.menuContent}&menuPrice=${menu?.menuPrice}&currency=${menu?.currency}")
+            },
         elevation = CardDefaults.cardElevation(1.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White

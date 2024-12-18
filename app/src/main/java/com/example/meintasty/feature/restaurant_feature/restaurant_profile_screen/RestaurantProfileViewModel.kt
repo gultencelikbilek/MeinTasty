@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.RestaurantAccountModel
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
+import com.example.meintasty.domain.model.update_menu_model.update_menu_request.UpdateMenuRequest
 import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
+import com.example.meintasty.domain.usecase.UpdateMenuUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,12 +21,16 @@ import javax.inject.Inject
 class RestaurantProfileViewModel @Inject constructor(
     private val getRestaurantTokenUseCase: GetRestaurantTokenUseCase,
     private val restaurantDetailUseCase: RestaurantDetailUseCase,
+    private val updateMenuUseCase: UpdateMenuUseCase
 ) : ViewModel() {
     private val _restaurantDatabaseState = MutableStateFlow(RestaurantDatabaseState())
     val restaurantDatabaseState = _restaurantDatabaseState.asStateFlow()
 
     private val _detailRestaurantProfileState = MutableStateFlow(RestaurantDetailState())
     val detailRestaurantProfileState = _detailRestaurantProfileState.asStateFlow()
+
+
+
 
     fun getDetailRestaurant(detailRestaurantRequest: DetailRestaurantRequest) {
         viewModelScope.launch {
@@ -51,8 +57,10 @@ class RestaurantProfileViewModel @Inject constructor(
                         }
 
                         is NetworkResult.Success -> {
+                            val updatedMenuList = result.data.value?.menuList
+                            Log.d("updateMneuList","$updatedMenuList")
                             _detailRestaurantProfileState.value = RestaurantDetailState(
-                                data = result.data.value,
+                                data = result.data.value?.copy(menuList = updatedMenuList),
                                 isSuccess = true,
                                 isLoading = false,
                                 isError = ""
