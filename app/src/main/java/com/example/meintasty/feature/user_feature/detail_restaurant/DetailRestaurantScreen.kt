@@ -22,12 +22,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -60,7 +58,7 @@ import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_re
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.MenuListCardComponent
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SharedTransitionScope.DetailRestaurantScreen(
@@ -71,13 +69,14 @@ fun SharedTransitionScope.DetailRestaurantScreen(
 ) {
 
     val detailRestState = detailRestaurantViewModel.detailRestState.collectAsState().value
-
+    val basketRestIdControlState = detailRestaurantViewModel.basketRestIdControlState.collectAsState()
+    val basketControlState = basketRestIdControlState.value.data
     val detailRestaurantRequest = DetailRestaurantRequest(restaurantId!!.toInt())
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_bold, weight = FontWeight.Normal)
     )
     val gridState =
-        rememberLazyGridState() // Grid'in state'ini yönetmek için, rememberLazyGridState() kaydırma pozisyonunu kontrol etmenizi sağlar.
+        rememberLazyListState() // Grid'in state'ini yönetmek için, rememberLazyGridState() kaydırma pozisyonunu kontrol etmenizi sağlar.
 
     val selectedCategoryId = remember { mutableStateOf<Int?>(null) }
 
@@ -196,8 +195,7 @@ fun SharedTransitionScope.DetailRestaurantScreen(
                     LaunchedEffect(filteredMenu) {
                         gridState.scrollToItem(0) //gridState.scrollToItem(0) ile liste başına kaydırılır.
                     }
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                    LazyColumn(
                         state = gridState,
                         modifier = Modifier
                             .fillMaxSize()
@@ -208,6 +206,7 @@ fun SharedTransitionScope.DetailRestaurantScreen(
                             MenuListCardComponent(
                                 animatedVisibilityScope,
                                 menu = menu,
+                                basketControlState,
                                 detailRestaurantViewModel = detailRestaurantViewModel,
                             )
                         }

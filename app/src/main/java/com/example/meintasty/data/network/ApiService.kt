@@ -26,6 +26,7 @@ import com.example.meintasty.domain.model.payment_model.payment_response_model.P
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.remove_menu_model.remove_menu_request.RemoveMenuRequest
+import com.example.meintasty.domain.model.remove_menu_model.remove_menu_response.RemoveMenuResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_response.RestaurantLoginResponse
@@ -112,7 +113,7 @@ interface ApiService {
     @POST(Constants.END_POINT_UPDATE_MENU)
     suspend fun updateMenu(@Body updateMenuRequest: UpdateMenuRequest) : UpdateMenuResponse
 
-   /* @POST(Constants.END_POINT_REMOVE_MENU)
-    suspend fun removeMenu(@Body removeMenuRequest: RemoveMenuRequest) : RemoveMenuResponse*/
+    @POST(Constants.END_POINT_REMOVE_MENU)
+    suspend fun removeMenu(@Body removeMenuRequest: RemoveMenuRequest) : RemoveMenuResponse
 
 }
