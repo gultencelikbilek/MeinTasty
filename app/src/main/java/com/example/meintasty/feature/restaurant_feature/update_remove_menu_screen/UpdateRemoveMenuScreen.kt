@@ -39,6 +39,7 @@ import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.create_menu_model.create_menu_request.CreateMenuRequest
+import com.example.meintasty.domain.model.remove_menu_model.remove_menu_request.RemoveMenuRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.update_menu_model.update_menu_request.UpdateMenuRequest
 import com.example.meintasty.navigation.Screen
@@ -59,7 +60,6 @@ fun UpdateRemoveMenuScreen(
     currency: String?,
     updateRemoveMenuViewModel: UpdateRemoveMenuViewModel = hiltViewModel()
 ) {
-    // MutableState ile gelen değerleri yönet
     val menuNameState = remember { mutableStateOf(menuName ?: "") }
     val menuContentState = remember { mutableStateOf(menuContent ?: "") }
     val menuPriceState = remember { mutableStateOf(menuPrice ?: "") }
@@ -96,7 +96,9 @@ fun UpdateRemoveMenuScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate(Screen.RestaurantCreateMenuScreen.route)
+                        updateRemoveMenuViewModel.removeMenu(RemoveMenuRequest(id))
+                        Toast.makeText(context,"Delete menu",Toast.LENGTH_SHORT).show()
+                        navController.navigate(Screen.RestaurantMenuDetailScreen.route)
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.delete),

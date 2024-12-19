@@ -6,4 +6,6 @@ data class AddBasketRequest(
     val price: String?,
     val quantity: Int?,
     val restaurantId: Int?,
+    val isReplaceBasket : Boolean? = false
+
 )

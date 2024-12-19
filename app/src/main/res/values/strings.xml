@@ -67,4 +67,6 @@
     <string name="menu_content">Menu content</string>
     <string name="currency">Currency</string>
     <string name="update_menu">Update Screen</string>
+    <string name="info_basket">Are you sure you want to\n change the menu of a \ndifferent restaurant?</string>
+    <string name="change">Change</string>
 </resources>

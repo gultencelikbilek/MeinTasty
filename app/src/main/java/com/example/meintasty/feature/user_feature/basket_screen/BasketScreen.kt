@@ -25,6 +25,8 @@ import com.example.meintasty.R
 import com.example.meintasty.data.Constants
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
+import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
+import com.example.meintasty.feature.user_feature.detail_restaurant.DetailRestaurantViewModel
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.BasketCardComponent
@@ -44,6 +46,7 @@ fun BasketScreen(
     val sharedPreferences =
         context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
     val restaurantId = sharedPreferences.getInt(Constants.SHARED_RESTAURANT_ID, 0)
+
     var selectedBasketId by remember { mutableStateOf(0) }
     val userState = basketViewModel.userState.collectAsState().value.data
     val basketState = basketViewModel.basketState.collectAsState()
@@ -120,7 +123,7 @@ fun BasketScreen(
                         }
                     } else {
                         LazyColumn(modifier = Modifier.weight(1f)) {
-                            items(basketData) { basketItem ->
+                            items(basketData) {basketItem ->
                                 basketItem?.let { basket ->
 
                                     SwipeBox(
@@ -257,7 +260,7 @@ fun BasketScreen(
 fun AlertDialogBasket(
     openDialogState: MutableState<Boolean>,
     basketViewModel: BasketViewModel,
-    selectedId: Int? // selectedId parametresi ekleniyor
+    selectedId: Int? // selectedId parametresi ekleniyor){}
 ) {
     val context = LocalContext.current
     if (openDialogState.value) {

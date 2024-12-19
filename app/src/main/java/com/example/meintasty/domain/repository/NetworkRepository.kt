@@ -23,6 +23,8 @@ import com.example.meintasty.domain.model.payment_model.payment_request_model.Pa
 import com.example.meintasty.domain.model.payment_model.payment_response_model.PaymentResponse
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
+import com.example.meintasty.domain.model.remove_menu_model.remove_menu_request.RemoveMenuRequest
+import com.example.meintasty.domain.model.remove_menu_model.remove_menu_response.RemoveMenuResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.RestaurantDetailResponse
 import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
@@ -67,5 +69,6 @@ interface NetworkRepository {
     suspend fun restaurantLogin(restaurantLoginRequest: RestaurantLoginRequest): RestaurantLoginResponse
     suspend fun createMenu(createMenuRequest: CreateMenuRequest): CreateMenuResponse
     suspend fun updateMenu(updateMenuRequest: UpdateMenuRequest) : UpdateMenuResponse
+    suspend fun removeMenu(removeMenuRequest: RemoveMenuRequest) : RemoveMenuResponse
 
 }
