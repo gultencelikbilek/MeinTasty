@@ -1,6 +1,7 @@
 package com.example.meintasty.feature.user_feature.basket_screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
+import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
@@ -53,7 +55,6 @@ fun BasketScreen(
     val totalPrice by basketViewModel.totalPriceState.collectAsState()
     val openDialogState = remember { mutableStateOf(false) }
     val basketData = basketState.value.data
-    val isLoading = remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
@@ -147,6 +148,7 @@ fun BasketScreen(
                                                 val removeBasketRequest =
                                                     RemoveBasketRequest(basketId = basket.id)
                                                 basketViewModel.removeBasket(removeBasketRequest)
+                                                Log.d("basketId:","$basket.id")
                                                 Toast.makeText(
                                                     context,
                                                     "Item Deleted",
@@ -155,7 +157,9 @@ fun BasketScreen(
                                             }
                                         }
                                     ) { _, _, _ ->
-                                        BasketCardComponent(
+
+
+                                            BasketCardComponent(
                                             basket = basket,
                                             onClick = {
                                             },
@@ -164,39 +168,29 @@ fun BasketScreen(
                                                 openDialogState.value = true
                                             },
                                             onProductAdd = {
-                                              //  basket.quantity = (basket.quantity ?: 0) + 1
-                                                basket.id?.let {
-                                                    basketViewModel.updateQuantity(
-                                                        it,
-                                                        1
+
+                                                    val addBasketRequest = AddBasketRequest(
+                                                        currencyCode = basket.currencyCode,
+                                                        menuId = basket.menuId,
+                                                        price = basket.price,
+                                                        quantity = 1,
+                                                        restaurantId = basket.restaurantId,
+                                                        isReplaceBasket = false
                                                     )
-                                                }
+                                                basketViewModel.addBasket(addBasketRequest)
+
                                             },
                                             onProductMinus = {
-                                               // basket.quantity = basket.quantity!! - 1
-                                                if (basket.quantity!! > 0) {
-                                                    basket.id?.let {
-                                                        basketViewModel.updateQuantity(
-                                                            it,
-                                                           -1
-                                                        )
-                                                    }
-                                                } else {
-                                                    isLoading.value = true
-                                                    if (basket.quantity!! == 0) {
-                                                        val removeBasketRequest =
-                                                            RemoveBasketRequest(basketId = basket.id)
-                                                        basketViewModel.removeBasket(
-                                                            removeBasketRequest
-                                                        )
-                                                        isLoading.value = false
-                                                        Toast.makeText(
-                                                            context,
-                                                            "Item Deleted",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    }
-                                                }
+                                                val addBasketRequest = AddBasketRequest(
+                                                    currencyCode = basket.currencyCode,
+                                                    menuId = basket.menuId,
+                                                    price =basket.price,
+                                                    quantity = -1,
+                                                    restaurantId = basket.restaurantId,
+                                                    isReplaceBasket = false
+                                                )
+                                                basketViewModel.addBasket(addBasketRequest)
+
                                             },
                                             basketViewModel
                                         )

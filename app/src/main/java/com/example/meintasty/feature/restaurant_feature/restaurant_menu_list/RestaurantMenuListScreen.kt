@@ -66,20 +66,20 @@ import com.example.meintasty.uicomponent.RestaurantMenuListCardComponent
 fun SharedTransitionScope.RestaurantMenuListScreen(
     animatedVisibilityScope: AnimatedVisibilityScope,
     navController: NavController,
-    restaurantViewModel: RestaurantProfileViewModel = hiltViewModel()
+    restaurantMenuListViewModel: RestaurantMenuListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val sharedPreferences =
         context.getSharedPreferences(Constants.SHARED_RESTAURANT_ID, Context.MODE_PRIVATE)
     val restaurantId = sharedPreferences.getInt(Constants.SHARED_RESTAURANT_ID, 0)
-    val detailRestState = restaurantViewModel.detailRestaurantProfileState.collectAsState().value
+    val detailRestState = restaurantMenuListViewModel.restaurantMenuListState.collectAsState().value
     val selectedCategoryId = remember { mutableStateOf<Int?>(null) }
     val gridState = rememberLazyGridState()
 
     LaunchedEffect(restaurantId) {
-        restaurantViewModel.getRestaurantDatabase()
+        restaurantMenuListViewModel.getRestaurantDatabase()
         restaurantId?.let {
-            restaurantViewModel.getDetailRestaurant(DetailRestaurantRequest(it))
+            restaurantMenuListViewModel.getDetailRestaurant(DetailRestaurantRequest(it))
             Log.d("restaurantId","$restaurantId")
         }
     }

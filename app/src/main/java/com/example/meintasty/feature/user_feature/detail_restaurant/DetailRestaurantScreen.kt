@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
+import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.MenuListCardComponent
@@ -69,12 +70,16 @@ fun SharedTransitionScope.DetailRestaurantScreen(
 ) {
 
     val detailRestState = detailRestaurantViewModel.detailRestState.collectAsState().value
-    val basketRestIdControlState = detailRestaurantViewModel.basketRestIdControlState.collectAsState()
+    val basketRestIdControlState =
+        detailRestaurantViewModel.basketRestIdControlState.collectAsState()
     val basketControlState = basketRestIdControlState.value.data
+    Log.d("basjetControlState:", "${basketControlState?.firstOrNull()?.restaurantId}")
     val detailRestaurantRequest = DetailRestaurantRequest(restaurantId!!.toInt())
     val customFontFamily = FontFamily(
         Font(resId = R.font.poppins_bold, weight = FontWeight.Normal)
     )
+    val userModelState = detailRestaurantViewModel.userModelState.collectAsState().value
+
     val gridState =
         rememberLazyListState() // Grid'in state'ini yönetmek için, rememberLazyGridState() kaydırma pozisyonunu kontrol etmenizi sağlar.
 
@@ -83,138 +88,143 @@ fun SharedTransitionScope.DetailRestaurantScreen(
     LaunchedEffect(Unit) {
         detailRestaurantViewModel.getDetailRestaurant(detailRestaurantRequest)
     }
+    userModelState.data.let {
+        val basketRequest = GetBasketRequest(restaurantId = restaurantId, userId = it?.userId)
+        detailRestaurantViewModel.getBasket(basketRequest)
+    }
 
     Scaffold(
         topBar = {
-        TopAppBar(
-            title = {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    BackIcon {
-                        navController.navigateUp()
+            TopAppBar(
+                title = {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        BackIcon {
+                            navController.navigateUp()
+                        }
+                        detailRestState.data?.restaurantName?.let { it1 ->
+                            Text(
+                                text = it1,
+                                modifier = Modifier
+                                    .padding(start = 4.dp)
+                                    .padding(top = 6.dp),
+                                color = Color.White,
+                                fontFamily = customFontFamily
+                            )
+                        }
                     }
-                    detailRestState.data?.restaurantName?.let { it1 ->
-                        Text(
-                            text = it1,
-                            modifier = Modifier
-                                .padding(start = 4.dp)
-                                .padding(top = 6.dp),
-                            color = Color.White,
-                            fontFamily = customFontFamily
-                        )
-                    }
-                }
-            }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = colorResource(id = R.color.mein_tasty_color)
-            )
-        )
-    }, content = { paddingValues ->
-        if (detailRestState.isLoading == true) {
-            Box(
-                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    color = colorResource(id = R.color.mein_tasty_color)
+                }, colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorResource(id = R.color.mein_tasty_color)
                 )
-            }
-        } else if (detailRestState.isSuccess == true) {
-            Log.d("succes:", "${detailRestState.data}")
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            )
+        }, content = { paddingValues ->
+            if (detailRestState.isLoading == true) {
                 Box(
-                    modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.food_one),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(180.dp)
-                            .sharedBounds(
-                                rememberSharedContentState(key = "image/${R.drawable.restaurant_bg}"),
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                enter = fadeIn(),
-                                exit = fadeOut(),
-                                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                            ),
-                        contentScale = ContentScale.Crop
+                    CircularProgressIndicator(
+                        color = colorResource(id = R.color.mein_tasty_color)
                     )
                 }
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom
+            } else if (detailRestState.isSuccess == true) {
+                Log.d("succes:", "${detailRestState.data}")
+                Column(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    detailRestState.data?.menuList?.let { menuList ->
-                        val distinctCategories =
-                            menuList.filterNotNull().distinctBy { it.categoryId }
+                    Box(
+                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.food_one),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(180.dp)
+                                .sharedBounds(
+                                    rememberSharedContentState(key = "image/${R.drawable.restaurant_bg}"),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    enter = fadeIn(),
+                                    exit = fadeOut(),
+                                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                                ),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
 
-                        items(distinctCategories) { category ->
-                            val isSelected =
-                                selectedCategoryId.value == category.categoryId // Şu anki kategori seçili mi?
-                            Box(
-                                modifier = Modifier
-                                    .width(80.dp)
-                                    .height(40.dp)
-                                    .padding(horizontal = 8.dp, vertical = 6.dp)
-                                    .clip(RoundedCornerShape(25.dp)) // Dış şekli kliple
-                                    .background(
-                                        color = if (isSelected) colorResource(id = R.color.mein_tasty_color) else colorResource(
-                                            id = R.color.white
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        detailRestState.data?.menuList?.let { menuList ->
+                            val distinctCategories =
+                                menuList.filterNotNull().distinctBy { it.categoryId }
+
+                            items(distinctCategories) { category ->
+                                val isSelected =
+                                    selectedCategoryId.value == category.categoryId // Şu anki kategori seçili mi?
+                                Box(
+                                    modifier = Modifier
+                                        .width(80.dp)
+                                        .height(40.dp)
+                                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                                        .clip(RoundedCornerShape(25.dp)) // Dış şekli kliple
+                                        .background(
+                                            color = if (isSelected) colorResource(id = R.color.mein_tasty_color) else colorResource(
+                                                id = R.color.white
+                                            )
                                         )
+                                        .clickable {
+                                            selectedCategoryId.value =
+                                                category.categoryId // Seçili kategoriyi güncelle
+                                        }
+                                ) {
+                                    Text(
+                                        text = category.categoryName.orEmpty(),
+                                        style = TextStyle(
+                                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                                            color = if (isSelected) colorResource(id = R.color.white) else colorResource(
+                                                id = R.color.mein_tasty_color
+                                            )
+                                        ),
+                                        modifier = Modifier.align(Alignment.Center)
                                     )
-                                    .clickable {
-                                        selectedCategoryId.value =
-                                            category.categoryId // Seçili kategoriyi güncelle
-                                    }
-                            ) {
-                                Text(
-                                    text = category.categoryName.orEmpty(),
-                                    style = TextStyle(
-                                        fontSize = MaterialTheme.typography.titleSmall.fontSize,
-                                        color = if (isSelected) colorResource(id = R.color.white) else colorResource(
-                                            id = R.color.mein_tasty_color
-                                        )
-                                    ),
-                                    modifier = Modifier.align(Alignment.Center)
+                                }
+                            }
+                        }
+                    }
+
+                    detailRestState.data?.menuList?.let { menuList ->
+                        val filteredMenu = if (selectedCategoryId.value == null) {
+                            menuList
+                        } else {
+                            menuList.filter { it?.categoryId == selectedCategoryId.value }
+                        }
+                        // Liste her değiştiğinde başa dön
+                        LaunchedEffect(filteredMenu) {
+                            gridState.scrollToItem(0) //gridState.scrollToItem(0) ile liste başına kaydırılır.
+                        }
+                        LazyColumn(
+                            state = gridState,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp)
+                                .background(Color.White)
+                        ) {
+                            items(filteredMenu) { menu ->
+                                MenuListCardComponent(
+                                    animatedVisibilityScope,
+                                    menu = menu,
+                                    basketControlState,
+                                    restaurantId,
+                                    detailRestaurantViewModel = detailRestaurantViewModel,
                                 )
                             }
                         }
                     }
                 }
-
-                detailRestState.data?.menuList?.let { menuList ->
-                    val filteredMenu = if (selectedCategoryId.value == null) {
-                        menuList
-                    } else {
-                        menuList.filter { it?.categoryId == selectedCategoryId.value }
-                    }
-                    // Liste her değiştiğinde başa dön
-                    LaunchedEffect(filteredMenu) {
-                        gridState.scrollToItem(0) //gridState.scrollToItem(0) ile liste başına kaydırılır.
-                    }
-                    LazyColumn(
-                        state = gridState,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp)
-                            .background(Color.White)
-                    ) {
-                        items(filteredMenu) { menu ->
-                            MenuListCardComponent(
-                                animatedVisibilityScope,
-                                menu = menu,
-                                basketControlState,
-                                detailRestaurantViewModel = detailRestaurantViewModel,
-                            )
-                        }
-                    }
-                }
+            } else {
+                Log.d("detailRestaurant:error", "${detailRestState.isError}")
             }
-        } else {
-            Log.d("detailRestaurant:error", "${detailRestState.isError}")
-        }
-    })
+        })
 }

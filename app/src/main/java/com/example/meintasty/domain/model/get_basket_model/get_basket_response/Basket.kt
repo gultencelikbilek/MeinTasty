@@ -10,5 +10,6 @@ data class Basket(
     var quantity: Int?,
     val restaurantId: Int?,
     val restaurantName: String?,
-    val userId: Int?
+    val userId: Int?,
+    val isRemove : Boolean? = false
 )

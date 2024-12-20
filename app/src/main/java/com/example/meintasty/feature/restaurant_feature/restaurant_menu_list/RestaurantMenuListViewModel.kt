@@ -1,4 +1,4 @@
-package com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen
+package com.example.meintasty.feature.restaurant_feature.restaurant_menu_list
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,10 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.meintasty.domain.model.RestaurantAccountModel
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
-import com.example.meintasty.domain.model.update_menu_model.update_menu_request.UpdateMenuRequest
 import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
-import com.example.meintasty.domain.usecase.UpdateMenuUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,18 +16,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RestaurantProfileViewModel @Inject constructor(
+class RestaurantMenuListViewModel @Inject constructor(
     private val getRestaurantTokenUseCase: GetRestaurantTokenUseCase,
-    private val restaurantDetailUseCase: RestaurantDetailUseCase,
-) : ViewModel() {
-    private val _restaurantDatabaseState = MutableStateFlow(RestaurantDatabaseState())
-    val restaurantDatabaseState = _restaurantDatabaseState.asStateFlow()
+    private val restaurantDetailUseCase: RestaurantDetailUseCase
+): ViewModel() {
 
-    private val _detailRestaurantProfileState = MutableStateFlow(RestaurantDetailState())
-    val detailRestaurantProfileState = _detailRestaurantProfileState.asStateFlow()
+    private val _restaurantMenuListDbState = MutableStateFlow(RestaurantDatabaseMenuListState())
+    val restaurantMenuListDbState = _restaurantMenuListDbState.asStateFlow()
 
-
-
+    private val _restaurantMenuListState = MutableStateFlow(RestaurantDetailMenuListState())
+    val restaurantMenuListState = _restaurantMenuListState.asStateFlow()
 
     fun getDetailRestaurant(detailRestaurantRequest: DetailRestaurantRequest) {
         viewModelScope.launch {
@@ -37,7 +33,7 @@ class RestaurantProfileViewModel @Inject constructor(
                 .collect { result ->
                     when (result) {
                         is NetworkResult.Failure -> {
-                            _detailRestaurantProfileState.value = RestaurantDetailState(
+                            _restaurantMenuListState.value = RestaurantDetailMenuListState(
                                 data = null,
                                 isSuccess = false,
                                 isLoading = false,
@@ -47,7 +43,7 @@ class RestaurantProfileViewModel @Inject constructor(
                         }
 
                         NetworkResult.Loading -> {
-                            _detailRestaurantProfileState.value = RestaurantDetailState(
+                            _restaurantMenuListState.value = RestaurantDetailMenuListState(
                                 data = null,
                                 isSuccess = true,
                                 isLoading = false,
@@ -58,7 +54,7 @@ class RestaurantProfileViewModel @Inject constructor(
                         is NetworkResult.Success -> {
                             val updatedMenuList = result.data.value?.menuList
                             Log.d("updateMneuList","$updatedMenuList")
-                            _detailRestaurantProfileState.value = RestaurantDetailState(
+                            _restaurantMenuListState.value = RestaurantDetailMenuListState(
                                 data = result.data.value?.copy(menuList = updatedMenuList),
                                 isSuccess = true,
                                 isLoading = false,
@@ -83,7 +79,7 @@ class RestaurantProfileViewModel @Inject constructor(
                     Log.d("userrequest:userId1:", "$it")
                     if (it > 0) {
                         Log.d("userrequest:userId2::", "$it")
-                        _restaurantDatabaseState.value = RestaurantDatabaseState(
+                        _restaurantMenuListDbState.value = RestaurantDatabaseMenuListState(
                             data = response
                         )
                         Log.d("userrequest:userId2::", "$response")
@@ -96,13 +92,11 @@ class RestaurantProfileViewModel @Inject constructor(
         }
     }
 }
-
-
-data class RestaurantDatabaseState(
+data class RestaurantDatabaseMenuListState(
     val data: RestaurantAccountModel? = null
 )
 
-data class RestaurantDetailState(
+data class RestaurantDetailMenuListState(
     val data: DetailRestaurant? = null,
     val isSuccess: Boolean? = false,
     val isLoading: Boolean? = false,
