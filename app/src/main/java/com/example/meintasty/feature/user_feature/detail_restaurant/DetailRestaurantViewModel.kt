@@ -19,6 +19,7 @@ import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen.RestaurantDatabaseState
 import com.example.meintasty.feature.user_feature.basket_screen.BasketState
+import com.example.meintasty.feature.user_feature.basket_screen.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -164,7 +165,7 @@ class DetailRestaurantViewModel @Inject constructor(
                         val basketData = result.data.value
                         Log.d("API Response:", "$basketData")
                         _basketRestIdControlState.value = BasketRestIdControlState(
-                            data = basketData?.distinctBy { it?.id },
+                            data = basketData,
                             isSuccess = true,
                             isLoading = false,
                             isError = ""
