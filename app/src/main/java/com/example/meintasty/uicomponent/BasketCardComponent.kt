@@ -1,6 +1,7 @@
 package com.example.meintasty.uicomponent
 
 
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -37,10 +38,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
+import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
 import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
+import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.feature.user_feature.basket_screen.BasketViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -54,6 +58,8 @@ fun BasketCardComponent(
     basketViewModel: BasketViewModel
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
+
+    val context = LocalContext.current
 
     // Her ürün için toplam fiyatı hesapla
     val productTotalPrice = remember(basket?.id, basket?.quantity, basket?.price) {
@@ -150,7 +156,17 @@ fun BasketCardComponent(
                                     contentDescription = "Decrease",
                                     modifier = Modifier
                                         .size(16.dp)
-                                        .clickable { onProductMinus() }
+                                        .clickable {
+                                            val addBasketRequest = AddBasketRequest(
+                                                currencyCode = basket.currencyCode,
+                                                menuId = basket.menuId,
+                                                price =basket.price,
+                                                quantity = -1,
+                                                restaurantId = basket.restaurantId,
+                                                isReplaceBasket = false
+                                            )
+                                            basketViewModel.addBasket(addBasketRequest)
+                                        }
                                 )
                             } else if (basket?.quantity == 1) {
                                 Icon(
@@ -158,7 +174,11 @@ fun BasketCardComponent(
                                     contentDescription = "Decrease",
                                     modifier = Modifier
                                         .size(16.dp)
-                                        .clickable { onProductMinus() }
+                                        .clickable {
+                                            val removeBasket = RemoveBasketRequest(basketId = basket.id)
+                                            basketViewModel.removeBasket(removeBasket)
+                                            Toast.makeText(context,"Remove Basket",Toast.LENGTH_SHORT).show()
+                                        }
                                 )
                             }
 
@@ -173,7 +193,9 @@ fun BasketCardComponent(
                                 contentDescription = "Increase",
                                 modifier = Modifier
                                     .size(16.dp)
-                                    .clickable { onProductAdd() }
+                                    .clickable {
+                                        onProductAdd()
+                                    }
                             )
                         }
                     }

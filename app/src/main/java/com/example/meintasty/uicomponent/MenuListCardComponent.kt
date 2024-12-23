@@ -134,12 +134,12 @@ fun SharedTransitionScope.MenuListCardComponent(
                                 Log.d("menu", "$menu")
                                 //   if ()
                                 if (basketControlState.isNullOrEmpty().not()) {
-                                    if (baskets?.restaurantId == restaurantId) {
-                                        Log.d("addBasketRequest:", "${baskets?.restaurantId}")
-                                        Log.d("addBasketRequest:", "${restaurantId}")
+                                    if ( restaurantId == baskets?.restaurantId) {
+                                        Log.d("addBasketRequest:restaurantId", "${baskets?.restaurantId}")
+                                        Log.d("addBasketRequest:mevcutrestaurantId", "${restaurantId}")
                                         Log.d("addBasketRequest:", "burda")
 
-                                        if (userModelState.data?.userId != null) {
+                                   //     if (userModelState.data?.userId != null) {
                                             val addBasketRequest = AddBasketRequest(
                                                 currencyCode = menu.currency.toString(),
                                                 menuId = menu.id,
@@ -157,31 +157,10 @@ fun SharedTransitionScope.MenuListCardComponent(
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()
-                                        }
+                                     //   }
 
                                     } else {
                                         openDialogState.value = true
-                                        if (userModelState.data?.userId != null) {
-                                            Log.d("addBasketRequest:", "burda:else")
-                                            val addBasketRequest = AddBasketRequest(
-                                                currencyCode = menu.currency.toString(),
-                                                menuId = menu.id,
-                                                price = menu.menuPrice.toString(),
-                                                quantity = 1,
-                                                restaurantId = deatilState.data?.restaurantId,
-                                                isReplaceBasket = true
-                                            )
-                                            Log.d("addBasketRequest:", "$addBasketRequest")
-                                            detailRestaurantViewModel.addBasket(addBasketRequest)
-                                            Toast
-                                                .makeText(
-                                                    context,
-                                                    "addedBasket",
-                                                    Toast.LENGTH_SHORT
-                                                )
-                                                .show()
-
-                                        }
                                     }
                                 } else {
                                     if (userModelState.data?.userId != null) {
@@ -310,6 +289,27 @@ fun AlertDialogReplace(
             },
             confirmButton = {
                 TextButton(onClick = {
+                    if (userModelState.data?.userId != null) {
+                        Log.d("addBasketRequest:", "burda:else:x")
+                        val addBasketRequest = AddBasketRequest(
+                            currencyCode = menu?.currency.toString(),
+                            menuId = menu?.id,
+                            price = menu?.menuPrice.toString(),
+                            quantity = 1,
+                            restaurantId = deatilState.data?.restaurantId,
+                            isReplaceBasket = true
+                        )
+                        Log.d("addBasketRequest:", "$addBasketRequest")
+                        detailRestaurantViewModel.addBasket(addBasketRequest)
+                        Toast
+                            .makeText(
+                                context,
+                                "addedBasket",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+
+                    }
                     openDialogState.value = false
 
                 }) {
