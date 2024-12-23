@@ -24,6 +24,7 @@ object Constants {
     const val END_POINT_CREATE_MENU = "Menu/createMenu"
     const val END_POINT_UPDATE_MENU = "Menu/updateMenu"
     const val END_POINT_REMOVE_MENU = "Menu/removeMenu"
+    const val END_POINT_GET_TAX = "Tax/getTaxes"
 
     const val SHARED_PREF = "city_code"
     const val SHARED_TOKEN = "token_code"

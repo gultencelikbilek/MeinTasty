@@ -12,10 +12,14 @@ import com.example.meintasty.domain.model.remove_basket_model.remove_basket_requ
 import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
+import com.example.meintasty.domain.model.tax_model.tax_request.TaxRequest
+import com.example.meintasty.domain.model.tax_model.tax_response.Tax
+import com.example.meintasty.domain.model.tax_model.tax_response.TaxResponse
 import com.example.meintasty.domain.model.update_basket_model.update_basket_request.UpdateBasketRequest
 import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasket
 import com.example.meintasty.domain.usecase.AddBasketUseCase
 import com.example.meintasty.domain.usecase.GetBasketUseCase
+import com.example.meintasty.domain.usecase.GetTaxUseCase
 import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
 import com.example.meintasty.domain.usecase.RemoveBasketUseCase
 import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
@@ -35,8 +39,8 @@ class BasketViewModel @Inject constructor(
     private val getBasketUseCase: GetBasketUseCase,
     private val getUserDatabaseUseCase: GetUserDatabaseUseCase,
     private val removeBasketUseCase: RemoveBasketUseCase,
-    private val updateBasketUseCase: UpdateBasketUseCase,
     private val addBasketUseCase : AddBasketUseCase,
+    private val getTaxUseCase: GetTaxUseCase
     ) : ViewModel() {
 
     private val _basketState = MutableStateFlow(BasketState())
@@ -54,14 +58,13 @@ class BasketViewModel @Inject constructor(
     private val _totalPriceState = MutableStateFlow(0.0)
     val totalPriceState: StateFlow<Double> = _totalPriceState.asStateFlow()
 
-
-    private val _updateMenuTotalPriceState = MutableStateFlow(0.0)
-    val updateMenuTotalPriceState:  StateFlow<Double> = _updateMenuTotalPriceState.asStateFlow()
-
     private val _addBasketState = MutableStateFlow(AddBasketScreenState())
     val addBasketState = _addBasketState.asStateFlow()
 
+    private val _getTaxState= MutableStateFlow(GetTaxState())
+    val getTaxState = _getTaxState.asStateFlow()
 
+    private var taxAmount: Double = 0.0
 
     init {
         getUserModel()
@@ -169,30 +172,6 @@ class BasketViewModel @Inject constructor(
         getBasket(getBasketRequest)
     }
 
-    fun updateQuantity(basketId: Int, newQuantity: Int) {
-        viewModelScope.launch {
-            val updateRequest = UpdateBasketRequest(basketId, newQuantity)
-            val response = updateBasketUseCase.invoke(updateRequest)
-            response.collect { result ->
-                when (result) {
-                    is NetworkResult.Failure -> {
-                        Log.d("updatebasket:viewmodel:error:", "error:update")
-
-                    }
-
-                    NetworkResult.Loading -> {
-                        Log.d("updatebasket:viewmodel:loading:", "loading:update")
-
-                    }
-
-                    is NetworkResult.Success -> {
-                        updateTotalPrice()
-                    }
-                }
-            }
-
-        }
-    }
     fun addBasket(addBasketRequest: AddBasketRequest){
         viewModelScope.launch {
             addBasketUseCase.invoke(addBasketRequest).collect{result ->
@@ -221,6 +200,7 @@ class BasketViewModel @Inject constructor(
                             isLoading = true,
                             isError = ""
                         )
+                        refreshBasket()
                         Log.d("basketViewModel:addBasket:succes","${result.data}")
 
                     }
@@ -229,6 +209,7 @@ class BasketViewModel @Inject constructor(
         }
     }
 
+    // UpdateTotalPrice fonksiyonu
     private fun updateTotalPrice() {
         _basketState.value.data?.let { basketItems ->
             _totalPriceState.value = basketItems.sumOf { basketItem ->
@@ -236,7 +217,49 @@ class BasketViewModel @Inject constructor(
                 val price = basketItem?.price?.replace(",", ".")?.trim()?.toDoubleOrNull() ?: 0.0
                 Log.d("quantity:price:","$quantity $price")
                 1 * price
+            } + taxAmount // taxAmount değeri ekleniyor
+        }
+    }
 
+    fun getTax() {
+        viewModelScope.launch {
+            getTaxUseCase.invoke(TaxRequest()).collect { result ->
+                when (result) {
+                    is NetworkResult.Failure -> {
+                        _getTaxState.value = GetTaxState(
+                            data = null,
+                            isSuccess = false,
+                            isLoading = true,
+                            isError = result.msg
+                        )
+                        Log.d("basketViewModel:error:getTax:", "${result.msg}")
+                    }
+                    NetworkResult.Loading -> {
+                        _getTaxState.value = GetTaxState(
+                            data = null,
+                            isSuccess = false,
+                            isLoading = true,
+                            isError = ""
+                        )
+                    }
+                    is NetworkResult.Success -> {
+                        _getTaxState.value = GetTaxState(
+                            data = result.data,
+                            isSuccess = true,
+                            isLoading = false,
+                            isError = ""
+                        )
+
+                        val taxList: List<Tax?> = result.data.value ?: emptyList()
+                        taxAmount = taxList.sumOf { tax ->
+                            tax?.amount?.replace(",", ".")?.toDoubleOrNull() ?: 0.0
+                        }
+
+                        // Yeni total price'ı hesapla
+                        updateTotalPrice()
+                        Log.d("basketViewModel:error:getTax:", "${result.data}")
+                    }
+                }
             }
         }
     }
@@ -269,6 +292,13 @@ data class UpdateBasketState(
 
 data class AddBasketScreenState(
     val data: AddBasketResponse? = null,
+    val isSuccess: Boolean? = false,
+    val isLoading: Boolean? = false,
+    val isError: String? = ""
+)
+
+data class GetTaxState(
+    val data :TaxResponse? = null,
     val isSuccess: Boolean? = false,
     val isLoading: Boolean? = false,
     val isError: String? = ""

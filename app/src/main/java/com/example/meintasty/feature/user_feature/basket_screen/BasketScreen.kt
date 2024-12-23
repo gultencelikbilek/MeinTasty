@@ -56,9 +56,11 @@ fun BasketScreen(
     val openDialogState = remember { mutableStateOf(false) }
     val basketData = basketState.value.data
     val coroutineScope = rememberCoroutineScope()
+    val getTaxState = basketViewModel.getTaxState.collectAsState().value
 
     LaunchedEffect(Unit) {
         basketViewModel.refreshBasket()
+        basketViewModel.getTax()
     }
 
     userState?.userId?.let { userId ->
@@ -124,7 +126,7 @@ fun BasketScreen(
                         }
                     } else {
                         LazyColumn(modifier = Modifier.weight(1f)) {
-                            items(basketData) {basketItem ->
+                            items(basketData) { basketItem ->
                                 basketItem?.let { basket ->
 
                                     SwipeBox(
@@ -148,7 +150,7 @@ fun BasketScreen(
                                                 val removeBasketRequest =
                                                     RemoveBasketRequest(basketId = basket.id)
                                                 basketViewModel.removeBasket(removeBasketRequest)
-                                                Log.d("basketId:","$basket.id")
+                                                Log.d("basketId:", "$basket.id")
                                                 Toast.makeText(
                                                     context,
                                                     "Item Deleted",
@@ -158,8 +160,7 @@ fun BasketScreen(
                                         }
                                     ) { _, _, _ ->
 
-
-                                            BasketCardComponent(
+                                        BasketCardComponent(
                                             basket = basket,
                                             onClick = {
                                             },
@@ -168,30 +169,17 @@ fun BasketScreen(
                                                 openDialogState.value = true
                                             },
                                             onProductAdd = {
-
-                                                    val addBasketRequest = AddBasketRequest(
-                                                        currencyCode = basket.currencyCode,
-                                                        menuId = basket.menuId,
-                                                        price = basket.price,
-                                                        quantity = 1,
-                                                        restaurantId = basket.restaurantId,
-                                                        isReplaceBasket = false
-                                                    )
-                                                basketViewModel.addBasket(addBasketRequest)
-
-                                            },
-                                            onProductMinus = {
                                                 val addBasketRequest = AddBasketRequest(
                                                     currencyCode = basket.currencyCode,
                                                     menuId = basket.menuId,
-                                                    price =basket.price,
-                                                    quantity = -1,
+                                                    price = basket.price,
+                                                    quantity = 1,
                                                     restaurantId = basket.restaurantId,
                                                     isReplaceBasket = false
                                                 )
                                                 basketViewModel.addBasket(addBasketRequest)
-
                                             },
+                                            onProductMinus = {},
                                             basketViewModel
                                         )
                                     }
@@ -214,15 +202,34 @@ fun BasketScreen(
                         .fillMaxWidth()
                         .padding(16.dp),
                     verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.Start
                 ) {
+                    val amount = getTaxState.data?.value?.sumOf { tax ->
+                        tax?.amount?.replace(",", ".")?.toDoubleOrNull() ?: 0.0
+                    }
+
+                    TextField(
+                        value = "Tax: ${amount}",
+                        onValueChange = {},
+                        textStyle = TextStyle(
+                            color = Color.Black,
+                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            textAlign = TextAlign.Start
+                        ),
+                        enabled = false,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.White, disabledIndicatorColor = Color.Transparent
+                        )
+                    )
+
                     TextField(
                         value = "Total Price: $totalPrice",
                         onValueChange = {},
                         textStyle = TextStyle(
                             color = Color.Black,
                             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Start
                         ),
                         enabled = false,
                         modifier = Modifier.fillMaxWidth(),
