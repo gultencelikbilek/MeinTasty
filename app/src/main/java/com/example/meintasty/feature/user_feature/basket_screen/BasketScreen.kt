@@ -24,10 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
-import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
-import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
+import com.example.meintasty.domain.model.user_model_.add_basket_model.add_basket_request.AddBasketRequest
+import com.example.meintasty.domain.model.user_model_.get_basket_model.get_basket_request.GetBasketRequest
+import com.example.meintasty.domain.model.user_model_.remove_basket_model.remove_basket_request.RemoveBasketRequest
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_response.Menu
 import com.example.meintasty.feature.user_feature.detail_restaurant.DetailRestaurantViewModel
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.BackIcon

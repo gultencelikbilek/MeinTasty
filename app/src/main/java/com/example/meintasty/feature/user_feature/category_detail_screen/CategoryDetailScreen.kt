@@ -36,7 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest
+import com.example.meintasty.domain.model.user_model_.category_detail_model.category_detail_request.CategoryDetailRequest
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.CategoryDetailComponent
 

@@ -40,7 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
+import com.example.meintasty.domain.model.user_model_.get_user_model.user_request.UserRequest
 import com.example.meintasty.navigation.Screen
 
 

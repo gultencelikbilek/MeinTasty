@@ -3,12 +3,11 @@ package com.example.meintasty.feature.user_feature.password_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
-import com.example.meintasty.domain.model.user_password_model.user_pasword_response.UpdatePasswordResponse
-import com.example.meintasty.domain.usecase.UpdatePasswordUseCase
+import com.example.meintasty.domain.model.user_model_.user_password_model.user_pasword_request.UpdatePasswordRequest
+import com.example.meintasty.domain.model.user_model_.user_password_model.user_pasword_response.UpdatePasswordResponse
+import com.example.meintasty.domain.usecase.user_usecase.UpdatePasswordUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

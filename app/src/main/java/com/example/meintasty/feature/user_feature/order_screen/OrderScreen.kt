@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.get_order_model.get_order_request.GetOrderRequest
+import com.example.meintasty.domain.model.user_model_.get_order_model.get_order_request.GetOrderRequest
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.HeaderComponent

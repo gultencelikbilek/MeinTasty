@@ -46,7 +46,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
+import com.example.meintasty.domain.model.user_model_.signup_model.signup_request.SignupRequest
 import com.example.meintasty.uicomponent.SignUpButtonComponent
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.CustomSignUpTextFieldComponent

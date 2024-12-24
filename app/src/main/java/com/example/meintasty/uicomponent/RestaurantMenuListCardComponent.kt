@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.navArgument
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_response.Menu
 import com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen.RestaurantProfileViewModel
 import com.example.meintasty.navigation.Screen
 

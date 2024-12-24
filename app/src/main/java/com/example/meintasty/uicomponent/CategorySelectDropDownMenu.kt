@@ -3,8 +3,8 @@ package com.example.meintasty.uicomponent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.category_detail_model.category_detail_response.Category
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.Menu
+import com.example.meintasty.domain.model.user_model_.category_detail_model.category_detail_response.Category
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_response.Menu
 
 @Composable
 fun CategorySelectDropDownMenu(

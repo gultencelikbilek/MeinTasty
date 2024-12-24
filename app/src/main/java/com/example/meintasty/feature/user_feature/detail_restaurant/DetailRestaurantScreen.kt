@@ -54,8 +54,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
+import com.example.meintasty.domain.model.user_model_.get_basket_model.get_basket_request.GetBasketRequest
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.MenuListCardComponent
 

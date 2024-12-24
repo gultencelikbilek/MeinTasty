@@ -42,9 +42,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
-import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
-import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
+import com.example.meintasty.domain.model.user_model_.add_basket_model.add_basket_request.AddBasketRequest
+import com.example.meintasty.domain.model.user_model_.get_basket_model.get_basket_response.Basket
+import com.example.meintasty.domain.model.user_model_.remove_basket_model.remove_basket_request.RemoveBasketRequest
 import com.example.meintasty.feature.user_feature.basket_screen.BasketViewModel
 
 @OptIn(ExperimentalFoundationApi::class)

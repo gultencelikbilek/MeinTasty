@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.user_password_model.user_pasword_request.UpdatePasswordRequest
+import com.example.meintasty.domain.model.user_model_.user_password_model.user_pasword_request.UpdatePasswordRequest
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.CustomSignUpTextFieldComponent
 import com.example.meintasty.uicomponent.HeaderComponent

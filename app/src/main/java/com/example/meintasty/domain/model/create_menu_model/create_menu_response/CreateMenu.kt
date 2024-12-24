@@ -1,3 +1,0 @@
-package com.example.meintasty.domain.model.create_menu_model.create_menu_response
-
-class CreateMenu

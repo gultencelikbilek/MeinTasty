@@ -20,10 +20,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetail
+import com.example.meintasty.domain.model.user_model_.category_detail_model.category_detail_response.CategoryDetail
 
 @Composable
-fun CategoryDetailComponent(categoryDetail: CategoryDetail?,modifier: Modifier=Modifier) {
+fun CategoryDetailComponent(categoryDetail: CategoryDetail?, modifier: Modifier=Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()

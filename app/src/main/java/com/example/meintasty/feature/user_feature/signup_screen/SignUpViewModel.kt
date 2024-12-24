@@ -3,11 +3,11 @@ package com.example.meintasty.feature.user_feature.signup_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.usecase.SignUpUseCase
-import com.example.meintasty.domain.model.signup_model.signup_request.SignupRequest
-import com.example.meintasty.domain.model.signup_model.signup_response.SignUp
-import com.example.meintasty.domain.usecase.InsertUserTokenUseCase
+import com.example.meintasty.domain.model.db_model.UserAccountModel
+import com.example.meintasty.domain.usecase.user_usecase.SignUpUseCase
+import com.example.meintasty.domain.model.user_model_.signup_model.signup_request.SignupRequest
+import com.example.meintasty.domain.model.user_model_.signup_model.signup_response.SignUp
+import com.example.meintasty.domain.usecase.user_usecase.InsertUserTokenUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

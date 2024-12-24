@@ -3,12 +3,12 @@ package com.example.meintasty.feature.common_screen_feature.splash_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.RestaurantAccountModel
+import com.example.meintasty.domain.model.db_model.RestaurantAccountModel
 import com.example.meintasty.domain.usecase.GetLocaitonInfoUseCase
-import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
-import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.UserLocationModel
-import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
+import com.example.meintasty.domain.usecase.user_usecase.GetUserDatabaseUseCase
+import com.example.meintasty.domain.model.db_model.UserAccountModel
+import com.example.meintasty.domain.model.db_model.UserLocationModel
+import com.example.meintasty.domain.usecase.restaurant_usecase.GetRestaurantTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

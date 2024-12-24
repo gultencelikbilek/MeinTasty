@@ -2,7 +2,7 @@ package com.example.meintasty.domain.usecase
 
 import android.util.Log
 import com.example.meintasty.data.repoimpl.LoginDaoRepositoryImpl
-import com.example.meintasty.domain.model.UserLocationModel
+import com.example.meintasty.domain.model.db_model.UserLocationModel
 import javax.inject.Inject
 
 class InsertCantonUseCase @Inject constructor(private val loginDaoRepositoryImpl: LoginDaoRepositoryImpl) {

@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
-import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
+import com.example.meintasty.domain.model.user_model_.update_email_model.update_email_request.EmailUpdateRequest
+import com.example.meintasty.domain.model.user_model_.update_phone_model.update_phone_request.UpdatePhoneRequest
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.CustomSignUpTextFieldComponent
 import com.example.meintasty.uicomponent.HeaderComponent
