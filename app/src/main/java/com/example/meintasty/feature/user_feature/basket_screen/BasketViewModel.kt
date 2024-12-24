@@ -3,30 +3,23 @@ package com.example.meintasty.feature.user_feature.basket_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.add_basket_model.add_basket_request.AddBasketRequest
-import com.example.meintasty.domain.model.add_basket_model.add_basket_response.AddBasketResponse
-import com.example.meintasty.domain.model.get_basket_model.get_basket_request.GetBasketRequest
-import com.example.meintasty.domain.model.get_basket_model.get_basket_response.Basket
-import com.example.meintasty.domain.model.remove_basket_model.remove_basket_request.RemoveBasketRequest
-import com.example.meintasty.domain.model.remove_basket_model.remove_basket_response.RemoveBasketResponse
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
-import com.example.meintasty.domain.model.tax_model.tax_request.TaxRequest
-import com.example.meintasty.domain.model.tax_model.tax_response.Tax
-import com.example.meintasty.domain.model.tax_model.tax_response.TaxResponse
-import com.example.meintasty.domain.model.update_basket_model.update_basket_request.UpdateBasketRequest
-import com.example.meintasty.domain.model.update_basket_model.update_basket_response.UpdateBasket
-import com.example.meintasty.domain.usecase.AddBasketUseCase
-import com.example.meintasty.domain.usecase.GetBasketUseCase
-import com.example.meintasty.domain.usecase.GetTaxUseCase
-import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
-import com.example.meintasty.domain.usecase.RemoveBasketUseCase
-import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
-import com.example.meintasty.domain.usecase.UpdateBasketUseCase
+import com.example.meintasty.domain.model.db_model.UserAccountModel
+import com.example.meintasty.domain.model.user_model_.add_basket_model.add_basket_request.AddBasketRequest
+import com.example.meintasty.domain.model.user_model_.add_basket_model.add_basket_response.AddBasketResponse
+import com.example.meintasty.domain.model.user_model_.get_basket_model.get_basket_request.GetBasketRequest
+import com.example.meintasty.domain.model.user_model_.get_basket_model.get_basket_response.Basket
+import com.example.meintasty.domain.model.user_model_.remove_basket_model.remove_basket_request.RemoveBasketRequest
+import com.example.meintasty.domain.model.user_model_.remove_basket_model.remove_basket_response.RemoveBasketResponse
+import com.example.meintasty.domain.model.user_model_.tax_model.tax_request.TaxRequest
+import com.example.meintasty.domain.model.user_model_.tax_model.tax_response.Tax
+import com.example.meintasty.domain.model.user_model_.tax_model.tax_response.TaxResponse
+import com.example.meintasty.domain.model.user_model_.update_basket_model.update_basket_response.UpdateBasket
+import com.example.meintasty.domain.usecase.user_usecase.AddBasketUseCase
+import com.example.meintasty.domain.usecase.user_usecase.GetBasketUseCase
+import com.example.meintasty.domain.usecase.user_usecase.GetTaxUseCase
+import com.example.meintasty.domain.usecase.user_usecase.GetUserDatabaseUseCase
+import com.example.meintasty.domain.usecase.user_usecase.RemoveBasketUseCase
 import com.example.meintasty.feature.NetworkResult
-import com.example.meintasty.feature.user_feature.detail_restaurant.AddBasketState
-import com.example.meintasty.feature.user_feature.detail_restaurant.DetailRestaurantState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -202,14 +195,12 @@ class BasketViewModel @Inject constructor(
                         )
                         refreshBasket()
                         Log.d("basketViewModel:addBasket:succes","${result.data}")
-
                     }
                 }
             }
         }
     }
 
-    // UpdateTotalPrice fonksiyonu
     private fun updateTotalPrice() {
         _basketState.value.data?.let { basketItems ->
             _totalPriceState.value = basketItems.sumOf { basketItem ->
@@ -217,7 +208,7 @@ class BasketViewModel @Inject constructor(
                 val price = basketItem?.price?.replace(",", ".")?.trim()?.toDoubleOrNull() ?: 0.0
                 Log.d("quantity:price:","$quantity $price")
                 1 * price
-            } + taxAmount // taxAmount değeri ekleniyor
+            } + taxAmount
         }
     }
 
@@ -298,7 +289,7 @@ data class AddBasketScreenState(
 )
 
 data class GetTaxState(
-    val data :TaxResponse? = null,
+    val data : TaxResponse? = null,
     val isSuccess: Boolean? = false,
     val isLoading: Boolean? = false,
     val isError: String? = ""

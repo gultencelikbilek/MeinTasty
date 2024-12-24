@@ -2,10 +2,10 @@ package com.example.meintasty.feature.user_feature.category_detail_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.usecase.CategoryDetailUseCase
-import com.example.meintasty.domain.model.category_detail_model.category_detail_response.Category
-import com.example.meintasty.domain.model.category_detail_model.category_detail_response.CategoryDetail
-import com.example.meintasty.domain.model.category_detail_model.category_detail_request.CategoryDetailRequest
+import com.example.meintasty.domain.usecase.user_usecase.CategoryDetailUseCase
+import com.example.meintasty.domain.model.user_model_.category_detail_model.category_detail_response.Category
+import com.example.meintasty.domain.model.user_model_.category_detail_model.category_detail_response.CategoryDetail
+import com.example.meintasty.domain.model.user_model_.category_detail_model.category_detail_request.CategoryDetailRequest
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

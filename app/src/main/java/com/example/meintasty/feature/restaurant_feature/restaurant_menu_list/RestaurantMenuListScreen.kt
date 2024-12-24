@@ -53,7 +53,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
 import com.example.meintasty.feature.restaurant_feature.restaurant_profile_screen.RestaurantProfileViewModel
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.BackIcon

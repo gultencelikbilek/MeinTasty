@@ -3,11 +3,11 @@ package com.example.meintasty.feature.restaurant_feature.restaurant_menu_list
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.RestaurantAccountModel
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_response.DetailRestaurant
-import com.example.meintasty.domain.usecase.GetRestaurantTokenUseCase
-import com.example.meintasty.domain.usecase.RestaurantDetailUseCase
+import com.example.meintasty.domain.model.db_model.RestaurantAccountModel
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_response.DetailRestaurant
+import com.example.meintasty.domain.usecase.restaurant_usecase.GetRestaurantTokenUseCase
+import com.example.meintasty.domain.usecase.user_usecase.RestaurantDetailUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

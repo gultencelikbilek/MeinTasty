@@ -2,12 +2,12 @@ package com.example.meintasty.feature.user_feature.update_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.update_email_model.update_email_request.EmailUpdateRequest
-import com.example.meintasty.domain.model.update_email_model.update_email_response.EmailUpdateResponse
-import com.example.meintasty.domain.model.update_phone_model.update_phone_request.UpdatePhoneRequest
-import com.example.meintasty.domain.model.update_phone_model.update_phone_response.UpdatePhoneResponse
-import com.example.meintasty.domain.usecase.EmailUpdateUseCase
-import com.example.meintasty.domain.usecase.UpdatePhoneUseCase
+import com.example.meintasty.domain.model.user_model_.update_email_model.update_email_request.EmailUpdateRequest
+import com.example.meintasty.domain.model.user_model_.update_email_model.update_email_response.EmailUpdateResponse
+import com.example.meintasty.domain.model.user_model_.update_phone_model.update_phone_request.UpdatePhoneRequest
+import com.example.meintasty.domain.model.user_model_.update_phone_model.update_phone_response.UpdatePhoneResponse
+import com.example.meintasty.domain.usecase.user_usecase.EmailUpdateUseCase
+import com.example.meintasty.domain.usecase.user_usecase.UpdatePhoneUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

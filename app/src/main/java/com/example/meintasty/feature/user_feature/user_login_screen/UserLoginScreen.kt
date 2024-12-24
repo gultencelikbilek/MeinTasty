@@ -45,7 +45,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
+import com.example.meintasty.domain.model.user_model_.login_model.login_request.LoginUserRequest
 import com.example.meintasty.uicomponent.EmailLoginComponent
 import com.example.meintasty.uicomponent.ForgotPasswordComponent
 import com.example.meintasty.uicomponent.LoginButtonComponent

@@ -38,10 +38,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.create_menu_model.create_menu_request.CreateMenuRequest
-import com.example.meintasty.domain.model.remove_menu_model.remove_menu_request.RemoveMenuRequest
-import com.example.meintasty.domain.model.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
-import com.example.meintasty.domain.model.update_menu_model.update_menu_request.UpdateMenuRequest
+import com.example.meintasty.domain.model.restaurant_model_.create_menu_model.create_menu_request.CreateMenuRequest
+import com.example.meintasty.domain.model.restaurant_model_.remove_menu_model.remove_menu_request.RemoveMenuRequest
+import com.example.meintasty.domain.model.user_model_.restaurant_detail.restaurant_detail_request.DetailRestaurantRequest
+import com.example.meintasty.domain.model.restaurant_model_.update_menu_model.update_menu_request.UpdateMenuRequest
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.CategorySelectDropDownMenu

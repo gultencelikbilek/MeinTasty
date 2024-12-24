@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
-import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurant
+import com.example.meintasty.domain.model.user_model_.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurant
 
 @Composable
 fun FavoriteRestaurantCardComponent(

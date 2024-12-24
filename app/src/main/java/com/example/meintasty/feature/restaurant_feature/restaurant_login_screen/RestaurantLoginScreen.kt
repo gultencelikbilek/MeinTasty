@@ -35,8 +35,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.login_model.login_request.LoginUserRequest
-import com.example.meintasty.domain.model.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
+import com.example.meintasty.domain.model.user_model_.login_model.login_request.LoginUserRequest
+import com.example.meintasty.domain.model.restaurant_model_.restaurant_login_model.restaurant_login_request.RestaurantLoginRequest
 import com.example.meintasty.navigation.Screen
 import com.example.meintasty.uicomponent.EmailLoginComponent
 import com.example.meintasty.uicomponent.LoginButtonComponent

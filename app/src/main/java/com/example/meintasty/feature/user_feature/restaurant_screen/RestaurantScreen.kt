@@ -61,9 +61,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_request.FavoritesRestaurantRequest
+import com.example.meintasty.domain.model.user_model_.favorites_restaurants_model.favorite_restauranst_request.FavoritesRestaurantRequest
 import com.example.meintasty.domain.model.foodList
-import com.example.meintasty.domain.model.restaurant_model.restaurant_request.RestaurantRequest
+import com.example.meintasty.domain.model.user_model_.restaurant_model.restaurant_request.RestaurantRequest
 import com.example.meintasty.domain.model.user_models.category_model.category_request.CategoryRequest
 import com.example.meintasty.uicomponent.CategoryCardComponent
 import com.example.meintasty.uicomponent.FoodCardComponent

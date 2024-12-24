@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.data.Constants
-import com.example.meintasty.domain.model.UserLocationModel
+import com.example.meintasty.domain.model.db_model.UserLocationModel
 import com.example.meintasty.feature.common_screen_feature.canton_screen.CantonViewModel
 import com.example.meintasty.navigation.Screen
 

@@ -37,7 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
-import com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurant
+import com.example.meintasty.domain.model.user_model_.favorites_restaurants_model.favorite_restauranst_response.FavoriteRestaurant
 import com.example.meintasty.navigation.Screen
 
 @OptIn(ExperimentalAnimationSpecApi::class, ExperimentalSharedTransitionApi::class)

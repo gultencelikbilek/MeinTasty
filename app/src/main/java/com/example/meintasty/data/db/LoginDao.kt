@@ -4,9 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.meintasty.domain.model.RestaurantAccountModel
-import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.UserLocationModel
+import com.example.meintasty.domain.model.db_model.RestaurantAccountModel
+import com.example.meintasty.domain.model.db_model.UserAccountModel
+import com.example.meintasty.domain.model.db_model.UserLocationModel
 
 @Dao
 interface LoginDao {

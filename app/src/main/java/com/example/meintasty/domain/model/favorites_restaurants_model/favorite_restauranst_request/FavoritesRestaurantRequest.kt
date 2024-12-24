@@ -1,3 +1,0 @@
-package com.example.meintasty.domain.model.favorites_restaurants_model.favorite_restauranst_request
-
-class FavoritesRestaurantRequest

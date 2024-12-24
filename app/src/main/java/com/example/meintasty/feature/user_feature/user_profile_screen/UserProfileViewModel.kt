@@ -3,11 +3,11 @@ package com.example.meintasty.feature.user_feature.user_profile_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.meintasty.domain.model.UserAccountModel
-import com.example.meintasty.domain.model.get_user_model.user_request.UserRequest
-import com.example.meintasty.domain.model.get_user_model.user_response.UserResponse
-import com.example.meintasty.domain.usecase.GetUserUseCase
-import com.example.meintasty.domain.usecase.GetUserDatabaseUseCase
+import com.example.meintasty.domain.model.db_model.UserAccountModel
+import com.example.meintasty.domain.model.user_model_.get_user_model.user_request.UserRequest
+import com.example.meintasty.domain.model.user_model_.get_user_model.user_response.UserResponse
+import com.example.meintasty.domain.usecase.user_usecase.GetUserUseCase
+import com.example.meintasty.domain.usecase.user_usecase.GetUserDatabaseUseCase
 import com.example.meintasty.feature.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -81,7 +81,7 @@ class UserProfileViewModel @Inject constructor(
 
 
 data class UserState(
-    val data :UserResponse? = null,
+    val data : UserResponse? = null,
     val isSucces : Boolean? = false,
     val isLoading: Boolean? = false,
     val isError : String? = ""
