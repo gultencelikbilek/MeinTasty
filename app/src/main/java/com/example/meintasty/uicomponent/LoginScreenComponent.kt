@@ -1,12 +1,8 @@
 package com.example.meintasty.uicomponent
 
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,11 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -46,25 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meintasty.R
 import com.example.meintasty.navigation.Screen
-
-@Composable
-fun ScreenImage() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(400.dp)
-            .background(colorResource(id = R.color.mein_tasty_color))
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.meintast_logo),
-            contentDescription = "",
-            modifier = Modifier
-                .size(200.dp)
-                .align(Alignment.Center)
-        )
-    }
-}
-
 @Composable
 fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
 
@@ -73,10 +50,10 @@ fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
         onValueChange = { newEmail ->
             onEmailChange(newEmail)
         },
-        shape = RoundedCornerShape(25.dp),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape)),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(dimensionResource(id = R.dimen.horizontal_padding)),
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
             color = Color.Black
@@ -93,7 +70,7 @@ fun EmailLoginComponent(emailText: String, onEmailChange: (String) -> Unit) {
             Icon(
                 painter = painterResource(id = R.drawable.gmail),
                 contentDescription = "",
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size)),
                 tint = Color.LightGray
             )
         },
@@ -121,10 +98,10 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
         onValueChange = { password ->
             onPasswordChange(password)
         },
-        shape = RoundedCornerShape(25.dp),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape)),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(dimensionResource(id = R.dimen.horizontal_padding)),
         textStyle = TextStyle(
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
             fontWeight = FontWeight.ExtraBold,
@@ -144,7 +121,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
             Icon(
                 painter = painterResource(id = R.drawable.lock),
                 contentDescription = "",
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size)),
                 tint = Color.LightGray
             )
         },
@@ -156,7 +133,7 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
                         id = R.string.show
                     ),
                     tint = Color.LightGray,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size))
                 )
             }
         },
@@ -172,7 +149,6 @@ fun PasswordLoginComponent(passwordText: String, onPasswordChange: (String) -> U
             focusedIndicatorColor = colorResource(id = R.color.mein_tasty_color),
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-            //focusedLabelColor =  colorResource(id = R.color.mein_tasty_color)
         )
     )
 }
@@ -183,7 +159,7 @@ fun LoginButtonComponent(onLogin: () -> Unit) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 80.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.horizontal_button_padding)),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.mein_tasty_color)
         ),

@@ -29,7 +29,7 @@ import com.example.meintasty.uicomponent.EditIconComponent
 import com.example.meintasty.uicomponent.BackIcon
 import com.example.meintasty.uicomponent.DividierProfile
 import com.example.meintasty.uicomponent.HeaderComponent
-import com.example.meintasty.uicomponent.ProfileStartIcon
+import com.example.meintasty.uicomponent.ProfileStartIconComponent
 import com.example.meintasty.uicomponent.BasicText
 import com.example.meintasty.uicomponent.ProfileUserIcon
 import com.example.meintasty.uicomponent.LabelUserText
@@ -126,7 +126,7 @@ fun ProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.gmail)
                                 )
@@ -157,7 +157,7 @@ fun ProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     modifier = modifier,
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.phone)
@@ -190,7 +190,7 @@ fun ProfileScreen(
                                     .padding(vertical = 10.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     modifier,
                                     onClick = {},
                                     painterResource(id = R.drawable.lock)
@@ -216,7 +216,7 @@ fun ProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.navigation)
                                 )
@@ -236,7 +236,7 @@ fun ProfileScreen(
                                     .clickable {
                                     }
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.love)
                                 )
@@ -251,7 +251,7 @@ fun ProfileScreen(
                                         navController.navigate(Screen.OrderScreen.route)
                                     }
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.order)
                                 )

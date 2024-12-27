@@ -7,15 +7,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
+import com.example.meintasty.R
 
 @Composable
 fun DividierProfile(modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Divider(
-            modifier = Modifier.weight(1f).fillMaxWidth(),
+            modifier = modifier
+                .weight(1f)
+                .fillMaxWidth(),
             color = Color.LightGray,
-            thickness = 1.dp
+            thickness = dimensionResource(id = R.dimen.divide_thicknes)
         )
     }
 }

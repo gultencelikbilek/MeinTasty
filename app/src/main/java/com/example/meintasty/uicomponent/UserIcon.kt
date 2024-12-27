@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,18 +26,18 @@ import com.example.meintasty.R
 fun ProfileUserIcon(onClick: () -> Unit, painter: Painter) {
     Card(
         modifier = Modifier
-            .size(56.dp)
+            .size(dimensionResource(id = R.dimen.user_card_component_card_size))
             .clickable {
                 onClick()
             },
-        elevation = CardDefaults.cardElevation(2.dp),
-        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.user_card_component_card_elevation)),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.user_card_component_corner_shape)),
     ) {
         Box(
             modifier = Modifier
                 .background(
                     color = colorResource(id = R.color.white),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(dimensionResource(id = R.dimen.user_card_component_corner_shape))
                 )
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -45,14 +46,8 @@ fun ProfileUserIcon(onClick: () -> Unit, painter: Painter) {
                 painter = painter,
                 contentDescription = stringResource(id = R.string.back),
                 tint = colorResource(id = R.color.mein_tasty_color),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(dimensionResource(id = R.dimen.user_card_component_icon_size))
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun UserIconPrew() {
-    ProfileUserIcon(onClick = {}, painter = painterResource(id = R.drawable.user))
 }

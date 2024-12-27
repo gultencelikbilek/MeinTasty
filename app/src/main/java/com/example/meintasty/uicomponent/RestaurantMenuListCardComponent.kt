@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -63,20 +64,22 @@ fun SharedTransitionScope.RestaurantMenuListCardComponent(
     )
     Card(
         modifier = Modifier
-            .width(85.dp)
-            .height(170.dp)
-            .padding(4.dp)
+            .width(dimensionResource(id = R.dimen.menu_list_card_width))
+            .height(dimensionResource(id = R.dimen.menu_list_card_height))
+            .padding(dimensionResource(id = R.dimen.menu_list_padding))
             .clickable {
-                navController.navigate(Screen.UpdateRemoveMenuScreen.route +
-                        "?id=${menu?.id}&categoryId=${menu?.categoryId}&menuName=${menu?.menuName}&menuContent=${menu?.menuContent}&menuPrice=${menu?.menuPrice}&currency=${menu?.currency}")
+                navController.navigate(
+                    Screen.UpdateRemoveMenuScreen.route +
+                            "?id=${menu?.id}&categoryId=${menu?.categoryId}&menuName=${menu?.menuName}&menuContent=${menu?.menuContent}&menuPrice=${menu?.menuPrice}&currency=${menu?.currency}"
+                )
             },
-        elevation = CardDefaults.cardElevation(1.dp),
+        elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.divide_thicknes)),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
     ) {
         Column(
-            modifier = Modifier.height(150.dp)
+            modifier = Modifier.height(dimensionResource(id = R.dimen.menu_list_column_size))
         ) {
             Image(
                 painter = painterResource(id = R.drawable.restaurant_bg),
@@ -84,15 +87,19 @@ fun SharedTransitionScope.RestaurantMenuListCardComponent(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
-                    .border(1.dp, Color.Transparent, RoundedCornerShape(25.dp))
+                    .height(dimensionResource(id = R.dimen.menu_list_image_size))
+                    .border(
+                        dimensionResource(id = R.dimen.divide_thicknes),
+                        Color.Transparent,
+                        RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape))
+                    )
 
             )
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 8.dp),
+                    .padding(start = dimensionResource(id = R.dimen.user_card_component_corner_shape)),
                 verticalArrangement = Arrangement.Top
             ) {
                 Text(
@@ -100,12 +107,12 @@ fun SharedTransitionScope.RestaurantMenuListCardComponent(
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         color = Color.Black,
                         fontFamily = customFontFamily
-                    ), modifier = Modifier.padding(bottom = 2.dp)
+                    ), modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.text_bottom))
                 )
                 Text(
                     text = menu?.menuPrice.toString(), style = TextStyle(
                         fontSize = MaterialTheme.typography.titleMedium.fontSize, color = Color.Gray
-                    ), modifier = Modifier.padding(bottom = 2.dp)
+                    ), modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.text_bottom))
                 )
                 Text(
                     text = menu?.menuPic.toString(), style = TextStyle(

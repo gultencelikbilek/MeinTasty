@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,14 +25,15 @@ fun EditIconComponent(
     icon: Painter,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     Box(
         modifier = modifier
-            .padding(end = 16.dp) // Sağdan 8.dp boşluk
-            .size(24.dp)
+            .padding(end = dimensionResource(id = R.dimen.horizontal_padding))
+            .size(
+                dimensionResource(id = R.dimen.box_size)
+            )
             .background(
                 colorResource(id = R.color.white),
-                RoundedCornerShape(12.dp)
+                RoundedCornerShape(dimensionResource(id = R.dimen.icon_corner_shape))
             )
             .clickable {
 
@@ -46,7 +48,9 @@ fun EditIconComponent(
                 id = R.string.back
             ),
             tint = colorResource(id = R.color.mein_tasty_color),
-            modifier = Modifier.size(24.dp).align(Alignment.Center)
+            modifier = Modifier
+                .size(dimensionResource(id = R.dimen.icon_size))
+                .align(Alignment.Center)
         )
     }
 }

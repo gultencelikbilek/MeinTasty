@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="horizontal_padding">16dp</dimen>
+    <dimen name="vertical_padding">10dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="box_size">24dp</dimen>
+    <dimen name="corner_shape">25dp</dimen>
+    <dimen name="horizontal_button_padding">25dp</dimen>
+    <dimen name="image_size">200dp</dimen>
+    <dimen name="canton_screen_corner_shape">16dp</dimen>
+    <dimen name="canton_screen_card_elevation">8dp</dimen>
+    <dimen name="canton_screen_spacer_height">8dp</dimen>
+    <dimen name="canton_screen_box_size">350dp</dimen>
+    <dimen name="canton_screen_card_height">250dp</dimen>
+    <dimen name="signup_screen_card_height">400dp</dimen>
+    <dimen name="splash_image_size">100dp</dimen>
+    <dimen name="choose_screen_box_size">350dp</dimen>
+    <dimen name="choose_screen_spacer_height">26dp</dimen>
+    <dimen name="restaurant_screen_spacer_wight">8dp</dimen>
+    <dimen name="user_card_component_corner_shape">8dp</dimen>
+    <dimen name="user_card_component_card_elevation">2dp</dimen>
+    <dimen name="user_card_component_card_size">56dp</dimen>
+    <dimen name="user_card_component_icon_size">30dp</dimen>
+    <dimen name="divide_thicknes">1dp</dimen>
+    <dimen name="icon_corner_shape">12dp</dimen>
+    <dimen name="profil_start_icon_icon_size">36dp</dimen>
+    <dimen name="category_box_height">40dp</dimen>
+    <dimen name="category_box_width">80dp</dimen>
+    <dimen name="category_padding_horizontal">8dp</dimen>
+    <dimen name="category_padding_vertical">6dp</dimen>
+    <dimen name="menu_list_padding">4dp</dimen>
+    <dimen name="menu_list_card_height">170dp</dimen>
+    <dimen name="menu_list_card_width">85dp</dimen>
+    <dimen name="menu_list_column_size">150dp</dimen>
+    <dimen name="menu_list_image_size">80dp</dimen>
+    <dimen name="text_bottom">2dp</dimen>
+</resources>

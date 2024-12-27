@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -50,7 +51,7 @@ fun ChooseLoginRegisterScreen(
                 actions = {
                     Text(
                         modifier = Modifier
-                            .padding(end = 16.dp)
+                            .padding(end = dimensionResource(id = R.dimen.horizontal_padding))
                             .clickable {
                                 navController.navigate(Screen.CantonScreen.route)
                             },
@@ -62,7 +63,7 @@ fun ChooseLoginRegisterScreen(
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xffdc3545)
+                    containerColor = colorResource(id = R.color.mein_tasty_color)
                 )
             )
         },
@@ -74,26 +75,26 @@ fun ChooseLoginRegisterScreen(
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 0.dp),
+                        .fillMaxSize(),
+                       // .padding(top = 0.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(350.dp)
+                            .height(dimensionResource(id = R.dimen.choose_screen_box_size))
                             .background(colorResource(id = R.color.mein_tasty_color))
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.meintast_logo),
                             contentDescription = "",
                             modifier = Modifier
-                                .size(200.dp)
+                                .size(dimensionResource(id = R.dimen.image_size))
                                 .align(Alignment.Center)
                         )
                     }
-                    Spacer(modifier = Modifier.height(26.dp))
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.choose_screen_spacer_height)))
                     SignUpButtonComponent(
                         onClick = {
                             navController.navigate(Screen.SignUpScreen.route)

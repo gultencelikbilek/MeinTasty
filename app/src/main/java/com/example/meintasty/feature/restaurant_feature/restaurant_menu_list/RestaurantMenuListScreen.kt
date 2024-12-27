@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -105,7 +106,7 @@ fun SharedTransitionScope.RestaurantMenuListScreen(
                             painter = painterResource(id = R.drawable.plus),
                             contentDescription = "",
                             tint = Color.White,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size))
                         )
                     }
                 },
@@ -134,10 +135,13 @@ fun SharedTransitionScope.RestaurantMenuListScreen(
                                 selectedCategoryId.value == category.categoryId // Şu anki kategori seçili mi?
                             Box(
                                 modifier = Modifier
-                                    .width(80.dp)
-                                    .height(40.dp)
-                                    .padding(horizontal = 8.dp, vertical = 6.dp)
-                                    .clip(RoundedCornerShape(25.dp)) // Dış şekli kliple
+                                    .width(dimensionResource(id = R.dimen.category_box_width))
+                                    .height(dimensionResource(id = R.dimen.category_box_height))
+                                    .padding(
+                                        horizontal = dimensionResource(id = R.dimen.category_padding_horizontal),
+                                        vertical = dimensionResource(id = R.dimen.category_padding_vertical)
+                                    )
+                                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_shape))) // Dış şekli kliple
                                     .background(
                                         color = if (isSelected) colorResource(id = R.color.mein_tasty_color) else colorResource(
                                             id = R.color.white
