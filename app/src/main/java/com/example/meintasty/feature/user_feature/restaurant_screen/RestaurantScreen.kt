@@ -225,7 +225,7 @@ fun SharedTransitionScope.RestaurantScreen(
                         .wrapContentHeight()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Box(
+                  /*  Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(colorResource(id = R.color.mein_tasty_color))
@@ -237,8 +237,7 @@ fun SharedTransitionScope.RestaurantScreen(
                                 query = it
                             }
                         )
-                    }
-
+                    }*/
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

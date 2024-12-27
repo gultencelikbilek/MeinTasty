@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -110,7 +111,7 @@ fun SignUpScreen(
             TopAppBar(
                 title = { /*TODO*/ },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xffdc3545)
+                    containerColor = colorResource(id = R.color.mein_tasty_color)
                 )
             )
         },
@@ -144,7 +145,7 @@ fun SignUpScreen(
                             painter = painterResource(id = R.drawable.meintast_logo),
                             contentDescription = "",
                             modifier = Modifier
-                                .size(200.dp)
+                                .size(dimensionResource(id = R.dimen.image_size))
                                 .align(Alignment.Center)
                         )
                     }
@@ -152,13 +153,13 @@ fun SignUpScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = dimensionResource(id = R.dimen.horizontal_padding)),
                         contentAlignment = Alignment.Center
                     ) {
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(400.dp),
+                                .height(dimensionResource(id = R.dimen.signup_screen_card_height)),
                             colors = CardDefaults.cardColors(
                                 containerColor = Color.White
                             )

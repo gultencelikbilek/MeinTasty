@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -37,7 +38,6 @@ import com.example.meintasty.navigation.Screen
 
 @Composable
 fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavController) {
-
 
     var cantonSelect by remember {
         mutableStateOf("")
@@ -95,7 +95,7 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(350.dp)
+            .height(dimensionResource(id = R.dimen.canton_screen_box_size))
 
     ) {
         Image(
@@ -107,17 +107,17 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
         Card(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
+                .padding(dimensionResource(id = R.dimen.horizontal_padding))
                 .fillMaxWidth()
-                .height(250.dp),
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(8.dp),
+                .height(dimensionResource(id = R.dimen.canton_screen_card_height)),
+            shape = RoundedCornerShape(dimensionResource(id = R.dimen.canton_screen_corner_shape)),
+            elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.canton_screen_card_elevation)),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
             )
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.horizontal_padding)),
                 verticalArrangement = Arrangement.Bottom
             ) {
 
@@ -128,7 +128,7 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
                         cantonSelect = newCanton
                     }
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.canton_screen_spacer_height)))
                 CitiesTextFieldComponent(
                     citiesList = citiesList,
                     citiesSelect = citiesSelect,
@@ -136,7 +136,7 @@ fun BeatMeCardComponent(cantonViewModel: CantonViewModel, navController: NavCont
                         citiesSelect = newCity
                     }
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.canton_screen_spacer_height)))
                 SearchButton(onClick = {
                     if (cantonSelect.isNullOrEmpty().not() && citiesSelect.isNullOrEmpty().not()) {
                         val userLocationModel = UserLocationModel(0, cantonSelect, citiesSelect)

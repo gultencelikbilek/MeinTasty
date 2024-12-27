@@ -25,7 +25,6 @@ fun CantonScreen(
     val requestModel = CantonRequestModel()
     LaunchedEffect(Unit) {
         cantonViewModel.getCanton(requestModel)
-        Log.d("cantonscreen", cantonViewModel.canton.toString())
     }
     Surface(
         modifier = Modifier.verticalScroll(rememberScrollState()),
@@ -36,7 +35,6 @@ fun CantonScreen(
             verticalArrangement = Arrangement.Bottom
         ) {
             BeatMeCardComponent(cantonViewModel, navController)
-
         }
     }
 }

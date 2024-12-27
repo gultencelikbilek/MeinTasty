@@ -1,7 +1,6 @@
 package com.example.meintasty.uicomponent
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -12,22 +11,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.meintasty.R
 
 @Composable
-fun ProfileStartIcon(
+fun ProfileStartIconComponent(
     modifier: Modifier = Modifier,
     onClick:() -> Unit,
     painter: Painter
 ) {
     Box(
         modifier = modifier
-            .size(56.dp)
+            .size(dimensionResource(id = R.dimen.user_card_component_card_size))
             .background(
                 colorResource(id = R.color.white),
-                RoundedCornerShape(8.dp)
+                RoundedCornerShape(dimensionResource(id = R.dimen.user_card_component_corner_shape))
             )
             .clickable {
                 onClick()
@@ -36,10 +36,10 @@ fun ProfileStartIcon(
     ) {
         Box(
             modifier = Modifier
-                .size(36.dp)
+                .size(dimensionResource(id = R.dimen.profil_start_icon_icon_size))
                 .background(
                     colorResource(id = R.color.white),
-                    RoundedCornerShape(12.dp)
+                    RoundedCornerShape(dimensionResource(id = R.dimen.icon_corner_shape))
                 )
                 .clickable {
                     onClick()
@@ -52,7 +52,7 @@ fun ProfileStartIcon(
                     id = R.string.back
                 ),
                 tint = colorResource(id = R.color.mein_tasty_color),
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(dimensionResource(id = R.dimen.profil_start_icon_icon_size))
             )
         }
     }

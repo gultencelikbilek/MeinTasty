@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,7 @@ import com.example.meintasty.uicomponent.DividierProfile
 import com.example.meintasty.uicomponent.EditIconComponent
 import com.example.meintasty.uicomponent.HeaderComponent
 import com.example.meintasty.uicomponent.LabelUserText
-import com.example.meintasty.uicomponent.ProfileStartIcon
+import com.example.meintasty.uicomponent.ProfileStartIconComponent
 import com.example.meintasty.uicomponent.ProfileUserIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,25 +96,25 @@ fun RestaurantProfileScreen(
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp),
+                            .padding(top = dimensionResource(id = R.dimen.horizontal_padding)),
                         colors = CardDefaults.cardColors(
                             containerColor = Color.White
                         )
                     ) {
                         Column(
-                            modifier = Modifier.padding(start = 16.dp)
+                            modifier = Modifier.padding(start = dimensionResource(id = R.dimen.horizontal_padding))
                         ) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 10.dp),
+                                    .padding(vertical = dimensionResource(id = R.dimen.vertical_padding)),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 ProfileUserIcon(
                                     onClick = {},
                                     painterResource(id = R.drawable.user)
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.restaurant_screen_spacer_wight)))
                                 LabelUserText(restaurant.restaurantName.toString())
                             }
 
@@ -121,9 +122,9 @@ fun RestaurantProfileScreen(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 10.dp)
+                                    .padding(vertical = dimensionResource(id = R.dimen.vertical_padding))
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.gmail)
                                 )
@@ -151,9 +152,9 @@ fun RestaurantProfileScreen(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 10.dp)
+                                    .padding(vertical = dimensionResource(id = R.dimen.vertical_padding))
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     modifier = modifier,
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.phone)
@@ -181,9 +182,9 @@ fun RestaurantProfileScreen(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 10.dp)
+                                    .padding(vertical = dimensionResource(id = R.dimen.vertical_padding))
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     modifier = modifier,
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.calendar)
@@ -205,7 +206,7 @@ fun RestaurantProfileScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp)
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     modifier = modifier,
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.clock)
@@ -229,7 +230,7 @@ fun RestaurantProfileScreen(
                                             .fillMaxWidth()
                                             .padding(vertical = 10.dp)
                                     ) {
-                                        ProfileStartIcon(
+                                        ProfileStartIconComponent(
                                             onClick = {},
                                             painter = painterResource(id = R.drawable.navigation)
                                         )
@@ -253,7 +254,7 @@ fun RestaurantProfileScreen(
                                         navController.navigate(Screen.RestaurantMenuDetailScreen.route)
                                     }
                             ) {
-                                ProfileStartIcon(
+                                ProfileStartIconComponent(
                                     onClick = {},
                                     painter = painterResource(id = R.drawable.restaurant_menu)
                                 )
